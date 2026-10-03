@@ -32,7 +32,6 @@ module.exports = async (req, res) => {
         systemInstruction: { parts: [{ text: system }] },
         contents,
         generationConfig: {
-          temperature: 0.65,
           maxOutputTokens: 2500
         }
       })
