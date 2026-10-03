@@ -1,4 +1,4 @@
-const { guard, BRAND, RULES } = require("./_shared");
+const { guard } = require("./_shared");
 
 const LIVE_MODEL =
   process.env.GEMINI_LIVE_MODEL || "gemini-3.8-live";
@@ -27,57 +27,22 @@ module.exports = async (req, res) => {
 
     const payload = {
       uses: 1,
-
       expireTime: new Date(
         now + 30 * 60 * 1000
       ).toISOString(),
-
       newSessionExpireTime: new Date(
         now + 60 * 1000
       ).toISOString(),
-
-      liveConnectConstraints: {
-        model: `models/${LIVE_MODEL}`,
-
-        config: {
-          responseModalities: ["AUDIO"],
-
-          systemInstruction: {
-            parts: [
-              {
-                text: `${RULES}
-
-${BRAND}
-
-This is a live voice conversation.
-
-Speak naturally, clearly and conversationally.
-Keep responses reasonably concise.
-Answer in the user's language.
-Do not use Markdown.
-Do not read URLs character-by-character unless necessary.
-Do not invent IP BABA information.
-Do not make unsupported promises.
-When the user asks about an IP BABA service, explain the relevant service naturally and provide a next step when appropriate.`,
-              },
-            ],
-          },
-
-          sessionResumption: {},
-        },
-      },
     };
 
     const response = await fetch(
       "https://generativelanguage.googleapis.com/v1beta/auth_tokens",
       {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
           "x-goog-api-key": apiKey,
         },
-
         body: JSON.stringify(payload),
       }
     );
