@@ -5,100 +5,512 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#04070d">
 <title>JARVIS — IP BABA AI Assistant</title>
+
 <style>
-:root{--cyan:#00e5ff;--blue:#0a84ff;--red:#e50914;--bg:#03060b;--panel:rgba(9,15,25,.78);--line:rgba(91,130,170,.28);--muted:#8ea3ba;--text:#eff8ff}
-*{box-sizing:border-box}
-html,body{margin:0;background:radial-gradient(circle at 50% 15%,#0b1730 0,#03060b 46%,#010204 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-body{min-height:100vh}
-.app{width:min(1180px,100%);margin:auto;padding:16px;position:relative;overflow:hidden}
-.ambient{position:fixed;inset:0;pointer-events:none;background:linear-gradient(rgba(0,229,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.035) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 90%)}
-header{text-align:center;position:relative;z-index:2}
-.brand-logo{height:66px;max-width:min(280px,72vw);object-fit:contain;display:block;margin:2px auto 4px}
-.logo-fallback{display:none;font-weight:900;letter-spacing:.18em;font-size:1.7rem;color:white}
-.title{margin:0;font-size:2rem;letter-spacing:.32em;font-weight:800;color:#fff;text-shadow:0 0 18px rgba(0,229,255,.28)}
-.subtitle{margin:5px 0 0;color:var(--muted);font-size:.9rem;letter-spacing:.08em}
-.secure{margin:8px auto 0;width:max-content;color:#8fc7d5;font-size:.72rem;border:1px solid var(--line);padding:5px 9px;border-radius:999px;background:rgba(0,229,255,.04)}
-.core-wrap{position:relative;width:min(430px,92vw);height:min(430px,92vw);margin:10px auto 4px}
-.core-wrap:before{content:"";position:absolute;inset:10%;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,.13),rgba(10,132,255,.05) 35%,transparent 68%);filter:blur(16px)}
-#core{width:100%;height:100%;display:block;position:relative;z-index:1}
-.core-logo{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%);width:27%;max-height:27%;object-fit:contain;filter:drop-shadow(0 0 16px rgba(0,229,255,.45));pointer-events:none}
-.state{position:absolute;left:50%;bottom:4px;transform:translateX(-50%);z-index:4;white-space:nowrap;font-size:.73rem;letter-spacing:.18em;color:#b9eaff;text-shadow:0 0 12px rgba(0,229,255,.5)}
-.controls,.quick,.composer,.chat{position:relative;z-index:5}
-.controls{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:8px 0}
-.btn{border:1px solid var(--line);background:rgba(10,18,30,.86);color:#fff;border-radius:12px;padding:10px 14px;min-height:44px;font-weight:650;cursor:pointer;transition:.18s transform,.18s border-color,.18s background}
-.btn:hover{transform:translateY(-1px);border-color:rgba(0,229,255,.65)}
-.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
-.btn.primary{border:0;background:linear-gradient(100deg,#0a84ff,#00e5ff);color:#001019;box-shadow:0 0 22px rgba(0,229,255,.2)}
-.btn.live{min-width:180px;font-size:.95rem}
-.btn.live.on{background:linear-gradient(100deg,#e50914,#8c0010);color:#fff}
-.btn.danger{border-color:rgba(229,9,20,.5)}
-.status{display:flex;justify-content:center;align-items:center;gap:7px;color:var(--muted);font-size:.78rem;margin:4px 0 12px}
-.dot{width:8px;height:8px;border-radius:50%;background:#506070;box-shadow:0 0 0 transparent}
-.dot.ok{background:#4cffae;box-shadow:0 0 12px #4cffae}
-.dot.busy{background:#00e5ff;box-shadow:0 0 12px #00e5ff;animation:pulse 1s infinite}
-.dot.err{background:#ff3945;box-shadow:0 0 12px #ff3945}
-@keyframes pulse{50%{opacity:.35;transform:scale(.7)}}
-.quick{display:flex;gap:7px;overflow:auto;padding:3px 2px 9px;scrollbar-width:thin}
-.quick .btn{white-space:nowrap;font-size:.82rem;min-height:40px;padding:8px 11px}
-.section-label{color:#91a9bd;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;margin:6px 2px}
-.chat{height:min(460px,52vh);overflow:auto;border:1px solid var(--line);background:linear-gradient(180deg,rgba(6,11,18,.86),rgba(7,12,20,.72));border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
-.bubble{max-width:88%;padding:10px 12px;border-radius:15px;line-height:1.58;font-size:.94rem;overflow-wrap:anywhere}
-.bubble.user{align-self:flex-end;background:linear-gradient(135deg,#123e70,#0c2949);border:1px solid rgba(52,146,255,.25);white-space:pre-wrap}
-.bubble.ai{align-self:flex-start;background:rgba(18,27,41,.95);border:1px solid rgba(0,229,255,.14);border-left:3px solid var(--cyan)}
-.bubble.ai p{margin:.35em 0}
-.bubble.ai h3{margin:.55em 0 .2em;color:#9cefff;font-size:1rem}
-.bubble.ai ul,.bubble.ai ol{margin:.35em 0;padding-left:1.25em}
-.bubble.ai code{background:#050a11;border:1px solid #1b2a3e;border-radius:5px;padding:1px 4px}
-.bubble.ai pre{white-space:pre-wrap;background:#050a11;border:1px solid #1b2a3e;border-radius:9px;padding:9px;overflow:auto}
-.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
-.mini{border:1px solid var(--line);background:#08101b;color:#d9f7ff;border-radius:8px;padding:5px 8px;font-size:.72rem;cursor:pointer}
-.cta{border-color:rgba(229,9,20,.65);background:linear-gradient(90deg,#b20711,#e50914);color:#fff}
-.typing{opacity:.7;font-style:italic}
-.composer{display:flex;gap:7px;margin-top:9px;background:rgba(7,13,22,.92);border:1px solid var(--line);border-radius:15px;padding:7px}
-.composer textarea{flex:1;resize:none;min-height:46px;max-height:140px;border:0;outline:0;background:transparent;color:#fff;padding:11px 8px;font:inherit}
-.icon{width:46px;min-width:46px;padding:8px}
-.footer{text-align:center;color:#70869a;font-size:.72rem;margin:10px 0 3px}
-.hidden{display:none!important}
-.modal{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.68);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:16px}
-.modal-card{width:min(560px,100%);background:#08111d;border:1px solid rgba(0,229,255,.3);border-radius:18px;padding:16px;box-shadow:0 20px 80px rgba(0,0,0,.55)}
-.modal-card h2{margin:0 0 8px}
-.modal-card p{color:#9db1c4;line-height:1.5}
-.modal-card .row{display:flex;gap:8px;justify-content:flex-end}
-@media(max-width:640px){
-.app{padding:10px}
-.title{font-size:1.45rem;letter-spacing:.24em}
-.subtitle{font-size:.78rem}
-.brand-logo{height:52px}
-.core-wrap{margin-top:2px}
-.chat{height:48vh}
-.bubble{max-width:94%}
-.controls .btn{flex:1}
-.controls .live{flex-basis:100%}
-.composer{position:sticky;bottom:8px}
-.footer{padding-bottom:4px}
+:root{
+  --cyan:#00e5ff;
+  --blue:#0a84ff;
+  --red:#e50914;
+  --bg:#03060b;
+  --panel:rgba(9,15,25,.78);
+  --line:rgba(91,130,170,.28);
+  --muted:#8ea3ba;
+  --text:#eff8ff
 }
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  min-height:100%;
+  background:radial-gradient(circle at 50% 15%,#0b1730 0,#03060b 46%,#010204 100%);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+}
+
+body{min-height:100vh}
+
+.app{
+  width:min(1180px,100%);
+  margin:auto;
+  padding:16px;
+  position:relative;
+  overflow:hidden
+}
+
+.ambient{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(0,229,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,229,255,.035) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(to bottom,black,transparent 90%)
+}
+
+header{
+  text-align:center;
+  position:relative;
+  z-index:2
+}
+
+.brand-logo{
+  height:66px;
+  max-width:min(280px,72vw);
+  object-fit:contain;
+  display:block;
+  margin:2px auto 4px;
+  padding:9px 16px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(0,0,0,.82));
+  box-shadow:0 0 28px rgba(229,9,20,.14),inset 0 0 18px rgba(255,255,255,.035)
+}
+
+.logo-fallback{
+  display:none;
+  font-weight:900;
+  letter-spacing:.18em;
+  font-size:1.7rem;
+  color:white
+}
+
+.title{
+  margin:0;
+  font-size:2rem;
+  letter-spacing:.32em;
+  font-weight:800;
+  color:#fff;
+  text-shadow:0 0 18px rgba(0,229,255,.28)
+}
+
+.subtitle{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:.9rem;
+  letter-spacing:.08em
+}
+
+.secure{
+  margin:8px auto 0;
+  width:max-content;
+  color:#8fc7d5;
+  font-size:.72rem;
+  border:1px solid var(--line);
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(0,229,255,.04)
+}
+
+.core-wrap{
+  position:relative;
+  width:min(470px,94vw);
+  height:min(470px,94vw);
+  margin:8px auto 4px;
+  isolation:isolate
+}
+
+.code-stream{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  border-radius:50%;
+  pointer-events:none;
+  opacity:.58;
+  mask-image:radial-gradient(circle,black 28%,rgba(0,0,0,.85) 50%,transparent 76%)
+}
+
+.code-stream span{
+  position:absolute;
+  color:rgba(0,229,255,.42);
+  font:600 10px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace;
+  white-space:nowrap;
+  transform:rotate(var(--rot));
+  animation:codeFloat var(--dur) linear infinite;
+  animation-delay:var(--delay);
+  text-shadow:0 0 8px rgba(0,229,255,.22)
+}
+
+@keyframes codeFloat{
+  0%{
+    transform:translate3d(var(--x),110%,0) rotate(var(--rot));
+    opacity:0
+  }
+  12%{opacity:.7}
+  88%{opacity:.7}
+  100%{
+    transform:translate3d(calc(var(--x) + var(--drift)),-20%,0) rotate(var(--rot));
+    opacity:0
+  }
+}
+
+.core-wrap:before{
+  content:"";
+  position:absolute;
+  inset:10%;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(0,229,255,.13),rgba(10,132,255,.05) 35%,transparent 68%);
+  filter:blur(16px)
+}
+
+#core{
+  width:100%;
+  height:100%;
+  display:block;
+  position:relative;
+  z-index:1
+}
+
+.state{
+  position:absolute;
+  left:50%;
+  bottom:4px;
+  transform:translateX(-50%);
+  z-index:4;
+  white-space:nowrap;
+  font-size:.73rem;
+  letter-spacing:.18em;
+  color:#b9eaff;
+  text-shadow:0 0 12px rgba(0,229,255,.5)
+}
+
+.controls,.quick,.composer,.chat{
+  position:relative;
+  z-index:5
+}
+
+.controls{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:8px 0
+}
+
+.btn{
+  border:1px solid var(--line);
+  background:rgba(10,18,30,.86);
+  color:#fff;
+  border-radius:12px;
+  padding:10px 14px;
+  min-height:44px;
+  font-weight:650;
+  cursor:pointer;
+  transition:.18s transform,.18s border-color,.18s background
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  border-color:rgba(0,229,255,.65)
+}
+
+.btn:focus-visible{
+  outline:2px solid var(--cyan);
+  outline-offset:2px
+}
+
+.btn.primary{
+  border:0;
+  background:linear-gradient(100deg,#0a84ff,#00e5ff);
+  color:#001019;
+  box-shadow:0 0 22px rgba(0,229,255,.2)
+}
+
+.btn.live{
+  min-width:180px;
+  font-size:.95rem
+}
+
+.btn.live.on{
+  background:linear-gradient(100deg,#e50914,#8c0010);
+  color:#fff
+}
+
+.btn.danger{
+  border-color:rgba(229,9,20,.5)
+}
+
+.status{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:7px;
+  color:var(--muted);
+  font-size:.78rem;
+  margin:4px 0 12px
+}
+
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#506070
+}
+
+.dot.ok{
+  background:#4cffae;
+  box-shadow:0 0 12px #4cffae
+}
+
+.dot.busy{
+  background:#00e5ff;
+  box-shadow:0 0 12px #00e5ff;
+  animation:pulse 1s infinite
+}
+
+.dot.err{
+  background:#ff3945;
+  box-shadow:0 0 12px #ff3945
+}
+
+@keyframes pulse{
+  50%{opacity:.35;transform:scale(.7)}
+}
+
+.quick{
+  display:flex;
+  gap:7px;
+  overflow:auto;
+  padding:3px 2px 9px;
+  scrollbar-width:thin
+}
+
+.quick .btn{
+  white-space:nowrap;
+  font-size:.82rem;
+  min-height:40px;
+  padding:8px 11px
+}
+
+.section-label{
+  color:#91a9bd;
+  font-size:.72rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin:6px 2px
+}
+
+.chat{
+  height:min(460px,52vh);
+  overflow:auto;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(6,11,18,.86),rgba(7,12,20,.72));
+  border-radius:18px;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03)
+}
+
+.bubble{
+  max-width:88%;
+  padding:10px 12px;
+  border-radius:15px;
+  line-height:1.58;
+  font-size:.94rem;
+  overflow-wrap:anywhere
+}
+
+.bubble.user{
+  align-self:flex-end;
+  background:linear-gradient(135deg,#123e70,#0c2949);
+  border:1px solid rgba(52,146,255,.25);
+  white-space:pre-wrap
+}
+
+.bubble.ai{
+  align-self:flex-start;
+  background:rgba(18,27,41,.95);
+  border:1px solid rgba(0,229,255,.14);
+  border-left:3px solid var(--cyan)
+}
+
+.bubble.ai p{margin:.35em 0}
+
+.bubble.ai h3{
+  margin:.55em 0 .2em;
+  color:#9cefff;
+  font-size:1rem
+}
+
+.bubble.ai ul,.bubble.ai ol{
+  margin:.35em 0;
+  padding-left:1.25em
+}
+
+.bubble.ai code{
+  background:#050a11;
+  border:1px solid #1b2a3e;
+  border-radius:5px;
+  padding:1px 4px
+}
+
+.bubble.ai pre{
+  white-space:pre-wrap;
+  background:#050a11;
+  border:1px solid #1b2a3e;
+  border-radius:9px;
+  padding:9px;
+  overflow:auto
+}
+
+.actions{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:7px
+}
+
+.mini{
+  border:1px solid var(--line);
+  background:#08101b;
+  color:#d9f7ff;
+  border-radius:8px;
+  padding:5px 8px;
+  font-size:.72rem;
+  cursor:pointer
+}
+
+.cta{
+  border-color:rgba(229,9,20,.65);
+  background:linear-gradient(90deg,#b20711,#e50914);
+  color:#fff
+}
+
+.typing{
+  opacity:.7;
+  font-style:italic
+}
+
+.composer{
+  display:flex;
+  gap:7px;
+  margin-top:9px;
+  background:rgba(7,13,22,.92);
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:7px
+}
+
+.composer textarea{
+  flex:1;
+  resize:none;
+  min-height:46px;
+  max-height:140px;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#fff;
+  padding:11px 8px;
+  font:inherit
+}
+
+.icon{
+  width:46px;
+  min-width:46px;
+  padding:8px
+}
+
+.footer{
+  text-align:center;
+  color:#70869a;
+  font-size:.72rem;
+  margin:10px 0 3px
+}
+
+.hidden{display:none!important}
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:30;
+  background:rgba(0,0,0,.68);
+  backdrop-filter:blur(7px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px
+}
+
+.modal-card{
+  width:min(560px,100%);
+  background:#08111d;
+  border:1px solid rgba(0,229,255,.3);
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 20px 80px rgba(0,0,0,.55)
+}
+
+.modal-card h2{margin:0 0 8px}
+
+.modal-card p{
+  color:#9db1c4;
+  line-height:1.5
+}
+
+.modal-card .row{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end
+}
+
+@media(max-width:640px){
+  .app{padding:10px}
+  .title{
+    font-size:1.45rem;
+    letter-spacing:.24em
+  }
+  .subtitle{font-size:.78rem}
+  .brand-logo{height:52px}
+  .core-wrap{margin-top:2px}
+  .chat{height:48vh}
+  .bubble{max-width:94%}
+  .controls .btn{flex:1}
+  .controls .live{flex-basis:100%}
+  .composer{
+    position:sticky;
+    bottom:8px
+  }
+  .footer{padding-bottom:4px}
+}
+
 @media(prefers-reduced-motion:reduce){
-*,*:before,*:after{animation:none!important;transition:none!important}
+  *,*:before,*:after{
+    animation:none!important;
+    transition:none!important
+  }
 }
 </style>
 </head>
 
 <body>
+
 <div class="ambient"></div>
 
 <main class="app" id="jv">
 
 <header>
-  <img class="brand-logo" id="brandLogo" src="/assets/ipbaba-logo.png" alt="IP BABA logo">
+  <img
+    class="brand-logo"
+    id="brandLogo"
+    src="/assets/ipbaba-logo.png"
+    alt="IP BABA logo"
+  >
+
   <div class="logo-fallback" id="logoFallback">IP BABA</div>
+
   <h1 class="title">JARVIS</h1>
   <p class="subtitle">AI Assistant of IP BABA</p>
+
   <div class="secure">🔒 Secure AI Connection</div>
 </header>
 
 <section class="core-wrap" aria-label="JARVIS AI Core">
   <canvas id="core"></canvas>
-  <img id="coreLogo" class="core-logo" src="/assets/ipbaba-logo.png" alt="">
+  <div class="code-stream" id="codeStream" aria-hidden="true"></div>
   <div id="state" class="state">JARVIS READY</div>
 </section>
 
@@ -109,7 +521,6 @@ header{text-align:center;position:relative;z-index:2}
 
 <div class="controls">
   <button id="liveBtn" class="btn primary live">🎙 TALK LIVE</button>
-  <button id="listenStop" class="btn">⏹ Stop Speaking</button>
   <button id="newBtn" class="btn">＋ New Chat</button>
   <button id="clearBtn" class="btn">Clear</button>
 </div>
@@ -121,9 +532,29 @@ header{text-align:center;position:relative;z-index:2}
 <section id="chat" class="chat" aria-live="polite"></section>
 
 <form id="composer" class="composer">
-  <textarea id="input" rows="1" placeholder="Ask JARVIS anything about AI, digital marketing, business, IP BABA, or ask for a prompt..."></textarea>
-  <button type="button" id="micBtn" class="btn icon" title="Voice typing" aria-label="Voice typing">🎤</button>
-  <button type="submit" id="sendBtn" class="btn primary icon" title="Send" aria-label="Send">➤</button>
+
+  <textarea
+    id="input"
+    rows="1"
+    placeholder="Ask JARVIS anything about AI, digital marketing, business, IP BABA, or ask for a prompt..."
+  ></textarea>
+
+  <button
+    type="button"
+    id="micBtn"
+    class="btn icon"
+    title="Voice typing"
+    aria-label="Voice typing"
+  >🎤</button>
+
+  <button
+    type="submit"
+    id="sendBtn"
+    class="btn primary icon"
+    title="Send"
+    aria-label="Send"
+  >➤</button>
+
 </form>
 
 <footer class="footer">
@@ -134,1218 +565,475 @@ header{text-align:center;position:relative;z-index:2}
 
 <div id="liveModal" class="modal hidden">
   <div class="modal-card">
+
     <h2>JARVIS Live Voice</h2>
-    <p id="liveInfo">Starting secure realtime voice connection…</p>
+
+    <p id="liveInfo">
+      Starting secure realtime voice connection…
+    </p>
+
     <div class="row">
-      <button id="endLive" class="btn danger">End Conversation</button>
+      <button id="endLive" class="btn danger">
+        End Conversation
+      </button>
     </div>
+
   </div>
 </div>
 
 <script>
 (() => {
-'use strict';
+  'use strict';
 
-const API_BASE_URL = window.JARVIS_API_BASE_URL || '';
+  const API_BASE_URL = window.JARVIS_API_BASE_URL || '';
 
-const $ = id => document.getElementById(id);
+  const $ = id => document.getElementById(id);
 
-const els = {
-  logo:$('brandLogo'),
-  fallback:$('logoFallback'),
-  coreLogo:$('coreLogo'),
-  core:$('core'),
-  state:$('state'),
-  dot:$('dot'),
-  conn:$('conn'),
-  live:$('liveBtn'),
-  stop:$('listenStop'),
-  newBtn:$('newBtn'),
-  clear:$('clearBtn'),
-  quick:$('quick'),
-  chat:$('chat'),
-  form:$('composer'),
-  input:$('input'),
-  mic:$('micBtn'),
-  send:$('sendBtn'),
-  modal:$('liveModal'),
-  liveInfo:$('liveInfo'),
-  endLive:$('endLive')
-};
-
-const state = {
-  messages:[],
-  audio:null,
-  live:null,
-  recognition:null,
-  coreMode:'idle'
-};
-
-const QUICK = [
-  ['🚀 Grow My Business','Help me understand how I can grow my business digitally.'],
-  ['📢 Meta Ads','Explain how Meta Ads could help my business and what I should prepare.'],
-  ['🌐 Build a Website','I need a professional website. Guide me on what I need and what IP BABA can provide.'],
-  ['🤖 AI Automation','How can AI automation improve my business?'],
-  ['🔍 Improve SEO','My website is not getting enough organic traffic. What should I do?'],
-  ['🎨 Branding','I need stronger branding for my business. Guide me.'],
-  ['✍ Generate Prompt','I want to generate a professional AI image or video prompt.'],
-  ['💬 Contact IP BABA','Tell me how I can contact IP BABA.']
-];
-
-els.logo.addEventListener('error',()=>{
-  els.logo.classList.add('hidden');
-  els.fallback.style.display='block';
-  els.coreLogo.classList.add('hidden');
-});
-
-function setMode(mode,label){
-  state.coreMode=mode;
-  els.state.textContent=label;
-  els.conn.textContent=label;
-  els.dot.className='dot '+(
-    mode==='error'?'err':
-    mode==='idle'?'ok':
-    'busy'
-  );
-}
-
-function escapeHtml(s){
-  return String(s)
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'","&#039;");
-}
-
-function markdownLite(text){
-  let s=escapeHtml(text);
-  s=s.replace(/```([\s\S]*?)```/g,'<pre>$1</pre>');
-  s=s.replace(/^### (.*)$/gm,'<h3>$1</h3>');
-  s=s.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
-  s=s.replace(/`([^`]+)`/g,'<code>$1</code>');
-  s=s.replace(/\n- (.*)/g,'<br>• $1');
-  s=s.replace(/\n(\d+)\. (.*)/g,'<br>$1. $2');
-  s=s.replace(/\n\n/g,'<p></p>');
-  s=s.replace(/\n/g,'<br>');
-  return s;
-}
-
-function addBubble(role,text,options={}){
-  const div=document.createElement('div');
-  div.className='bubble '+(role==='user'?'user':'ai');
-
-  if(role==='user'){
-    div.textContent=text;
-  }else{
-    div.innerHTML=markdownLite(text);
-
-    const actions=document.createElement('div');
-    actions.className='actions';
-
-    const listen=document.createElement('button');
-    listen.className='mini';
-    listen.textContent='🔊 Listen';
-    listen.onclick=()=>speak(text);
-
-    const copy=document.createElement('button');
-    copy.className='mini';
-    copy.textContent='📋 Copy';
-    copy.onclick=async()=>{
-      await navigator.clipboard.writeText(text);
-      copy.textContent='✓ Copied';
-      setTimeout(()=>copy.textContent='📋 Copy',1200);
-    };
-
-    actions.append(listen,copy);
-
-    if(options.cta){
-      const cta=document.createElement('button');
-      cta.className='mini cta';
-      cta.textContent='💬 Contact IP BABA';
-      cta.onclick=()=>window.open('https://wa.me/923443225533','_blank','noopener');
-      actions.appendChild(cta);
-    }
-
-    div.appendChild(actions);
-  }
-
-  els.chat.appendChild(div);
-  els.chat.scrollTop=els.chat.scrollHeight;
-}
-
-function welcome(){
-  addBubble('assistant',
-`Hello! I'm JARVIS — the AI Assistant of IP BABA.
-
-I can help you with AI, digital marketing, technology, business growth, IP BABA services, and professional AI prompt generation.
-
-You can type your question, use the microphone, or start a live voice conversation.
-
-What would you like to work on?`);
-}
-
-function autoSize(){
-  els.input.style.height='auto';
-  els.input.style.height=Math.min(140,els.input.scrollHeight)+'px';
-}
-
-els.input.addEventListener('input',autoSize);
-
-QUICK.forEach(([label,text])=>{
-  const b=document.createElement('button');
-  b.className='btn';
-  b.textContent=label;
-  b.onclick=()=>{
-    els.input.value=text;
-    autoSize();
-    els.input.focus();
+  const els = {
+    logo: $('brandLogo'),
+    fallback: $('logoFallback'),
+    core: $('core'),
+    codeStream: $('codeStream'),
+    state: $('state'),
+    dot: $('dot'),
+    conn: $('conn'),
+    live: $('liveBtn'),
+    newBtn: $('newBtn'),
+    clear: $('clearBtn'),
+    quick: $('quick'),
+    chat: $('chat'),
+    form: $('composer'),
+    input: $('input'),
+    mic: $('micBtn'),
+    send: $('sendBtn'),
+    modal: $('liveModal'),
+    liveInfo: $('liveInfo'),
+    endLive: $('endLive')
   };
-  els.quick.appendChild(b);
-});
 
-async function sendMessage(text){
-  text=String(text||'').trim();
-  if(!text)return;
+  const state = {
+    messages: [],
+    recognition: null,
+    coreMode: 'idle'
+  };
 
-  addBubble('user',text);
+  const QUICK = [
+    ['🚀 Grow My Business',
+      'Help me understand how I can grow my business digitally.'],
 
-  state.messages.push({
-    role:'user',
-    text
+    ['📢 Meta Ads',
+      'Explain how Meta Ads could help my business and what I should prepare.'],
+
+    ['🌐 Build a Website',
+      'I need a professional website. Guide me on what I need and what IP BABA can provide.'],
+
+    ['🤖 AI Automation',
+      'How can AI automation improve my business?'],
+
+    ['🔍 Improve SEO',
+      'My website is not getting enough organic traffic. What should I do?'],
+
+    ['🎨 Branding',
+      'I need stronger branding for my business. Guide me.'],
+
+    ['✍ Image Prompt',
+      'Generate a professional AI image prompt. Ask me the required questions first.'],
+
+    ['🎬 Video Prompt',
+      'Generate a professional AI video prompt. Ask me the required questions first.'],
+
+    ['📣 Ad Prompt',
+      'Create a professional marketing advertisement prompt. Ask me the business, audience, platform, objective and offer first.'],
+
+    ['💬 Contact IP BABA',
+      'Tell me how I can contact IP BABA.']
+  ];
+
+  els.logo.addEventListener('error', () => {
+    els.logo.classList.add('hidden');
+    els.fallback.style.display = 'block';
   });
 
-  els.input.value='';
-  autoSize();
+  QUICK.forEach(([label, text]) => {
+    const b = document.createElement('button');
 
-  setMode('thinking','THINKING…');
+    b.className = 'btn';
+    b.textContent = label;
 
-  const typing=document.createElement('div');
-  typing.className='bubble ai typing';
-  typing.textContent='JARVIS is thinking…';
-  els.chat.appendChild(typing);
-  els.chat.scrollTop=els.chat.scrollHeight;
-
-  try{
-    const r=await fetch(API_BASE_URL+'/api/chat',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify({
-        messages:state.messages.slice(-24)
-      })
-    });
-
-    const d=await r.json().catch(()=>({}));
-
-    typing.remove();
-
-    if(!r.ok){
-      throw new Error(d.error||'chat_error');
-    }
-
-    const reply=String(d.reply||'').trim();
-
-    if(!reply){
-      throw new Error('empty_reply');
-    }
-
-    state.messages.push({
-      role:'assistant',
-      text:reply
-    });
-
-    const cta=reply.includes('[[CTA]]');
-
-    addBubble(
-      'assistant',
-      reply.replace(/\[\[CTA\]\]/g,'').trim(),
-      {cta}
-    );
-
-    setMode('idle','JARVIS READY');
-
-  }catch(error){
-    console.error(error);
-    typing.remove();
-
-    addBubble(
-      'assistant',
-      'JARVIS backend سے رابطہ نہیں ہو سکا۔ براہِ کرم Vercel deployment اور Environment Variables چیک کریں۔'
-    );
-
-    setMode('error','CONNECTION ERROR');
-  }
-}
-
-els.form.addEventListener('submit',e=>{
-  e.preventDefault();
-  sendMessage(els.input.value);
-});
-
-async function speak(text){
-  try{
-    if(state.audio){
-      state.audio.pause();
-      state.audio.currentTime=0;
-      state.audio=null;
-    }
-
-    setMode('speaking','SPEAKING…');
-
-    const r=await fetch(API_BASE_URL+'/api/tts',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify({
-        text:text.replace(/\[\[CTA\]\]/g,'').slice(0,1800)
-      })
-    });
-
-    if(!r.ok){
-      throw new Error('tts');
-    }
-
-    const blob=await r.blob();
-    const url=URL.createObjectURL(blob);
-    const a=new Audio(url);
-
-    state.audio=a;
-
-    a.onended=()=>{
-      URL.revokeObjectURL(url);
-      state.audio=null;
-      setMode('idle','JARVIS READY');
+    b.onclick = () => {
+      els.input.value = text;
+      sendText();
     };
 
-    a.onerror=()=>{
-      URL.revokeObjectURL(url);
-      state.audio=null;
-      setMode('error','AUDIO ERROR');
-    };
-
-    await a.play();
-
-  }catch(e){
-    setMode('error','VOICE ERROR');
-  }
-}
-
-els.stop.onclick=()=>{
-  if(state.audio){
-    state.audio.pause();
-    state.audio.currentTime=0;
-    state.audio=null;
-  }
-  setMode('idle','JARVIS READY');
-};
-
-function reset(){
-  state.messages=[];
-  els.chat.innerHTML='';
-  welcome();
-  setMode('idle','JARVIS READY');
-}
-
-els.newBtn.onclick=reset;
-els.clear.onclick=reset;
-
-const SpeechRecognition=
-  window.SpeechRecognition||
-  window.webkitSpeechRecognition;
-
-if(SpeechRecognition){
-
-  const r=new SpeechRecognition();
-
-  r.lang=navigator.language||'en-US';
-  r.interimResults=true;
-  r.continuous=false;
-
-  r.onstart=()=>{
-    setMode('listening','LISTENING…');
-  };
-
-  r.onresult=e=>{
-    let t='';
-
-    for(
-      let i=e.resultIndex;
-      i<e.results.length;
-      i++
-    ){
-      t+=e.results[i][0].transcript;
-    }
-
-    els.input.value=t;
-    autoSize();
-  };
-
-  r.onerror=()=>{
-    setMode('error','MIC ERROR');
-  };
-
-  r.onend=()=>{
-    if(state.coreMode==='listening'){
-      setMode('idle','JARVIS READY');
-    }
-  };
-
-  state.recognition=r;
-
-  els.mic.onclick=()=>{
-    try{
-      r.start();
-    }catch(_){}
-  };
-
-}else{
-
-  els.mic.title=
-    'Voice typing is not supported in this browser';
-
-  els.mic.onclick=()=>{
-    alert(
-      'Voice typing is not supported in this browser. Please use a current Chrome/Chromium browser or type your message.'
-    );
-  };
-}
-
-
-/* ===== FUTURISTIC AI CORE ===== */
-
-const c=els.core;
-const ctx=c.getContext('2d');
-
-let W=0;
-let H=0;
-let dpr=1;
-let particles=[];
-
-function resize(){
-
-  const r=c.getBoundingClientRect();
-
-  dpr=Math.min(
-    window.devicePixelRatio||1,
-    2
-  );
-
-  W=Math.max(
-    1,
-    Math.floor(r.width*dpr)
-  );
-
-  H=Math.max(
-    1,
-    Math.floor(r.height*dpr)
-  );
-
-  c.width=W;
-  c.height=H;
-
-  particles=Array.from(
-    {length:130},
-    ()=>({
-      a:Math.random()*Math.PI*2,
-      r:.18+Math.random()*.5,
-      z:.15+Math.random()*.85,
-      s:.002+Math.random()*.006,
-      p:Math.random()*6.28
-    })
-  );
-}
-
-window.addEventListener(
-  'resize',
-  resize
-);
-
-resize();
-
-function drawCore(t){
-
-  const time=t*.001;
-
-  ctx.clearRect(
-    0,
-    0,
-    W,
-    H
-  );
-
-  const cx=W/2;
-  const cy=H/2;
-  const base=Math.min(W,H)*.39;
-
-  ctx.save();
-  ctx.translate(cx,cy);
-  ctx.globalCompositeOperation='lighter';
-
-  for(
-    let layer=0;
-    layer<5;
-    layer++
-  ){
-
-    const rad=base*(
-      .34+
-      layer*.13
-    );
-
-    ctx.beginPath();
-
-    ctx.strokeStyle=
-      `rgba(${layer<2?0:10},${160+layer*20},255,${.16-layer*.018})`;
-
-    ctx.lineWidth=
-      Math.max(
-        1,
-        2*dpr
-      );
-
-    ctx.ellipse(
-      0,
-      0,
-      rad,
-      rad*(.32+layer*.11),
-      time*(.16+layer*.04)*(layer%2?1:-1),
-      0,
-      Math.PI*2
-    );
-
-    ctx.stroke();
-  }
-
-  particles.forEach((p)=>{
-
-    p.a+=
-      p.s*
-      (
-        state.coreMode==='thinking'
-        ?3
-        :1
-      );
-
-    const rr=
-      base*
-      p.r*
-      (
-        .75+
-        .25*Math.sin(
-          time+p.p
-        )
-      );
-
-    const x=
-      Math.cos(p.a)*
-      rr;
-
-    const y=
-      Math.sin(p.a)*
-      rr*
-      (.35+.65*p.z);
-
-    const size=
-      (1+p.z*2.8)*
-      dpr;
-
-    ctx.beginPath();
-
-    ctx.fillStyle=
-      `rgba(0,${180+Math.floor(70*p.z)},255,${.25+.55*p.z})`;
-
-    ctx.arc(
-      x,
-      y,
-      size,
-      0,
-      Math.PI*2
-    );
-
-    ctx.fill();
+    els.quick.appendChild(b);
   });
 
-  const pulse=
-    1+
-    .035*
-    Math.sin(time*2.2)*
-    (
-      state.coreMode==='idle'
-      ?1
-      :2.8
-    );
+  function setMode(mode, label) {
 
-  const g=
-    ctx.createRadialGradient(
-      0,
-      0,
-      base*.04,
-      0,
-      0,
-      base*.45
-    );
+    state.coreMode = mode;
 
-  g.addColorStop(
-    0,
-    'rgba(255,255,255,.85)'
-  );
+    els.state.textContent =
+      label || mode.toUpperCase();
 
-  g.addColorStop(
-    .16,
-    'rgba(0,229,255,.5)'
-  );
-
-  g.addColorStop(
-    .5,
-    'rgba(10,132,255,.12)'
-  );
-
-  g.addColorStop(
-    1,
-    'rgba(0,0,0,0)'
-  );
-
-  ctx.fillStyle=g;
-
-  ctx.beginPath();
-
-  ctx.arc(
-    0,
-    0,
-    base*.48*pulse,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fill();
-
-  ctx.restore();
-
-  requestAnimationFrame(drawCore);
-}
-
-requestAnimationFrame(drawCore);
-
-
-/* ===== LIVE VOICE ===== */
-
-let liveSocket=null;
-let mediaStream=null;
-let audioCtx=null;
-let workletNode=null;
-let sourceNode=null;
-let resumeToken=null;
-let liveToken=null;
-let livePlaying=[];
-let nextPlayTime=0;
-
-function b64ToBytes(b64){
-
-  const bin=atob(b64);
-  const out=
-    new Uint8Array(bin.length);
-
-  for(
-    let i=0;
-    i<bin.length;
-    i++
-  ){
-    out[i]=
-      bin.charCodeAt(i);
-  }
-
-  return out;
-}
-
-function bytesToB64(bytes){
-
-  let s='';
-  const step=0x8000;
-
-  for(
-    let i=0;
-    i<bytes.length;
-    i+=step
-  ){
-    s+=String.fromCharCode(
-      ...bytes.subarray(
-        i,
-        i+step
-      )
-    );
-  }
-
-  return btoa(s);
-}
-
-function pcm16ToFloat(bytes){
-
-  const dv=
-    new DataView(
-      bytes.buffer,
-      bytes.byteOffset,
-      bytes.byteLength
-    );
-
-  const out=
-    new Float32Array(
-      Math.floor(
-        bytes.byteLength/2
-      )
-    );
-
-  for(
-    let i=0;
-    i<out.length;
-    i++
-  ){
-
-    out[i]=Math.max(
-      -1,
-      Math.min(
-        1,
-        dv.getInt16(
-          i*2,
-          true
-        )/32768
-      )
-    );
-  }
-
-  return out;
-}
-
-function playPcm(b64){
-
-  if(!audioCtx)return;
-
-  const bytes=
-    b64ToBytes(b64);
-
-  const f=
-    pcm16ToFloat(bytes);
-
-  const buf=
-    audioCtx.createBuffer(
-      1,
-      f.length,
-      24000
-    );
-
-  buf.copyToChannel(
-    f,
-    0
-  );
-
-  const src=
-    audioCtx.createBufferSource();
-
-  src.buffer=buf;
-
-  const gain=
-    audioCtx.createGain();
-
-  gain.gain.value=.95;
-
-  src
-    .connect(gain)
-    .connect(
-      audioCtx.destination
-    );
-
-  const now=
-    audioCtx.currentTime;
-
-  nextPlayTime=
-    Math.max(
-      nextPlayTime,
-      now+.02
-    );
-
-  src.start(
-    nextPlayTime
-  );
-
-  nextPlayTime+=
-    buf.duration;
-
-  livePlaying.push(src);
-
-  src.onended=()=>{
-    livePlaying=
-      livePlaying.filter(
-        x=>x!==src
+    els.dot.className =
+      'dot ' +
+      (
+        mode === 'error'
+          ? 'err'
+          : mode === 'idle'
+            ? 'ok'
+            : 'busy'
       );
-  };
 
-  setMode(
-    'speaking',
-    'JARVIS SPEAKING…'
-  );
-}
-
-function stopLiveAudio(){
-
-  livePlaying.forEach(
-    s=>{
-      try{
-        s.stop();
-      }catch(_){}
+    if (mode === 'idle') {
+      els.conn.textContent = 'Ready';
+    } else if (mode === 'live') {
+      els.conn.textContent = 'Live Voice';
+    } else {
+      els.conn.textContent =
+        mode.charAt(0).toUpperCase() +
+        mode.slice(1);
     }
-  );
+  }
 
-  livePlaying=[];
+  function escapeHtml(s) {
 
-  nextPlayTime=0;
-}
-
-async function getLiveToken(){
-
-  const r=
-    await fetch(
-      API_BASE_URL+
-      '/api/live-token',
-      {
-        method:'POST',
-        headers:{
-          'Content-Type':
-            'application/json'
-        },
-        body:'{}'
-      }
-    );
-
-  const d=
-    await r.json()
-      .catch(()=>({}));
-
-  if(!r.ok){
-    throw new Error(
-      d.error||
-      'live_token'
+    return String(s).replace(
+      /[&<>'"]/g,
+      c => ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        "'":'&#39;',
+        '"':'&quot;'
+      }[c])
     );
   }
 
-  return d;
-}
+  function renderMarkdown(src) {
 
-async function setupMic(){
+    let s = escapeHtml(src);
 
-  mediaStream=
-    await navigator.mediaDevices.getUserMedia({
-      audio:{
-        channelCount:1,
-        echoCancellation:true,
-        noiseSuppression:true,
-        autoGainControl:true
+    const blocks = [];
+
+    s = s.replace(
+      /```(?:\w+)?\n?([\s\S]*?)```/g,
+      (_, x) => {
+        const i = blocks.length;
+        blocks.push('<pre>' + x.trim() + '</pre>');
+        return '@@BLOCK' + i + '@@';
       }
-    });
-
-  audioCtx=
-    new (
-      window.AudioContext||
-      window.webkitAudioContext
-    )();
-
-  await audioCtx.resume();
-
-  sourceNode=
-    audioCtx.createMediaStreamSource(
-      mediaStream
     );
 
-  const workletCode=`
-class PCMProcessor extends AudioWorkletProcessor{
-  constructor(){
-    super();
-    this.buf=[];
+    s = s
+      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>');
+
+    s = s
+      .replace(/^(?:[-*]) (.+)$/gm, '<li>$1</li>')
+      .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+
+    s = s
+      .replace(/\n{2,}/g, '</p><p>')
+      .replace(/\n/g, '<br>');
+
+    s = '<p>' + s + '</p>';
+
+    s = s.replace(
+      /@@BLOCK(\d+)@@/g,
+      (_, i) => blocks[Number(i)]
+    );
+
+    return s;
   }
 
-  process(inputs){
+  function addBubble(role, text, actions = true) {
 
-    const input=
-      inputs[0]&&inputs[0][0];
+    const box = document.createElement('div');
 
-    if(input){
+    box.className =
+      'bubble ' +
+      (role === 'user' ? 'user' : 'ai');
 
-      for(
-        let i=0;
-        i<input.length;
-        i++
-      ){
-        this.buf.push(input[i]);
-      }
+    box.innerHTML =
+      role === 'user'
+        ? escapeHtml(text)
+        : renderMarkdown(text);
 
-      if(this.buf.length>=2048){
+    if (role === 'assistant' && actions) {
 
-        const data=
-          new Float32Array(
-            this.buf
-          );
+      const act = document.createElement('div');
+      act.className = 'actions';
 
-        this.buf=[];
+      const copy = document.createElement('button');
 
-        this.port.postMessage(
-          data
-        );
-      }
-    }
+      copy.className = 'mini';
+      copy.textContent = '📋 Copy';
 
-    return true;
-  }
-}
-
-registerProcessor(
-  'pcm-processor',
-  PCMProcessor
-);
-`;
-
-  const blob=
-    new Blob(
-      [workletCode],
-      {
-        type:
-          'application/javascript'
-      }
-    );
-
-  const url=
-    URL.createObjectURL(
-      blob
-    );
-
-  await audioCtx.audioWorklet.addModule(
-    url
-  );
-
-  URL.revokeObjectURL(url);
-
-  workletNode=
-    new AudioWorkletNode(
-      audioCtx,
-      'pcm-processor'
-    );
-
-  sourceNode.connect(
-    workletNode
-  );
-
-  workletNode.port.onmessage=
-    e=>{
-
-      if(
-        !liveSocket||
-        liveSocket.readyState!==
-        WebSocket.OPEN
-      ){
-        return;
-      }
-
-      const input=e.data;
-      const inRate=
-        audioCtx.sampleRate;
-
-      const outRate=16000;
-
-      const ratio=
-        inRate/outRate;
-
-      const outLen=
-        Math.floor(
-          input.length/ratio
-        );
-
-      const pcm=
-        new Int16Array(
-          outLen
-        );
-
-      for(
-        let i=0;
-        i<outLen;
-        i++
-      ){
-
-        const idx=
-          Math.min(
-            input.length-1,
-            Math.floor(
-              i*ratio
-            )
-          );
-
-        let s=input[idx];
-
-        s=Math.max(
-          -1,
-          Math.min(
-            1,
-            s
-          )
-        );
-
-        pcm[i]=
-          s<0
-          ?s*0x8000
-          :s*0x7fff;
-      }
-
-      liveSocket.send(
-        JSON.stringify({
-          realtimeInput:{
-            audio:{
-              data:
-                bytesToB64(
-                  new Uint8Array(
-                    pcm.buffer
-                  )
-                ),
-              mimeType:
-                'audio/pcm;rate=16000'
-            }
-          }
-        })
-      );
-    };
-
-  const mute=
-    audioCtx.createGain();
-
-  mute.gain.value=0;
-
-  workletNode
-    .connect(mute)
-    .connect(
-      audioCtx.destination
-    );
-}
-
-function closeMic(){
-
-  try{
-    workletNode?.disconnect();
-  }catch(_){}
-
-  try{
-    sourceNode?.disconnect();
-  }catch(_){}
-
-  mediaStream
-    ?.getTracks()
-    .forEach(
-      t=>t.stop()
-    );
-
-  workletNode=null;
-  sourceNode=null;
-  mediaStream=null;
-
-  if(audioCtx){
-    audioCtx
-      .close()
-      .catch(()=>{});
-
-    audioCtx=null;
-  }
-}
-
-async function openLive(){
-
-  if(liveSocket)return;
-
-  els.modal.classList.remove(
-    'hidden'
-  );
-
-  els.live.classList.add('on');
-  els.live.textContent=
-    '⏹ END LIVE';
-
-  setMode(
-    'live',
-    'CONNECTING LIVE…'
-  );
-
-  els.liveInfo.textContent=
-    'Requesting secure short-lived Live token…';
-
-  try{
-
-    const d=
-      await getLiveToken();
-
-    liveToken=d.token;
-
-    els.liveInfo.textContent=
-      'Connecting microphone and realtime AI…';
-
-    await setupMic();
-
-    const url=
-      'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?access_token='+
-      encodeURIComponent(
-        liveToken
-      );
-
-    liveSocket=
-      new WebSocket(url);
-
-    liveSocket.onopen=()=>{
-
-      const setup={
-        setup:{
-          model:
-            'models/'+d.model,
-
-          generationConfig:{
-            responseModalities:[
-              'AUDIO'
-            ]
-          },
-
-          systemInstruction:{
-            parts:[
-              {
-                text:
-                  "You are JARVIS, AI Assistant of IP BABA. Speak naturally and briefly. Reply in the user's language. Help with AI, digital marketing, technology, business, IP BABA services and prompt generation. Never invent prices, clients, awards, guarantees or company facts."
-              }
-            ]
-          },
-
-          sessionResumption:
-            resumeToken
-            ?{handle:resumeToken}
-            :{}
-        }
+      copy.onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(text);
+          copy.textContent = '✓ Copied';
+          setTimeout(() => {
+            copy.textContent = '📋 Copy';
+          }, 1200);
+        } catch (_) {}
       };
 
-      liveSocket.send(
-        JSON.stringify(
-          setup
-        )
+      act.appendChild(copy);
+
+      const clean =
+        text.replace(/\[\[CTA\]\]/g, '').trim();
+
+      const usefulCTA =
+        text.includes('[[CTA]]') ||
+        /IP BABA|contact|quote|pricing|service|website|marketing|branding|seo|ads|automation|chatbot|prompt|design|business/i.test(clean);
+
+      if (usefulCTA) {
+
+        const c = document.createElement('button');
+
+        c.className = 'mini cta';
+        c.textContent = '💬 Contact IP BABA';
+
+        c.onclick = () => {
+          window.open(
+            'https://wa.me/923443225533',
+            '_blank',
+            'noopener'
+          );
+        };
+
+        act.appendChild(c);
+      }
+
+      box.appendChild(act);
+    }
+
+    els.chat.appendChild(box);
+    els.chat.scrollTop = els.chat.scrollHeight;
+
+    return box;
+  }
+
+  function welcome() {
+
+    if (els.chat.children.length) return;
+
+    addBubble(
+      'assistant',
+      `Hello! I’m JARVIS — the AI Assistant of IP BABA.
+
+I can help with AI, digital marketing, websites, business problems, IP BABA services, and professional image/video/marketing prompts.
+
+You can type, use voice typing, generate professional prompts, or start a live voice conversation.`
+    );
+  }
+
+  welcome();
+
+  function setBusy(on) {
+
+    els.send.disabled = on;
+
+    if (on) {
+      setMode('thinking', 'PROCESSING…');
+    } else if (state.coreMode === 'thinking') {
+      setMode('idle', 'JARVIS READY');
+    }
+  }
+
+  async function sendText() {
+
+    const text = els.input.value.trim();
+
+    if (!text || els.send.disabled) return;
+
+    els.input.value = '';
+    autoSize();
+
+    addBubble('user', text, false);
+
+    state.messages.push({
+      role: 'user',
+      text
+    });
+
+    setBusy(true);
+
+    const typing =
+      addBubble('assistant', 'Thinking…', false);
+
+    typing.classList.add('typing');
+
+    try {
+
+      const r = await fetch(
+        API_BASE_URL + '/api/chat',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            messages: state.messages.slice(-24)
+          })
+        }
       );
 
-      els.liveInfo.textContent=
-        'Connected. Start speaking naturally.';
+      const d =
+        await r.json().catch(() => ({}));
+
+      if (!r.ok) {
+        throw new Error(
+          d.error || 'backend_error'
+        );
+      }
+
+      typing.remove();
+
+      state.messages.push({
+        role: 'assistant',
+        text: d.reply
+      });
+
+      addBubble(
+        'assistant',
+        d.reply,
+        true
+      );
+
+    } catch (e) {
+
+      console.error('JARVIS chat error:', e);
+
+      typing.remove();
+
+      addBubble(
+        'assistant',
+        'JARVIS backend سے connect نہیں ہو سکا۔ براہِ کرم دوبارہ کوشش کریں۔'
+      );
 
       setMode(
-        'live',
+        'error',
+        'CONNECTION ERROR'
+      );
+
+    } finally {
+
+      setBusy(false);
+    }
+  }
+
+  els.form.addEventListener(
+    'submit',
+    e => {
+      e.preventDefault();
+      sendText();
+    }
+  );
+
+  els.input.addEventListener(
+    'keydown',
+    e => {
+
+      if (
+        e.key === 'Enter' &&
+        !e.shiftKey
+      ) {
+        e.preventDefault();
+        sendText();
+      }
+
+    }
+  );
+
+  function autoSize() {
+
+    els.input.style.height = 'auto';
+
+    els.input.style.height =
+      Math.min(
+        140,
+        els.input.scrollHeight
+      ) + 'px';
+  }
+
+  els.input.addEventListener(
+    'input',
+    autoSize
+  );
+
+  function reset() {
+
+    state.messages = [];
+
+    els.chat.innerHTML = '';
+
+    welcome();
+
+    setMode(
+      'idle',
+      'JARVIS READY'
+    );
+  }
+
+  els.newBtn.onclick = reset;
+  els.clear.onclick = reset;
+
+  /* Voice Typing */
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (SpeechRecognition) {
+
+    const r =
+      new SpeechRecognition();
+
+    r.lang =
+      navigator.language || 'en-US';
+
+    r.interimResults = true;
+    r.continuous = false;
+
+    r.onstart = () => {
+      setMode(
+        'listening',
         'LISTENING…'
       );
     };
 
-    liveSocket.onmessage=e=>{
+    r.onresult = e => {
 
-      try{
+      let t = '';
 
-        const d=
-          JSON.parse(
-            e.data
-          );
-
-        const sc=
-          d.serverContent;
-
-        if(d.setupComplete){
-          setMode(
-            'live',
-            'LISTENING…'
-          );
-        }
-
-        if(sc?.interrupted){
-
-          stopLiveAudio();
-
-          setMode(
-            'live',
-            'LISTENING…'
-          );
-        }
-
-        if(sc?.modelTurn?.parts){
-
-          for(
-            const part
-            of sc.modelTurn.parts
-          ){
-
-            const b=
-              part.inlineData?.data||
-              part.inline_data?.data;
-
-            if(b){
-              playPcm(b);
-            }
-
-            if(part.text){
-              els.liveInfo.textContent=
-                part.text;
-            }
-          }
-        }
-
-        if(sc?.turnComplete){
-
-          setMode(
-            'live',
-            'LISTENING…'
-          );
-
-          els.liveInfo.textContent=
-            'Listening…';
-        }
-
-        if(
-          sc?.sessionResumptionUpdate
-            ?.resumable&&
-          sc.sessionResumptionUpdate
-            .newHandle
-        ){
-
-          resumeToken=
-            sc.sessionResumptionUpdate
-              .newHandle;
-        }
-
-        if(d.goAway){
-
-          setTimeout(
-            ()=>reconnectLive(),
-            300
-          );
-        }
-
-      }catch(err){
-        console.error(err);
+      for (
+        let i = e.resultIndex;
+        i < e.results.length;
+        i++
+      ) {
+        t += e.results[i][0].transcript;
       }
+
+      els.input.value = t;
+      autoSize();
     };
 
-    liveSocket.onerror=()=>{
-
+    r.onerror = () => {
       setMode(
         'error',
-        'LIVE ERROR'
+        'MIC ERROR'
       );
-
-      els.liveInfo.textContent=
-        'Live connection error. Please try again.';
     };
 
-    liveSocket.onclose=()=>{
+    r.onend = () => {
 
-      liveSocket=null;
-
-      if(
-        state.coreMode==='live'
-      ){
-
-        closeMic();
-
+      if (
+        state.coreMode === 'listening'
+      ) {
         setMode(
           'idle',
           'JARVIS READY'
@@ -1353,86 +1041,1090 @@ async function openLive(){
       }
     };
 
-  }catch(e){
+    state.recognition = r;
 
-    console.error(e);
+    els.mic.onclick = () => {
 
-    closeLive();
+      try {
+        r.start();
+      } catch (_) {}
 
-    setMode(
-      'error',
-      'LIVE VOICE ERROR'
+    };
+
+  } else {
+
+    els.mic.title =
+      'Voice typing is not supported in this browser';
+
+    els.mic.onclick = () => {
+
+      alert(
+        'Voice typing is not supported in this browser. Please use a current Chrome/Chromium browser or type your message.'
+      );
+
+    };
+  }
+
+  /* Ambient Code Stream */
+
+  const codeSnippets = [
+    '010101',
+    'JARVIS',
+    'AI_CORE',
+    '101001',
+    'PROMPT',
+    'GROW',
+    '001101',
+    'IP_BABA',
+    'NEURAL',
+    '011010',
+    'CHAT',
+    '010011',
+    'VOICE',
+    '110100'
+  ];
+
+  for (let i = 0; i < 30; i++) {
+
+    const s =
+      document.createElement('span');
+
+    s.textContent =
+      codeSnippets[
+        i % codeSnippets.length
+      ] +
+      '  ' +
+      Math.random()
+        .toString(2)
+        .slice(2,10);
+
+    s.style.setProperty(
+      '--x',
+      (8 + Math.random() * 84) + '%'
     );
 
-    els.liveInfo.textContent=
-      'Live Voice could not start. Check microphone permission, Vercel Environment Variables and browser support.';
+    s.style.setProperty(
+      '--drift',
+      (Math.random() * 100 - 50) + 'px'
+    );
+
+    s.style.setProperty(
+      '--rot',
+      (Math.random() * 34 - 17) + 'deg'
+    );
+
+    s.style.setProperty(
+      '--dur',
+      (7 + Math.random() * 10) + 's'
+    );
+
+    s.style.setProperty(
+      '--delay',
+      (-Math.random() * 12) + 's'
+    );
+
+    els.codeStream.appendChild(s);
   }
-}
 
-async function reconnectLive(){
+  /* Futuristic JARVIS Core */
 
-  if(!liveSocket)return;
+  const c = els.core;
+  const ctx = c.getContext('2d');
 
-  closeLive(false);
+  let W = 0;
+  let H = 0;
+  let dpr = 1;
+  let particles = [];
 
-  await new Promise(
-    r=>setTimeout(r,300)
+  function resize() {
+
+    const r =
+      c.getBoundingClientRect();
+
+    dpr =
+      Math.min(
+        window.devicePixelRatio || 1,
+        2
+      );
+
+    W =
+      Math.max(
+        1,
+        Math.floor(r.width * dpr)
+      );
+
+    H =
+      Math.max(
+        1,
+        Math.floor(r.height * dpr)
+      );
+
+    c.width = W;
+    c.height = H;
+
+    particles =
+      Array.from(
+        {length:130},
+        () => ({
+          a: Math.random() * Math.PI * 2,
+          r: .18 + Math.random() * .5,
+          z: .15 + Math.random() * .85,
+          s: .002 + Math.random() * .006,
+          p: Math.random() * 6.28
+        })
+      );
+  }
+
+  window.addEventListener(
+    'resize',
+    resize
   );
 
-  try{
-    await openLive();
-  }catch(_){}
-}
+  resize();
 
-function closeLive(hide=true){
+  function drawCore(t) {
 
-  stopLiveAudio();
+    const time = t * .001;
 
-  try{
-    liveSocket?.close();
-  }catch(_){}
+    ctx.clearRect(
+      0,
+      0,
+      W,
+      H
+    );
 
-  liveSocket=null;
+    const cx = W / 2;
+    const cy = H / 2;
+    const base =
+      Math.min(W,H) * .39;
 
-  closeMic();
+    ctx.save();
 
-  liveToken=null;
+    ctx.translate(cx,cy);
 
-  els.live.classList.remove(
-    'on'
+    ctx.globalCompositeOperation =
+      'lighter';
+
+    for (
+      let layer = 0;
+      layer < 5;
+      layer++
+    ) {
+
+      const rad =
+        base * (
+          .34 + layer * .13
+        );
+
+      ctx.beginPath();
+
+      ctx.strokeStyle =
+        `rgba(${layer < 2 ? 0 : 10},${160 + layer * 20},255,${.16 - layer * .018})`;
+
+      ctx.lineWidth =
+        Math.max(
+          1,
+          2 * dpr
+        );
+
+      ctx.ellipse(
+        0,
+        0,
+        rad,
+        rad * (
+          .32 + layer * .11
+        ),
+        time *
+          (.16 + layer * .04) *
+          (layer % 2 ? 1 : -1),
+        0,
+        Math.PI * 2
+      );
+
+      ctx.stroke();
+    }
+
+    particles.forEach(p => {
+
+      p.a +=
+        p.s *
+        (
+          state.coreMode === 'thinking'
+            ? 3
+            : 1
+        );
+
+      const rr =
+        base *
+        p.r *
+        (
+          .75 +
+          .25 *
+          Math.sin(
+            time + p.p
+          )
+        );
+
+      const x =
+        Math.cos(p.a) * rr;
+
+      const y =
+        Math.sin(p.a) *
+        rr *
+        (
+          .35 +
+          .65 * p.z
+        );
+
+      const size =
+        (
+          1 +
+          p.z * 2.8
+        ) * dpr;
+
+      ctx.beginPath();
+
+      ctx.fillStyle =
+        `rgba(0,${180 + Math.floor(70 * p.z)},255,${.25 + .55 * p.z})`;
+
+      ctx.arc(
+        x,
+        y,
+        size,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+    });
+
+    const pulse =
+      1 +
+      .035 *
+      Math.sin(time * 2.2) *
+      (
+        state.coreMode === 'idle'
+          ? 1
+          : 2.8
+      );
+
+    const g =
+      ctx.createRadialGradient(
+        0,
+        0,
+        base * .04,
+        0,
+        0,
+        base * .45
+      );
+
+    g.addColorStop(
+      0,
+      'rgba(255,255,255,.85)'
+    );
+
+    g.addColorStop(
+      .16,
+      'rgba(0,229,255,.5)'
+    );
+
+    g.addColorStop(
+      .5,
+      'rgba(10,132,255,.12)'
+    );
+
+    g.addColorStop(
+      1,
+      'rgba(0,0,0,0)'
+    );
+
+    ctx.fillStyle = g;
+
+    ctx.beginPath();
+
+    ctx.arc(
+      0,
+      0,
+      base * .48 * pulse,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.restore();
+
+    requestAnimationFrame(
+      drawCore
+    );
+  }
+
+  requestAnimationFrame(
+    drawCore
   );
 
-  els.live.textContent=
-    '🎙 TALK LIVE';
+  /* Gemini Live Voice */
 
-  if(hide){
-    els.modal.classList.add(
+  let liveSocket = null;
+  let mediaStream = null;
+  let audioCtx = null;
+  let workletNode = null;
+  let sourceNode = null;
+  let resumeToken = null;
+  let liveToken = null;
+  let livePlaying = [];
+  let nextPlayTime = 0;
+  let liveReady = false;
+
+  function b64ToBytes(b64) {
+
+    const bin = atob(b64);
+
+    const out =
+      new Uint8Array(
+        bin.length
+      );
+
+    for (
+      let i = 0;
+      i < bin.length;
+      i++
+    ) {
+      out[i] =
+        bin.charCodeAt(i);
+    }
+
+    return out;
+  }
+
+  function bytesToB64(bytes) {
+
+    let s = '';
+
+    const step = 0x8000;
+
+    for (
+      let i = 0;
+      i < bytes.length;
+      i += step
+    ) {
+      s += String.fromCharCode(
+        ...bytes.subarray(
+          i,
+          i + step
+        )
+      );
+    }
+
+    return btoa(s);
+  }
+
+  function pcm16ToFloat(bytes) {
+
+    const dv =
+      new DataView(
+        bytes.buffer,
+        bytes.byteOffset,
+        bytes.byteLength
+      );
+
+    const out =
+      new Float32Array(
+        Math.floor(
+          bytes.byteLength / 2
+        )
+      );
+
+    for (
+      let i = 0;
+      i < out.length;
+      i++
+    ) {
+      out[i] =
+        Math.max(
+          -1,
+          Math.min(
+            1,
+            dv.getInt16(
+              i * 2,
+              true
+            ) / 32768
+          )
+        );
+    }
+
+    return out;
+  }
+
+  function playPcm(b64) {
+
+    if (!audioCtx) return;
+
+    try {
+
+      const bytes =
+        b64ToBytes(b64);
+
+      const f =
+        pcm16ToFloat(bytes);
+
+      const buf =
+        audioCtx.createBuffer(
+          1,
+          f.length,
+          24000
+        );
+
+      buf.copyToChannel(
+        f,
+        0
+      );
+
+      const src =
+        audioCtx.createBufferSource();
+
+      src.buffer = buf;
+
+      const gain =
+        audioCtx.createGain();
+
+      gain.gain.value = .95;
+
+      src
+        .connect(gain)
+        .connect(
+          audioCtx.destination
+        );
+
+      const now =
+        audioCtx.currentTime;
+
+      nextPlayTime =
+        Math.max(
+          nextPlayTime,
+          now + .02
+        );
+
+      src.start(
+        nextPlayTime
+      );
+
+      nextPlayTime +=
+        buf.duration;
+
+      livePlaying.push(src);
+
+      src.onended = () => {
+
+        livePlaying =
+          livePlaying.filter(
+            x => x !== src
+          );
+      };
+
+      setMode(
+        'speaking',
+        'JARVIS SPEAKING…'
+      );
+
+    } catch (error) {
+
+      console.error(
+        'Live audio playback error:',
+        error
+      );
+    }
+  }
+
+  function stopLiveAudio() {
+
+    livePlaying.forEach(
+      s => {
+        try {
+          s.stop();
+        } catch (_) {}
+      }
+    );
+
+    livePlaying = [];
+    nextPlayTime = 0;
+  }
+
+  async function getLiveToken() {
+
+    const r =
+      await fetch(
+        API_BASE_URL +
+        '/api/live-token',
+        {
+          method:'POST',
+          headers:{
+            'Content-Type':
+              'application/json'
+          },
+          body:'{}'
+        }
+      );
+
+    const d =
+      await r.json().catch(
+        () => ({})
+      );
+
+    if (!r.ok) {
+      throw new Error(
+        d.error || 'live_token'
+      );
+    }
+
+    return d;
+  }
+
+  async function setupMic() {
+
+    mediaStream =
+      await navigator.mediaDevices.getUserMedia({
+        audio:{
+          channelCount:1,
+          echoCancellation:true,
+          noiseSuppression:true,
+          autoGainControl:true
+        }
+      });
+
+    audioCtx =
+      new (
+        window.AudioContext ||
+        window.webkitAudioContext
+      )();
+
+    await audioCtx.resume();
+
+    sourceNode =
+      audioCtx.createMediaStreamSource(
+        mediaStream
+      );
+
+    const workletCode = `
+      class PCMProcessor extends AudioWorkletProcessor {
+
+        constructor(){
+          super();
+          this.buf=[];
+        }
+
+        process(inputs){
+
+          const input =
+            inputs[0] &&
+            inputs[0][0];
+
+          if(input){
+
+            for(
+              let i=0;
+              i<input.length;
+              i++
+            ){
+              this.buf.push(
+                input[i]
+              );
+            }
+
+            if(this.buf.length >= 2048){
+
+              const data =
+                new Float32Array(
+                  this.buf
+                );
+
+              this.buf=[];
+
+              this.port.postMessage(
+                data
+              );
+            }
+          }
+
+          return true;
+        }
+      }
+
+      registerProcessor(
+        'pcm-processor',
+        PCMProcessor
+      );
+    `;
+
+    const blob =
+      new Blob(
+        [workletCode],
+        {
+          type:
+            'application/javascript'
+        }
+      );
+
+    const url =
+      URL.createObjectURL(blob);
+
+    await audioCtx.audioWorklet.addModule(
+      url
+    );
+
+    URL.revokeObjectURL(url);
+
+    workletNode =
+      new AudioWorkletNode(
+        audioCtx,
+        'pcm-processor'
+      );
+
+    sourceNode.connect(
+      workletNode
+    );
+
+    workletNode.port.onmessage =
+      e => {
+
+        if (
+          !liveReady ||
+          !liveSocket ||
+          liveSocket.readyState !==
+            WebSocket.OPEN
+        ) {
+          return;
+        }
+
+        const input = e.data;
+
+        const inRate =
+          audioCtx.sampleRate;
+
+        const outRate = 16000;
+
+        const ratio =
+          inRate / outRate;
+
+        const outLen =
+          Math.floor(
+            input.length / ratio
+          );
+
+        const pcm =
+          new Int16Array(
+            outLen
+          );
+
+        for (
+          let i = 0;
+          i < outLen;
+          i++
+        ) {
+
+          const idx =
+            Math.min(
+              input.length - 1,
+              Math.floor(
+                i * ratio
+              )
+            );
+
+          let s =
+            input[idx];
+
+          s =
+            Math.max(
+              -1,
+              Math.min(1,s)
+            );
+
+          pcm[i] =
+            s < 0
+              ? s * 0x8000
+              : s * 0x7fff;
+        }
+
+        liveSocket.send(
+          JSON.stringify({
+            realtimeInput:{
+              audio:{
+                data:
+                  bytesToB64(
+                    new Uint8Array(
+                      pcm.buffer
+                    )
+                  ),
+                mimeType:
+                  'audio/pcm;rate=16000'
+              }
+            }
+          })
+        );
+      };
+
+    const mute =
+      audioCtx.createGain();
+
+    mute.gain.value = 0;
+
+    workletNode
+      .connect(mute)
+      .connect(
+        audioCtx.destination
+      );
+  }
+
+  function closeMic() {
+
+    try {
+      workletNode?.disconnect();
+    } catch (_) {}
+
+    try {
+      sourceNode?.disconnect();
+    } catch (_) {}
+
+    if (mediaStream) {
+      mediaStream
+        .getTracks()
+        .forEach(
+          t => t.stop()
+        );
+    }
+
+    workletNode = null;
+    sourceNode = null;
+    mediaStream = null;
+
+    if (audioCtx) {
+
+      audioCtx
+        .close()
+        .catch(() => {});
+
+      audioCtx = null;
+    }
+  }
+
+  async function openLive() {
+
+    if (liveSocket) return;
+
+    liveReady = false;
+
+    els.modal.classList.remove(
       'hidden'
     );
+
+    els.live.classList.add('on');
+
+    els.live.textContent =
+      '⏹ END LIVE';
+
+    setMode(
+      'live',
+      'CONNECTING LIVE…'
+    );
+
+    els.liveInfo.textContent =
+      'Requesting secure short-lived Live token…';
+
+    try {
+
+      const d =
+        await getLiveToken();
+
+      liveToken = d.token;
+
+      els.liveInfo.textContent =
+        'Connecting microphone and realtime AI…';
+
+      await setupMic();
+
+      const url =
+        'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?access_token=' +
+        encodeURIComponent(
+          liveToken
+        );
+
+      liveSocket =
+        new WebSocket(url);
+
+      liveSocket.onopen = () => {
+
+        const setup = {
+          setup:{
+            model:
+              'models/' +
+              d.model,
+
+            generationConfig:{
+              responseModalities:[
+                'AUDIO'
+              ]
+            },
+
+            systemInstruction:{
+              parts:[
+                {
+                  text:
+                    `You are JARVIS, AI Assistant of IP BABA.
+
+Speak naturally and briefly.
+
+Reply in the user's language.
+
+Help with AI, digital marketing, technology, business, IP BABA services and professional prompt generation.
+
+Never invent prices, clients, awards, guarantees, statistics or company facts.
+
+When the user asks for a prompt, ask only the necessary questions and then create a professional ready-to-use prompt.`
+                }
+              ]
+            },
+
+            sessionResumption:
+              resumeToken
+                ? {
+                    handle:
+                      resumeToken
+                  }
+                : {}
+          }
+        };
+
+        liveSocket.send(
+          JSON.stringify(setup)
+        );
+
+        els.liveInfo.textContent =
+          'Connected. Preparing live audio…';
+
+        setMode(
+          'live',
+          'CONNECTED…'
+        );
+      };
+
+      liveSocket.onmessage = e => {
+
+        try {
+
+          const d =
+            JSON.parse(e.data);
+
+          const sc =
+            d.serverContent;
+
+          if (d.setupComplete) {
+
+            liveReady = true;
+
+            setMode(
+              'live',
+              'LISTENING…'
+            );
+
+            els.liveInfo.textContent =
+              'Listening…';
+          }
+
+          if (sc?.interrupted) {
+
+            stopLiveAudio();
+
+            setMode(
+              'live',
+              'LISTENING…'
+            );
+          }
+
+          if (
+            sc?.modelTurn?.parts
+          ) {
+
+            for (
+              const part of
+              sc.modelTurn.parts
+            ) {
+
+              const audio =
+                part.inlineData?.data ||
+                part.inline_data?.data;
+
+              if (audio) {
+                playPcm(audio);
+              }
+
+              if (part.text) {
+
+                els.liveInfo.textContent =
+                  part.text;
+              }
+            }
+          }
+
+          if (sc?.turnComplete) {
+
+            setMode(
+              'live',
+              'LISTENING…'
+            );
+
+            els.liveInfo.textContent =
+              'Listening…';
+          }
+
+          if (
+            sc?.sessionResumptionUpdate
+              ?.resumable &&
+            sc.sessionResumptionUpdate
+              .newHandle
+          ) {
+
+            resumeToken =
+              sc.sessionResumptionUpdate
+                .newHandle;
+          }
+
+          if (d.goAway) {
+
+            setTimeout(
+              () => reconnectLive(),
+              300
+            );
+          }
+
+        } catch (error) {
+
+          console.error(
+            'Live message error:',
+            error
+          );
+        }
+      };
+
+      liveSocket.onerror = () => {
+
+        setMode(
+          'error',
+          'LIVE ERROR'
+        );
+
+        els.liveInfo.textContent =
+          'Live connection error. Please try again.';
+      };
+
+      liveSocket.onclose = () => {
+
+        liveSocket = null;
+
+        if (
+          state.coreMode === 'live'
+        ) {
+
+          closeMic();
+
+          setMode(
+            'idle',
+            'JARVIS READY'
+          );
+        }
+      };
+
+    } catch (error) {
+
+      console.error(
+        'Live Voice error:',
+        error
+      );
+
+      closeLive();
+
+      setMode(
+        'error',
+        'LIVE VOICE ERROR'
+      );
+
+      els.liveInfo.textContent =
+        'Live Voice could not start. Check microphone permission, Live API configuration and browser support.';
+    }
   }
 
-  setMode(
-    'idle',
-    'JARVIS READY'
+  async function reconnectLive() {
+
+    if (!liveSocket) return;
+
+    closeLive(false);
+
+    await new Promise(
+      resolve =>
+        setTimeout(
+          resolve,
+          300
+        )
+    );
+
+    try {
+      await openLive();
+    } catch (_) {}
+  }
+
+  function closeLive(hide = true) {
+
+    liveReady = false;
+
+    stopLiveAudio();
+
+    try {
+      liveSocket?.close();
+    } catch (_) {}
+
+    liveSocket = null;
+
+    closeMic();
+
+    liveToken = null;
+
+    els.live.classList.remove(
+      'on'
+    );
+
+    els.live.textContent =
+      '🎙 TALK LIVE';
+
+    if (hide) {
+      els.modal.classList.add(
+        'hidden'
+      );
+    }
+
+    setMode(
+      'idle',
+      'JARVIS READY'
+    );
+  }
+
+  els.live.onclick = () => {
+
+    if (liveSocket) {
+      closeLive();
+    } else {
+      openLive();
+    }
+  };
+
+  els.endLive.onclick =
+    () => closeLive();
+
+  window.addEventListener(
+    'beforeunload',
+    () => closeLive(false)
   );
-}
-
-els.live.onclick=()=>
-  liveSocket
-  ?closeLive()
-  :openLive();
-
-els.endLive.onclick=
-  ()=>closeLive();
-
-window.addEventListener(
-  'beforeunload',
-  ()=>closeLive(false)
-);
-
-welcome();
 
 })();
 </script>
+
 </body>
 </html>
