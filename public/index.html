@@ -18,17 +18,27 @@
   --text:#eff8ff
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box
+}
 
 html,body{
   margin:0;
-  min-height:100%;
-  background:radial-gradient(circle at 50% 15%,#0b1730 0,#03060b 46%,#010204 100%);
+  background:
+    radial-gradient(circle at 50% 15%,#0b1730 0,#03060b 46%,#010204 100%);
   color:var(--text);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif
 }
 
-body{min-height:100vh}
+body{
+  min-height:100vh
+}
 
 .app{
   width:min(1180px,100%);
@@ -64,8 +74,11 @@ header{
   padding:9px 16px;
   border:1px solid rgba(255,255,255,.10);
   border-radius:14px;
-  background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(0,0,0,.82));
-  box-shadow:0 0 28px rgba(229,9,20,.14),inset 0 0 18px rgba(255,255,255,.035)
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.08),rgba(0,0,0,.82));
+  box-shadow:
+    0 0 28px rgba(229,9,20,.14),
+    inset 0 0 18px rgba(255,255,255,.035)
 }
 
 .logo-fallback{
@@ -119,29 +132,56 @@ header{
   border-radius:50%;
   pointer-events:none;
   opacity:.58;
-  mask-image:radial-gradient(circle,black 28%,rgba(0,0,0,.85) 50%,transparent 76%)
+  mask-image:
+    radial-gradient(
+      circle,
+      black 28%,
+      rgba(0,0,0,.85) 50%,
+      transparent 76%
+    )
 }
 
 .code-stream span{
   position:absolute;
   color:rgba(0,229,255,.42);
-  font:600 10px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace;
+  font:
+    600 10px/1.35
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
   white-space:nowrap;
   transform:rotate(var(--rot));
-  animation:codeFloat var(--dur) linear infinite;
+  animation:
+    codeFloat var(--dur) linear infinite;
   animation-delay:var(--delay);
   text-shadow:0 0 8px rgba(0,229,255,.22)
 }
 
 @keyframes codeFloat{
   0%{
-    transform:translate3d(var(--x),110%,0) rotate(var(--rot));
+    transform:
+      translate3d(var(--x),110%,0)
+      rotate(var(--rot));
     opacity:0
   }
-  12%{opacity:.7}
-  88%{opacity:.7}
+
+  12%{
+    opacity:.7
+  }
+
+  88%{
+    opacity:.7
+  }
+
   100%{
-    transform:translate3d(calc(var(--x) + var(--drift)),-20%,0) rotate(var(--rot));
+    transform:
+      translate3d(
+        calc(var(--x) + var(--drift)),
+        -20%,
+        0
+      )
+      rotate(var(--rot));
     opacity:0
   }
 }
@@ -151,7 +191,13 @@ header{
   position:absolute;
   inset:10%;
   border-radius:50%;
-  background:radial-gradient(circle,rgba(0,229,255,.13),rgba(10,132,255,.05) 35%,transparent 68%);
+  background:
+    radial-gradient(
+      circle,
+      rgba(0,229,255,.13),
+      rgba(10,132,255,.05) 35%,
+      transparent 68%
+    );
   filter:blur(16px)
 }
 
@@ -176,7 +222,10 @@ header{
   text-shadow:0 0 12px rgba(0,229,255,.5)
 }
 
-.controls,.quick,.composer,.chat{
+.controls,
+.quick,
+.composer,
+.chat{
   position:relative;
   z-index:5
 }
@@ -198,7 +247,10 @@ header{
   min-height:44px;
   font-weight:650;
   cursor:pointer;
-  transition:.18s transform,.18s border-color,.18s background
+  transition:
+    .18s transform,
+    .18s border-color,
+    .18s background
 }
 
 .btn:hover{
@@ -213,7 +265,8 @@ header{
 
 .btn.primary{
   border:0;
-  background:linear-gradient(100deg,#0a84ff,#00e5ff);
+  background:
+    linear-gradient(100deg,#0a84ff,#00e5ff);
   color:#001019;
   box-shadow:0 0 22px rgba(0,229,255,.2)
 }
@@ -224,7 +277,8 @@ header{
 }
 
 .btn.live.on{
-  background:linear-gradient(100deg,#e50914,#8c0010);
+  background:
+    linear-gradient(100deg,#e50914,#8c0010);
   color:#fff
 }
 
@@ -246,7 +300,8 @@ header{
   width:8px;
   height:8px;
   border-radius:50%;
-  background:#506070
+  background:#506070;
+  box-shadow:0 0 0 transparent
 }
 
 .dot.ok{
@@ -266,7 +321,10 @@ header{
 }
 
 @keyframes pulse{
-  50%{opacity:.35;transform:scale(.7)}
+  50%{
+    opacity:.35;
+    transform:scale(.7)
+  }
 }
 
 .quick{
@@ -296,13 +354,19 @@ header{
   height:min(460px,52vh);
   overflow:auto;
   border:1px solid var(--line);
-  background:linear-gradient(180deg,rgba(6,11,18,.86),rgba(7,12,20,.72));
+  background:
+    linear-gradient(
+      180deg,
+      rgba(6,11,18,.86),
+      rgba(7,12,20,.72)
+    );
   border-radius:18px;
   padding:12px;
   display:flex;
   flex-direction:column;
   gap:10px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.03)
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.03)
 }
 
 .bubble{
@@ -316,7 +380,8 @@ header{
 
 .bubble.user{
   align-self:flex-end;
-  background:linear-gradient(135deg,#123e70,#0c2949);
+  background:
+    linear-gradient(135deg,#123e70,#0c2949);
   border:1px solid rgba(52,146,255,.25);
   white-space:pre-wrap
 }
@@ -328,7 +393,9 @@ header{
   border-left:3px solid var(--cyan)
 }
 
-.bubble.ai p{margin:.35em 0}
+.bubble.ai p{
+  margin:.35em 0
+}
 
 .bubble.ai h3{
   margin:.55em 0 .2em;
@@ -336,7 +403,8 @@ header{
   font-size:1rem
 }
 
-.bubble.ai ul,.bubble.ai ol{
+.bubble.ai ul,
+.bubble.ai ol{
   margin:.35em 0;
   padding-left:1.25em
 }
@@ -376,7 +444,8 @@ header{
 
 .cta{
   border-color:rgba(229,9,20,.65);
-  background:linear-gradient(90deg,#b20711,#e50914);
+  background:
+    linear-gradient(90deg,#b20711,#e50914);
   color:#fff
 }
 
@@ -421,7 +490,9 @@ header{
   margin:10px 0 3px
 }
 
-.hidden{display:none!important}
+.hidden{
+  display:none!important
+}
 
 .modal{
   position:fixed;
@@ -444,7 +515,9 @@ header{
   box-shadow:0 20px 80px rgba(0,0,0,.55)
 }
 
-.modal-card h2{margin:0 0 8px}
+.modal-card h2{
+  margin:0 0 8px
+}
 
 .modal-card p{
   color:#9db1c4;
@@ -458,27 +531,59 @@ header{
 }
 
 @media(max-width:640px){
-  .app{padding:10px}
+
+  .app{
+    padding:10px
+  }
+
   .title{
     font-size:1.45rem;
     letter-spacing:.24em
   }
-  .subtitle{font-size:.78rem}
-  .brand-logo{height:52px}
-  .core-wrap{margin-top:2px}
-  .chat{height:48vh}
-  .bubble{max-width:94%}
-  .controls .btn{flex:1}
-  .controls .live{flex-basis:100%}
+
+  .subtitle{
+    font-size:.78rem
+  }
+
+  .brand-logo{
+    height:52px
+  }
+
+  .core-wrap{
+    margin-top:2px
+  }
+
+  .chat{
+    height:48vh
+  }
+
+  .bubble{
+    max-width:94%
+  }
+
+  .controls .btn{
+    flex:1
+  }
+
+  .controls .live{
+    flex-basis:100%
+  }
+
   .composer{
     position:sticky;
     bottom:8px
   }
-  .footer{padding-bottom:4px}
+
+  .footer{
+    padding-bottom:4px
+  }
 }
 
 @media(prefers-reduced-motion:reduce){
-  *,*:before,*:after{
+
+  *,
+  *:before,
+  *:after{
     animation:none!important;
     transition:none!important
   }
@@ -493,6 +598,7 @@ header{
 <main class="app" id="jv">
 
 <header>
+
   <img
     class="brand-logo"
     id="brandLogo"
@@ -500,38 +606,107 @@ header{
     alt="IP BABA logo"
   >
 
-  <div class="logo-fallback" id="logoFallback">IP BABA</div>
+  <div class="logo-fallback" id="logoFallback">
+    IP BABA
+  </div>
 
-  <h1 class="title">JARVIS</h1>
-  <p class="subtitle">AI Assistant of IP BABA</p>
+  <h1 class="title">
+    JARVIS
+  </h1>
 
-  <div class="secure">🔒 Secure AI Connection</div>
+  <p class="subtitle">
+    AI Assistant of IP BABA
+  </p>
+
+  <div class="secure">
+    🔒 Secure AI Connection
+  </div>
+
 </header>
 
-<section class="core-wrap" aria-label="JARVIS AI Core">
+<section
+  class="core-wrap"
+  aria-label="JARVIS AI Core"
+>
+
   <canvas id="core"></canvas>
-  <div class="code-stream" id="codeStream" aria-hidden="true"></div>
-  <div id="state" class="state">JARVIS READY</div>
+
+  <div
+    class="code-stream"
+    id="codeStream"
+    aria-hidden="true"
+  ></div>
+
+  <div
+    id="state"
+    class="state"
+  >
+    JARVIS READY
+  </div>
+
 </section>
 
 <div class="status">
-  <span id="dot" class="dot ok"></span>
-  <span id="conn">Ready</span>
+
+  <span
+    id="dot"
+    class="dot ok"
+  ></span>
+
+  <span id="conn">
+    Ready
+  </span>
+
 </div>
 
 <div class="controls">
-  <button id="liveBtn" class="btn primary live">🎙 TALK LIVE</button>
-  <button id="newBtn" class="btn">＋ New Chat</button>
-  <button id="clearBtn" class="btn">Clear</button>
+
+  <button
+    id="liveBtn"
+    class="btn primary live"
+  >
+    🎙 TALK LIVE
+  </button>
+
+  <button
+    id="newBtn"
+    class="btn"
+  >
+    ＋ New Chat
+  </button>
+
+  <button
+    id="clearBtn"
+    class="btn"
+  >
+    Clear
+  </button>
+
 </div>
 
-<div class="section-label">Quick Actions</div>
-<div class="quick" id="quick"></div>
+<div class="section-label">
+  Quick Actions
+</div>
 
-<div class="section-label">Conversation</div>
-<section id="chat" class="chat" aria-live="polite"></section>
+<div
+  class="quick"
+  id="quick"
+></div>
 
-<form id="composer" class="composer">
+<div class="section-label">
+  Conversation
+</div>
+
+<section
+  id="chat"
+  class="chat"
+  aria-live="polite"
+></section>
+
+<form
+  id="composer"
+  class="composer"
+>
 
   <textarea
     id="input"
@@ -545,7 +720,9 @@ header{
     class="btn icon"
     title="Voice typing"
     aria-label="Voice typing"
-  >🎤</button>
+  >
+    🎤
+  </button>
 
   <button
     type="submit"
@@ -553,7 +730,9 @@ header{
     class="btn primary icon"
     title="Send"
     aria-label="Send"
-  >➤</button>
+  >
+    ➤
+  </button>
 
 </form>
 
@@ -563,114 +742,201 @@ header{
 
 </main>
 
-<div id="liveModal" class="modal hidden">
+<div
+  id="liveModal"
+  class="modal hidden"
+>
+
   <div class="modal-card">
 
-    <h2>JARVIS Live Voice</h2>
+    <h2>
+      JARVIS Live Voice
+    </h2>
 
     <p id="liveInfo">
       Starting secure realtime voice connection…
     </p>
 
     <div class="row">
-      <button id="endLive" class="btn danger">
+
+      <button
+        id="endLive"
+        class="btn danger"
+      >
         End Conversation
       </button>
+
     </div>
 
   </div>
+
 </div>
 
 <script>
+
 (() => {
+
   'use strict';
 
-  const API_BASE_URL = window.JARVIS_API_BASE_URL || '';
+  const API_BASE_URL =
+    window.JARVIS_API_BASE_URL || '';
 
-  const $ = id => document.getElementById(id);
+  const $ =
+    id => document.getElementById(id);
 
   const els = {
-    logo: $('brandLogo'),
-    fallback: $('logoFallback'),
-    core: $('core'),
-    codeStream: $('codeStream'),
-    state: $('state'),
-    dot: $('dot'),
-    conn: $('conn'),
-    live: $('liveBtn'),
-    newBtn: $('newBtn'),
-    clear: $('clearBtn'),
-    quick: $('quick'),
-    chat: $('chat'),
-    form: $('composer'),
-    input: $('input'),
-    mic: $('micBtn'),
-    send: $('sendBtn'),
-    modal: $('liveModal'),
-    liveInfo: $('liveInfo'),
-    endLive: $('endLive')
+
+    logo:$('brandLogo'),
+
+    fallback:$('logoFallback'),
+
+    core:$('core'),
+
+    codeStream:$('codeStream'),
+
+    state:$('state'),
+
+    dot:$('dot'),
+
+    conn:$('conn'),
+
+    live:$('liveBtn'),
+
+    newBtn:$('newBtn'),
+
+    clear:$('clearBtn'),
+
+    quick:$('quick'),
+
+    chat:$('chat'),
+
+    form:$('composer'),
+
+    input:$('input'),
+
+    mic:$('micBtn'),
+
+    send:$('sendBtn'),
+
+    modal:$('liveModal'),
+
+    liveInfo:$('liveInfo'),
+
+    endLive:$('endLive')
+
   };
 
   const state = {
-    messages: [],
-    recognition: null,
-    coreMode: 'idle'
+
+    messages:[],
+
+    live:null,
+
+    recognition:null,
+
+    coreMode:'idle'
+
   };
 
   const QUICK = [
-    ['🚀 Grow My Business',
-      'Help me understand how I can grow my business digitally.'],
 
-    ['📢 Meta Ads',
-      'Explain how Meta Ads could help my business and what I should prepare.'],
+    [
+      '🚀 Grow My Business',
+      'Help me understand how I can grow my business digitally.'
+    ],
 
-    ['🌐 Build a Website',
-      'I need a professional website. Guide me on what I need and what IP BABA can provide.'],
+    [
+      '📢 Meta Ads',
+      'Explain how Meta Ads could help my business and what I should prepare.'
+    ],
 
-    ['🤖 AI Automation',
-      'How can AI automation improve my business?'],
+    [
+      '🌐 Build a Website',
+      'I need a professional website. Guide me on what I need and what IP BABA can provide.'
+    ],
 
-    ['🔍 Improve SEO',
-      'My website is not getting enough organic traffic. What should I do?'],
+    [
+      '🤖 AI Automation',
+      'How can AI automation improve my business?'
+    ],
 
-    ['🎨 Branding',
-      'I need stronger branding for my business. Guide me.'],
+    [
+      '🔍 Improve SEO',
+      'My website is not getting enough organic traffic. What should I do?'
+    ],
 
-    ['✍ Image Prompt',
-      'Generate a professional AI image prompt. Ask me the required questions first.'],
+    [
+      '🎨 Branding',
+      'I need stronger branding for my business. Guide me.'
+    ],
 
-    ['🎬 Video Prompt',
-      'Generate a professional AI video prompt. Ask me the required questions first.'],
+    [
+      '✍ Image Prompt',
+      'Generate a professional AI image prompt. Ask me the required questions first.'
+    ],
 
-    ['📣 Ad Prompt',
-      'Create a professional marketing advertisement prompt. Ask me the business, audience, platform, objective and offer first.'],
+    [
+      '🎬 Video Prompt',
+      'Generate a professional AI video prompt. Ask me the required questions first.'
+    ],
 
-    ['💬 Contact IP BABA',
-      'Tell me how I can contact IP BABA.']
+    [
+      '📣 Ad Prompt',
+      'Create a professional marketing advertisement prompt. Ask me the business, audience, platform, objective and offer first.'
+    ],
+
+    [
+      '💬 Contact IP BABA',
+      'Tell me how I can contact IP BABA.'
+    ]
+
   ];
 
-  els.logo.addEventListener('error', () => {
-    els.logo.classList.add('hidden');
-    els.fallback.style.display = 'block';
-  });
+  els.logo.addEventListener(
+    'error',
+    () => {
 
-  QUICK.forEach(([label, text]) => {
-    const b = document.createElement('button');
+      els.logo.classList.add('hidden');
 
-    b.className = 'btn';
-    b.textContent = label;
+      els.fallback.style.display =
+        'block';
 
-    b.onclick = () => {
-      els.input.value = text;
-      sendText();
-    };
+    }
+  );
 
-    els.quick.appendChild(b);
-  });
+  QUICK.forEach(
+    ([label,text]) => {
 
-  function setMode(mode, label) {
+      const b =
+        document.createElement('button');
 
-    state.coreMode = mode;
+      b.className =
+        'btn';
+
+      b.textContent =
+        label;
+
+      b.onclick = () => {
+
+        els.input.value =
+          text;
+
+        sendText();
+
+      };
+
+      els.quick.appendChild(b);
+
+    }
+  );
+
+  function setMode(
+    mode,
+    label
+  ){
+
+    state.coreMode =
+      mode;
 
     els.state.textContent =
       label || mode.toUpperCase();
@@ -685,18 +951,17 @@ header{
             : 'busy'
       );
 
-    if (mode === 'idle') {
-      els.conn.textContent = 'Ready';
-    } else if (mode === 'live') {
-      els.conn.textContent = 'Live Voice';
-    } else {
-      els.conn.textContent =
-        mode.charAt(0).toUpperCase() +
-        mode.slice(1);
-    }
+    els.conn.textContent =
+      mode === 'idle'
+        ? 'Ready'
+        : mode === 'live'
+          ? 'Live Voice'
+          : mode.charAt(0).toUpperCase()
+            + mode.slice(1);
+
   }
 
-  function escapeHtml(s) {
+  function escapeHtml(s){
 
     return String(s).replace(
       /[&<>'"]/g,
@@ -708,194 +973,297 @@ header{
         '"':'&quot;'
       }[c])
     );
+
   }
 
-  function renderMarkdown(src) {
+  function renderMarkdown(src){
 
-    let s = escapeHtml(src);
+    let s =
+      escapeHtml(src);
 
     const blocks = [];
 
     s = s.replace(
       /```(?:\w+)?\n?([\s\S]*?)```/g,
-      (_, x) => {
-        const i = blocks.length;
-        blocks.push('<pre>' + x.trim() + '</pre>');
-        return '@@BLOCK' + i + '@@';
+      (_,x) => {
+
+        const i =
+          blocks.length;
+
+        blocks.push(
+          '<pre>' +
+          x.trim() +
+          '</pre>'
+        );
+
+        return `@@BLOCK${i}@@`;
+
       }
     );
 
     s = s
-      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>');
+      .replace(
+        /^### (.+)$/gm,
+        '<h3>$1</h3>'
+      )
+      .replace(
+        /\*\*(.+?)\*\*/g,
+        '<strong>$1</strong>'
+      )
+      .replace(
+        /`([^`]+)`/g,
+        '<code>$1</code>'
+      );
 
     s = s
-      .replace(/^(?:[-*]) (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+      .replace(
+        /^(?:[-*]) (.+)$/gm,
+        '<li>$1</li>'
+      )
+      .replace(
+        /(<li>.*<\/li>)/gs,
+        '<ul>$1</ul>'
+      );
 
     s = s
-      .replace(/\n{2,}/g, '</p><p>')
-      .replace(/\n/g, '<br>');
+      .replace(
+        /\n{2,}/g,
+        '</p><p>'
+      )
+      .replace(
+        /\n/g,
+        '<br>'
+      );
 
-    s = '<p>' + s + '</p>';
+    s =
+      '<p>' +
+      s +
+      '</p>';
 
     s = s.replace(
       /@@BLOCK(\d+)@@/g,
-      (_, i) => blocks[Number(i)]
+      (_,i) =>
+        blocks[Number(i)]
     );
 
     return s;
+
   }
 
-  function addBubble(role, text, actions = true) {
+  function addBubble(
+    role,
+    text,
+    actions = true
+  ){
 
-    const box = document.createElement('div');
+    const box =
+      document.createElement('div');
 
     box.className =
       'bubble ' +
-      (role === 'user' ? 'user' : 'ai');
+      (
+        role === 'user'
+          ? 'user'
+          : 'ai'
+      );
 
     box.innerHTML =
       role === 'user'
         ? escapeHtml(text)
         : renderMarkdown(text);
 
-    if (role === 'assistant' && actions) {
+    if(
+      role === 'assistant' &&
+      actions
+    ){
 
-      const act = document.createElement('div');
-      act.className = 'actions';
+      const act =
+        document.createElement('div');
 
-      const copy = document.createElement('button');
+      act.className =
+        'actions';
 
-      copy.className = 'mini';
-      copy.textContent = '📋 Copy';
+      const copy =
+        document.createElement('button');
 
-      copy.onclick = async () => {
-        try {
-          await navigator.clipboard.writeText(text);
-          copy.textContent = '✓ Copied';
-          setTimeout(() => {
-            copy.textContent = '📋 Copy';
-          }, 1200);
-        } catch (_) {}
-      };
+      copy.className =
+        'mini';
 
-      act.appendChild(copy);
+      copy.textContent =
+        '📋 Copy';
+
+      copy.onclick = () =>
+        navigator.clipboard?.writeText(text);
+
+      act.append(copy);
 
       const clean =
-        text.replace(/\[\[CTA\]\]/g, '').trim();
+        text
+          .replace(
+            /\[\[CTA\]\]/g,
+            ''
+          )
+          .trim();
 
       const usefulCTA =
         text.includes('[[CTA]]') ||
         /IP BABA|contact|quote|pricing|service|website|marketing|branding|seo|ads|automation|chatbot|prompt|design|business/i.test(clean);
 
-      if (usefulCTA) {
+      if(usefulCTA){
 
-        const c = document.createElement('button');
+        const c =
+          document.createElement('button');
 
-        c.className = 'mini cta';
-        c.textContent = '💬 Contact IP BABA';
+        c.className =
+          'mini cta';
 
-        c.onclick = () => {
+        c.textContent =
+          '💬 Contact IP BABA';
+
+        c.onclick = () =>
           window.open(
             'https://wa.me/923443225533',
             '_blank',
             'noopener'
           );
-        };
 
-        act.appendChild(c);
+        act.append(c);
+
       }
 
       box.appendChild(act);
+
     }
 
     els.chat.appendChild(box);
-    els.chat.scrollTop = els.chat.scrollHeight;
+
+    els.chat.scrollTop =
+      els.chat.scrollHeight;
 
     return box;
+
   }
 
-  function welcome() {
+  function welcome(){
 
-    if (els.chat.children.length) return;
+    if(
+      els.chat.children.length
+    ){
+      return;
+    }
 
     addBubble(
       'assistant',
-      `Hello! I’m JARVIS — the AI Assistant of IP BABA.
-
-I can help with AI, digital marketing, websites, business problems, IP BABA services, and professional image/video/marketing prompts.
-
-You can type, use voice typing, generate professional prompts, or start a live voice conversation.`
+      'Hello! I’m JARVIS — the AI Assistant of IP BABA.\n\nI can help with AI, digital marketing, websites, business problems, IP BABA services, and professional image/video/marketing prompts.\n\nYou can type, use voice typing, generate professional prompts, or start a live voice conversation.'
     );
+
   }
 
   welcome();
 
-  function setBusy(on) {
+  function setBusy(on){
 
-    els.send.disabled = on;
+    els.send.disabled =
+      on;
 
-    if (on) {
-      setMode('thinking', 'PROCESSING…');
-    } else if (state.coreMode === 'thinking') {
-      setMode('idle', 'JARVIS READY');
+    if(on){
+
+      setMode(
+        'thinking',
+        'PROCESSING…'
+      );
+
+    }else if(
+      state.coreMode === 'thinking'
+    ){
+
+      setMode(
+        'idle',
+        'JARVIS READY'
+      );
+
     }
+
   }
 
-  async function sendText() {
+  async function sendText(){
 
-    const text = els.input.value.trim();
+    const text =
+      els.input.value.trim();
 
-    if (!text || els.send.disabled) return;
+    if(
+      !text ||
+      els.send.disabled
+    ){
+      return;
+    }
 
-    els.input.value = '';
+    els.input.value =
+      '';
+
     autoSize();
 
-    addBubble('user', text, false);
+    addBubble(
+      'user',
+      text,
+      false
+    );
 
     state.messages.push({
-      role: 'user',
+      role:'user',
       text
     });
 
     setBusy(true);
 
     const typing =
-      addBubble('assistant', 'Thinking…', false);
-
-    typing.classList.add('typing');
-
-    try {
-
-      const r = await fetch(
-        API_BASE_URL + '/api/chat',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            messages: state.messages.slice(-24)
-          })
-        }
+      addBubble(
+        'assistant',
+        'Thinking…',
+        false
       );
 
-      const d =
-        await r.json().catch(() => ({}));
+    typing.classList.add(
+      'typing'
+    );
 
-      if (!r.ok) {
-        throw new Error(
-          d.error || 'backend_error'
+    try{
+
+      const r =
+        await fetch(
+          API_BASE_URL +
+          '/api/chat',
+          {
+            method:'POST',
+            headers:{
+              'Content-Type':
+                'application/json'
+            },
+            body:JSON.stringify({
+              messages:
+                state.messages.slice(-24)
+            })
+          }
         );
+
+      const d =
+        await r.json()
+          .catch(() => ({}));
+
+      if(!r.ok){
+
+        throw new Error(
+          d.error ||
+          'backend_error'
+        );
+
       }
 
       typing.remove();
 
       state.messages.push({
-        role: 'assistant',
-        text: d.reply
+        role:'assistant',
+        text:d.reply
       });
 
       addBubble(
@@ -904,15 +1272,15 @@ You can type, use voice typing, generate professional prompts, or start a live v
         true
       );
 
-    } catch (e) {
+    }catch(e){
 
-      console.error('JARVIS chat error:', e);
+      console.error(e);
 
       typing.remove();
 
       addBubble(
         'assistant',
-        'JARVIS backend سے connect نہیں ہو سکا۔ براہِ کرم دوبارہ کوشش کریں۔'
+        'JARVIS backend سے connect نہیں ہو سکا۔ براہِ کرم Vercel deployment اور Environment Variables چیک کریں۔'
       );
 
       setMode(
@@ -920,17 +1288,22 @@ You can type, use voice typing, generate professional prompts, or start a live v
         'CONNECTION ERROR'
       );
 
-    } finally {
+    }finally{
 
       setBusy(false);
+
     }
+
   }
 
   els.form.addEventListener(
     'submit',
     e => {
+
       e.preventDefault();
+
       sendText();
+
     }
   );
 
@@ -938,26 +1311,31 @@ You can type, use voice typing, generate professional prompts, or start a live v
     'keydown',
     e => {
 
-      if (
+      if(
         e.key === 'Enter' &&
         !e.shiftKey
-      ) {
+      ){
+
         e.preventDefault();
+
         sendText();
+
       }
 
     }
   );
 
-  function autoSize() {
+  function autoSize(){
 
-    els.input.style.height = 'auto';
+    els.input.style.height =
+      'auto';
 
     els.input.style.height =
       Math.min(
         140,
         els.input.scrollHeight
       ) + 'px';
+
   }
 
   els.input.addEventListener(
@@ -965,11 +1343,12 @@ You can type, use voice typing, generate professional prompts, or start a live v
     autoSize
   );
 
-  function reset() {
+  function reset(){
 
     state.messages = [];
 
-    els.chat.innerHTML = '';
+    els.chat.innerHTML =
+      '';
 
     welcome();
 
@@ -977,95 +1356,118 @@ You can type, use voice typing, generate professional prompts, or start a live v
       'idle',
       'JARVIS READY'
     );
+
   }
 
-  els.newBtn.onclick = reset;
-  els.clear.onclick = reset;
+  els.newBtn.onclick =
+    reset;
 
-  /* Voice Typing */
+  els.clear.onclick =
+    reset;
+
+
+  // =========================
+  // BROWSER VOICE TYPING
+  // =========================
 
   const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
-  if (SpeechRecognition) {
+  if(SpeechRecognition){
 
     const r =
       new SpeechRecognition();
 
     r.lang =
-      navigator.language || 'en-US';
+      navigator.language ||
+      'en-US';
 
-    r.interimResults = true;
-    r.continuous = false;
+    r.interimResults =
+      true;
 
-    r.onstart = () => {
+    r.continuous =
+      false;
+
+    r.onstart = () =>
       setMode(
         'listening',
         'LISTENING…'
       );
-    };
 
     r.onresult = e => {
 
       let t = '';
 
-      for (
+      for(
         let i = e.resultIndex;
         i < e.results.length;
         i++
-      ) {
-        t += e.results[i][0].transcript;
+      ){
+
+        t +=
+          e.results[i][0].transcript;
+
       }
 
-      els.input.value = t;
+      els.input.value =
+        t;
+
       autoSize();
+
     };
 
-    r.onerror = () => {
+    r.onerror = () =>
       setMode(
         'error',
         'MIC ERROR'
       );
-    };
 
     r.onend = () => {
 
-      if (
-        state.coreMode === 'listening'
-      ) {
+      if(
+        state.coreMode ===
+        'listening'
+      ){
+
         setMode(
           'idle',
           'JARVIS READY'
         );
+
       }
+
     };
 
-    state.recognition = r;
+    state.recognition =
+      r;
 
     els.mic.onclick = () => {
 
-      try {
+      try{
+
         r.start();
-      } catch (_) {}
+
+      }catch(_){}
 
     };
 
-  } else {
+  }else{
 
     els.mic.title =
       'Voice typing is not supported in this browser';
 
-    els.mic.onclick = () => {
-
+    els.mic.onclick = () =>
       alert(
         'Voice typing is not supported in this browser. Please use a current Chrome/Chromium browser or type your message.'
       );
 
-    };
   }
 
-  /* Ambient Code Stream */
+
+  // =========================
+  // AMBIENT CODE STREAM
+  // =========================
 
   const codeSnippets = [
     '010101',
@@ -1084,10 +1486,16 @@ You can type, use voice typing, generate professional prompts, or start a live v
     '110100'
   ];
 
-  for (let i = 0; i < 30; i++) {
+  for(
+    let i = 0;
+    i < 30;
+    i++
+  ){
 
     const s =
-      document.createElement('span');
+      document.createElement(
+        'span'
+      );
 
     s.textContent =
       codeSnippets[
@@ -1100,79 +1508,117 @@ You can type, use voice typing, generate professional prompts, or start a live v
 
     s.style.setProperty(
       '--x',
-      (8 + Math.random() * 84) + '%'
+      (8 + Math.random()*84) +
+      '%'
     );
 
     s.style.setProperty(
       '--drift',
-      (Math.random() * 100 - 50) + 'px'
+      (Math.random()*100 - 50) +
+      'px'
     );
 
     s.style.setProperty(
       '--rot',
-      (Math.random() * 34 - 17) + 'deg'
+      (Math.random()*34 - 17) +
+      'deg'
     );
 
     s.style.setProperty(
       '--dur',
-      (7 + Math.random() * 10) + 's'
+      (7 + Math.random()*10) +
+      's'
     );
 
     s.style.setProperty(
       '--delay',
-      (-Math.random() * 12) + 's'
+      (-Math.random()*12) +
+      's'
     );
 
-    els.codeStream.appendChild(s);
+    els.codeStream.appendChild(
+      s
+    );
+
   }
 
-  /* Futuristic JARVIS Core */
 
-  const c = els.core;
-  const ctx = c.getContext('2d');
+  // =========================
+  // FUTURISTIC 3D CORE
+  // =========================
+
+  const c =
+    els.core;
+
+  const ctx =
+    c.getContext('2d');
 
   let W = 0;
   let H = 0;
   let dpr = 1;
   let particles = [];
 
-  function resize() {
+  function resize(){
 
     const r =
       c.getBoundingClientRect();
 
     dpr =
       Math.min(
-        window.devicePixelRatio || 1,
+        devicePixelRatio || 1,
         2
       );
 
     W =
       Math.max(
         1,
-        Math.floor(r.width * dpr)
+        Math.floor(
+          r.width * dpr
+        )
       );
 
     H =
       Math.max(
         1,
-        Math.floor(r.height * dpr)
+        Math.floor(
+          r.height * dpr
+        )
       );
 
-    c.width = W;
-    c.height = H;
+    c.width =
+      W;
+
+    c.height =
+      H;
 
     particles =
       Array.from(
-        {length:130},
+        {
+          length:130
+        },
         () => ({
-          a: Math.random() * Math.PI * 2,
-          r: .18 + Math.random() * .5,
-          z: .15 + Math.random() * .85,
-          s: .002 + Math.random() * .006,
-          p: Math.random() * 6.28
+          a:
+            Math.random() *
+            Math.PI * 2,
+
+          r:
+            .18 +
+            Math.random() * .5,
+
+          z:
+            .15 +
+            Math.random() * .85,
+
+          s:
+            .002 +
+            Math.random() * .006,
+
+          p:
+            Math.random() * 6.28
+
         })
       );
+
   }
 
   window.addEventListener(
@@ -1182,9 +1628,10 @@ You can type, use voice typing, generate professional prompts, or start a live v
 
   resize();
 
-  function drawCore(t) {
+  function drawCore(t){
 
-    const time = t * .001;
+    const time =
+      t * .001;
 
     ctx.clearRect(
       0,
@@ -1193,117 +1640,138 @@ You can type, use voice typing, generate professional prompts, or start a live v
       H
     );
 
-    const cx = W / 2;
-    const cy = H / 2;
+    const cx =
+      W / 2;
+
+    const cy =
+      H / 2;
+
     const base =
       Math.min(W,H) * .39;
 
     ctx.save();
 
-    ctx.translate(cx,cy);
+    ctx.translate(
+      cx,
+      cy
+    );
 
     ctx.globalCompositeOperation =
       'lighter';
 
-    for (
+    for(
       let layer = 0;
       layer < 5;
       layer++
-    ) {
+    ){
 
       const rad =
-        base * (
-          .34 + layer * .13
-        );
+        base *
+        (.34 + layer*.13);
 
       ctx.beginPath();
 
       ctx.strokeStyle =
-        `rgba(${layer < 2 ? 0 : 10},${160 + layer * 20},255,${.16 - layer * .018})`;
+        `rgba(
+          ${layer < 2 ? 0 : 10},
+          ${160 + layer*20},
+          255,
+          ${.16 - layer*.018}
+        )`;
 
       ctx.lineWidth =
         Math.max(
           1,
-          2 * dpr
+          2*dpr
         );
 
       ctx.ellipse(
         0,
         0,
         rad,
-        rad * (
-          .32 + layer * .11
-        ),
+        rad * (.32 + layer*.11),
         time *
-          (.16 + layer * .04) *
-          (layer % 2 ? 1 : -1),
+        (.16 + layer*.04) *
+        (layer % 2 ? 1 : -1),
         0,
         Math.PI * 2
       );
 
       ctx.stroke();
+
     }
 
-    particles.forEach(p => {
+    particles.forEach(
+      p => {
 
-      p.a +=
-        p.s *
-        (
-          state.coreMode === 'thinking'
-            ? 3
-            : 1
+        p.a +=
+          p.s *
+          (
+            state.coreMode ===
+            'thinking'
+              ? 3
+              : 1
+          );
+
+        const rr =
+          base *
+          p.r *
+          (
+            .75 +
+            .25 *
+            Math.sin(
+              time + p.p
+            )
+          );
+
+        const x =
+          Math.cos(p.a) *
+          rr;
+
+        const y =
+          Math.sin(p.a) *
+          rr *
+          (
+            .35 +
+            .65*p.z
+          );
+
+        const size =
+          (
+            1 +
+            p.z*2.8
+          ) * dpr;
+
+        ctx.beginPath();
+
+        ctx.fillStyle =
+          `rgba(
+            0,
+            ${180 + Math.floor(70*p.z)},
+            255,
+            ${.25 + .55*p.z}
+          )`;
+
+        ctx.arc(
+          x,
+          y,
+          size,
+          0,
+          Math.PI * 2
         );
 
-      const rr =
-        base *
-        p.r *
-        (
-          .75 +
-          .25 *
-          Math.sin(
-            time + p.p
-          )
-        );
+        ctx.fill();
 
-      const x =
-        Math.cos(p.a) * rr;
-
-      const y =
-        Math.sin(p.a) *
-        rr *
-        (
-          .35 +
-          .65 * p.z
-        );
-
-      const size =
-        (
-          1 +
-          p.z * 2.8
-        ) * dpr;
-
-      ctx.beginPath();
-
-      ctx.fillStyle =
-        `rgba(0,${180 + Math.floor(70 * p.z)},255,${.25 + .55 * p.z})`;
-
-      ctx.arc(
-        x,
-        y,
-        size,
-        0,
-        Math.PI * 2
-      );
-
-      ctx.fill();
-    });
+      }
+    );
 
     const pulse =
       1 +
       .035 *
-      Math.sin(time * 2.2) *
+      Math.sin(time*2.2) *
       (
-        state.coreMode === 'idle'
+        state.coreMode ===
+        'idle'
           ? 1
           : 2.8
       );
@@ -1312,10 +1780,10 @@ You can type, use voice typing, generate professional prompts, or start a live v
       ctx.createRadialGradient(
         0,
         0,
-        base * .04,
+        base*.04,
         0,
         0,
-        base * .45
+        base*.45
       );
 
     g.addColorStop(
@@ -1338,14 +1806,15 @@ You can type, use voice typing, generate professional prompts, or start a live v
       'rgba(0,0,0,0)'
     );
 
-    ctx.fillStyle = g;
+    ctx.fillStyle =
+      g;
 
     ctx.beginPath();
 
     ctx.arc(
       0,
       0,
-      base * .48 * pulse,
+      base*.48*pulse,
       0,
       Math.PI * 2
     );
@@ -1357,69 +1826,94 @@ You can type, use voice typing, generate professional prompts, or start a live v
     requestAnimationFrame(
       drawCore
     );
+
   }
 
   requestAnimationFrame(
     drawCore
   );
 
-  /* Gemini Live Voice */
+
+  // =========================
+  // GEMINI LIVE VOICE
+  // =========================
 
   let liveSocket = null;
+
   let mediaStream = null;
+
   let audioCtx = null;
+
   let workletNode = null;
+
   let sourceNode = null;
+
   let resumeToken = null;
+
   let liveToken = null;
+
   let livePlaying = [];
+
   let nextPlayTime = 0;
+
   let liveReady = false;
 
-  function b64ToBytes(b64) {
 
-    const bin = atob(b64);
+  function b64ToBytes(b64){
+
+    const bin =
+      atob(b64);
 
     const out =
       new Uint8Array(
         bin.length
       );
 
-    for (
+    for(
       let i = 0;
       i < bin.length;
       i++
-    ) {
+    ){
+
       out[i] =
         bin.charCodeAt(i);
+
     }
 
     return out;
+
   }
 
-  function bytesToB64(bytes) {
+
+  function bytesToB64(bytes){
 
     let s = '';
 
-    const step = 0x8000;
+    const step =
+      0x8000;
 
-    for (
+    for(
       let i = 0;
       i < bytes.length;
       i += step
-    ) {
-      s += String.fromCharCode(
-        ...bytes.subarray(
-          i,
-          i + step
-        )
-      );
+    ){
+
+      s +=
+        String.fromCharCode(
+          ...bytes.subarray(
+            i,
+            i + step
+          )
+        );
+
     }
 
     return btoa(s);
+
   }
 
-  function pcm16ToFloat(bytes) {
+
+  function pcm16ToFloat(bytes){
 
     const dv =
       new DataView(
@@ -1435,122 +1929,131 @@ You can type, use voice typing, generate professional prompts, or start a live v
         )
       );
 
-    for (
+    for(
       let i = 0;
       i < out.length;
       i++
-    ) {
+    ){
+
       out[i] =
         Math.max(
           -1,
           Math.min(
             1,
             dv.getInt16(
-              i * 2,
+              i*2,
               true
             ) / 32768
           )
         );
+
     }
 
     return out;
+
   }
 
-  function playPcm(b64) {
 
-    if (!audioCtx) return;
+  function playPcm(b64){
 
-    try {
-
-      const bytes =
-        b64ToBytes(b64);
-
-      const f =
-        pcm16ToFloat(bytes);
-
-      const buf =
-        audioCtx.createBuffer(
-          1,
-          f.length,
-          24000
-        );
-
-      buf.copyToChannel(
-        f,
-        0
-      );
-
-      const src =
-        audioCtx.createBufferSource();
-
-      src.buffer = buf;
-
-      const gain =
-        audioCtx.createGain();
-
-      gain.gain.value = .95;
-
-      src
-        .connect(gain)
-        .connect(
-          audioCtx.destination
-        );
-
-      const now =
-        audioCtx.currentTime;
-
-      nextPlayTime =
-        Math.max(
-          nextPlayTime,
-          now + .02
-        );
-
-      src.start(
-        nextPlayTime
-      );
-
-      nextPlayTime +=
-        buf.duration;
-
-      livePlaying.push(src);
-
-      src.onended = () => {
-
-        livePlaying =
-          livePlaying.filter(
-            x => x !== src
-          );
-      };
-
-      setMode(
-        'speaking',
-        'JARVIS SPEAKING…'
-      );
-
-    } catch (error) {
-
-      console.error(
-        'Live audio playback error:',
-        error
-      );
+    if(!audioCtx){
+      return;
     }
+
+    const bytes =
+      b64ToBytes(b64);
+
+    const f =
+      pcm16ToFloat(bytes);
+
+    const buf =
+      audioCtx.createBuffer(
+        1,
+        f.length,
+        24000
+      );
+
+    buf.copyToChannel(
+      f,
+      0
+    );
+
+    const src =
+      audioCtx.createBufferSource();
+
+    src.buffer =
+      buf;
+
+    const gain =
+      audioCtx.createGain();
+
+    gain.gain.value =
+      .95;
+
+    src
+      .connect(gain)
+      .connect(
+        audioCtx.destination
+      );
+
+    const now =
+      audioCtx.currentTime;
+
+    nextPlayTime =
+      Math.max(
+        nextPlayTime,
+        now + .02
+      );
+
+    src.start(
+      nextPlayTime
+    );
+
+    nextPlayTime +=
+      buf.duration;
+
+    livePlaying.push(
+      src
+    );
+
+    src.onended = () => {
+
+      livePlaying =
+        livePlaying.filter(
+          x => x !== src
+        );
+
+    };
+
+    setMode(
+      'speaking',
+      'JARVIS SPEAKING…'
+    );
+
   }
 
-  function stopLiveAudio() {
+
+  function stopLiveAudio(){
 
     livePlaying.forEach(
       s => {
-        try {
+
+        try{
           s.stop();
-        } catch (_) {}
+        }catch(_){}
+
       }
     );
 
     livePlaying = [];
-    nextPlayTime = 0;
+
+    nextPlayTime =
+      0;
+
   }
 
-  async function getLiveToken() {
+
+  async function getLiveToken(){
 
     const r =
       await fetch(
@@ -1567,30 +2070,47 @@ You can type, use voice typing, generate professional prompts, or start a live v
       );
 
     const d =
-      await r.json().catch(
-        () => ({})
+      await r.json()
+        .catch(() => ({}));
+
+    if(!r.ok){
+
+      throw new Error(
+        d.error ||
+        'live_token'
       );
 
-    if (!r.ok) {
-      throw new Error(
-        d.error || 'live_token'
-      );
     }
 
     return d;
+
   }
 
-  async function setupMic() {
+
+  async function setupMic(){
+
+    if(
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ){
+
+      throw new Error(
+        'microphone_not_supported'
+      );
+
+    }
 
     mediaStream =
-      await navigator.mediaDevices.getUserMedia({
-        audio:{
-          channelCount:1,
-          echoCancellation:true,
-          noiseSuppression:true,
-          autoGainControl:true
+      await navigator.mediaDevices.getUserMedia(
+        {
+          audio:{
+            channelCount:1,
+            echoCancellation:true,
+            noiseSuppression:true,
+            autoGainControl:true
+          }
         }
-      });
+      );
 
     audioCtx =
       new (
@@ -1606,11 +2126,15 @@ You can type, use voice typing, generate professional prompts, or start a live v
       );
 
     const workletCode = `
-      class PCMProcessor extends AudioWorkletProcessor {
+      class PCMProcessor
+      extends AudioWorkletProcessor{
 
         constructor(){
+
           super();
+
           this.buf=[];
+
         }
 
         process(inputs){
@@ -1626,12 +2150,16 @@ You can type, use voice typing, generate professional prompts, or start a live v
               i<input.length;
               i++
             ){
+
               this.buf.push(
                 input[i]
               );
+
             }
 
-            if(this.buf.length >= 2048){
+            if(
+              this.buf.length >= 2048
+            ){
 
               const data =
                 new Float32Array(
@@ -1643,11 +2171,15 @@ You can type, use voice typing, generate professional prompts, or start a live v
               this.port.postMessage(
                 data
               );
+
             }
+
           }
 
           return true;
+
         }
+
       }
 
       registerProcessor(
@@ -1672,7 +2204,9 @@ You can type, use voice typing, generate professional prompts, or start a live v
       url
     );
 
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(
+      url
+    );
 
     workletNode =
       new AudioWorkletNode(
@@ -1687,21 +2221,25 @@ You can type, use voice typing, generate professional prompts, or start a live v
     workletNode.port.onmessage =
       e => {
 
-        if (
+        if(
           !liveReady ||
           !liveSocket ||
           liveSocket.readyState !==
             WebSocket.OPEN
-        ) {
+        ){
+
           return;
+
         }
 
-        const input = e.data;
+        const input =
+          e.data;
 
         const inRate =
           audioCtx.sampleRate;
 
-        const outRate = 16000;
+        const outRate =
+          16000;
 
         const ratio =
           inRate / outRate;
@@ -1716,11 +2254,11 @@ You can type, use voice typing, generate professional prompts, or start a live v
             outLen
           );
 
-        for (
-          let i = 0;
-          i < outLen;
+        for(
+          let i=0;
+          i<outLen;
           i++
-        ) {
+        ){
 
           const idx =
             Math.min(
@@ -1736,88 +2274,110 @@ You can type, use voice typing, generate professional prompts, or start a live v
           s =
             Math.max(
               -1,
-              Math.min(1,s)
+              Math.min(
+                1,
+                s
+              )
             );
 
           pcm[i] =
             s < 0
               ? s * 0x8000
               : s * 0x7fff;
+
         }
 
         liveSocket.send(
-          JSON.stringify({
-            realtimeInput:{
-              audio:{
-                data:
-                  bytesToB64(
-                    new Uint8Array(
-                      pcm.buffer
-                    )
-                  ),
-                mimeType:
-                  'audio/pcm;rate=16000'
+          JSON.stringify(
+            {
+              realtimeInput:{
+                audio:{
+                  data:
+                    bytesToB64(
+                      new Uint8Array(
+                        pcm.buffer
+                      )
+                    ),
+                  mimeType:
+                    'audio/pcm;rate=16000'
+                }
               }
             }
-          })
+          )
         );
+
       };
 
     const mute =
       audioCtx.createGain();
 
-    mute.gain.value = 0;
+    mute.gain.value =
+      0;
 
     workletNode
       .connect(mute)
       .connect(
         audioCtx.destination
       );
+
   }
 
-  function closeMic() {
 
-    try {
+  function closeMic(){
+
+    try{
       workletNode?.disconnect();
-    } catch (_) {}
+    }catch(_){}
 
-    try {
+    try{
       sourceNode?.disconnect();
-    } catch (_) {}
+    }catch(_){}
 
-    if (mediaStream) {
-      mediaStream
-        .getTracks()
-        .forEach(
-          t => t.stop()
-        );
-    }
+    mediaStream
+      ?.getTracks()
+      .forEach(
+        t => t.stop()
+      );
 
-    workletNode = null;
-    sourceNode = null;
-    mediaStream = null;
+    workletNode =
+      null;
 
-    if (audioCtx) {
+    sourceNode =
+      null;
+
+    mediaStream =
+      null;
+
+    if(audioCtx){
 
       audioCtx
         .close()
         .catch(() => {});
 
-      audioCtx = null;
+      audioCtx =
+        null;
+
     }
+
   }
 
-  async function openLive() {
 
-    if (liveSocket) return;
+  async function openLive(){
 
-    liveReady = false;
+    if(liveSocket){
+      return;
+    }
+
+    liveReady =
+      false;
 
     els.modal.classList.remove(
       'hidden'
     );
 
-    els.live.classList.add('on');
+    els.live.classList.add(
+      'on'
+    );
 
     els.live.textContent =
       '⏹ END LIVE';
@@ -1830,214 +2390,294 @@ You can type, use voice typing, generate professional prompts, or start a live v
     els.liveInfo.textContent =
       'Requesting secure short-lived Live token…';
 
-    try {
+    try{
 
+      // Get secure short-lived token
       const d =
         await getLiveToken();
 
-      liveToken = d.token;
+      liveToken =
+        d.token;
+
+      if(!liveToken){
+        throw new Error(
+          'missing_live_token'
+        );
+      }
+
+      if(!d.model){
+        throw new Error(
+          'missing_live_model'
+        );
+      }
 
       els.liveInfo.textContent =
         'Connecting microphone and realtime AI…';
 
       await setupMic();
 
+
+      // IMPORTANT:
+      // Ephemeral Gemini tokens must use
+      // BidiGenerateContentConstrained.
       const url =
-        'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?access_token=' +
+        'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token=' +
         encodeURIComponent(
           liveToken
         );
 
+
       liveSocket =
-        new WebSocket(url);
+        new WebSocket(
+          url
+        );
 
-      liveSocket.onopen = () => {
 
-        const setup = {
-          setup:{
-            model:
-              'models/' +
-              d.model,
+      liveSocket.onopen =
+        () => {
 
-            generationConfig:{
-              responseModalities:[
-                'AUDIO'
-              ]
-            },
+          const setup = {
 
-            systemInstruction:{
-              parts:[
-                {
-                  text:
-                    `You are JARVIS, AI Assistant of IP BABA.
+            setup:{
 
-Speak naturally and briefly.
+              model:
+                'models/' +
+                d.model,
 
-Reply in the user's language.
+              generationConfig:{
+                responseModalities:[
+                  'AUDIO'
+                ]
+              },
 
-Help with AI, digital marketing, technology, business, IP BABA services and professional prompt generation.
-
-Never invent prices, clients, awards, guarantees, statistics or company facts.
-
-When the user asks for a prompt, ask only the necessary questions and then create a professional ready-to-use prompt.`
-                }
-              ]
-            },
-
-            sessionResumption:
-              resumeToken
-                ? {
-                    handle:
-                      resumeToken
+              systemInstruction:{
+                parts:[
+                  {
+                    text:
+                      'You are JARVIS, AI Assistant of IP BABA. Speak naturally and briefly. Reply in the user language. Help with AI, digital marketing, technology, business, IP BABA services and professional prompt generation. Never invent prices, clients, awards, guarantees, certifications, partnerships, revenue, statistics or company facts. If information is unknown, say so clearly.'
                   }
-                : {}
+                ]
+              }
+
+            }
+
+          };
+
+
+          // Session resumption is only added
+          // when an actual handle exists.
+          if(resumeToken){
+
+            setup.setup.sessionResumption = {
+              handle:
+                resumeToken
+            };
+
           }
+
+
+          liveSocket.send(
+            JSON.stringify(
+              setup
+            )
+          );
+
+          els.liveInfo.textContent =
+            'Connected. Preparing live audio…';
+
+          setMode(
+            'live',
+            'CONNECTED…'
+          );
+
         };
 
-        liveSocket.send(
-          JSON.stringify(setup)
-        );
 
-        els.liveInfo.textContent =
-          'Connected. Preparing live audio…';
+      liveSocket.onmessage =
+        e => {
 
-        setMode(
-          'live',
-          'CONNECTED…'
-        );
-      };
+          try{
 
-      liveSocket.onmessage = e => {
+            const d =
+              JSON.parse(
+                e.data
+              );
 
-        try {
+            const sc =
+              d.serverContent;
 
-          const d =
-            JSON.parse(e.data);
 
-          const sc =
-            d.serverContent;
+            // Server accepted the setup.
+            if(d.setupComplete){
 
-          if (d.setupComplete) {
+              liveReady =
+                true;
 
-            liveReady = true;
+              setMode(
+                'live',
+                'LISTENING…'
+              );
 
-            setMode(
-              'live',
-              'LISTENING…'
-            );
+              els.liveInfo.textContent =
+                'Listening…';
 
-            els.liveInfo.textContent =
-              'Listening…';
-          }
-
-          if (sc?.interrupted) {
-
-            stopLiveAudio();
-
-            setMode(
-              'live',
-              'LISTENING…'
-            );
-          }
-
-          if (
-            sc?.modelTurn?.parts
-          ) {
-
-            for (
-              const part of
-              sc.modelTurn.parts
-            ) {
-
-              const audio =
-                part.inlineData?.data ||
-                part.inline_data?.data;
-
-              if (audio) {
-                playPcm(audio);
-              }
-
-              if (part.text) {
-
-                els.liveInfo.textContent =
-                  part.text;
-              }
             }
-          }
 
-          if (sc?.turnComplete) {
 
-            setMode(
-              'live',
-              'LISTENING…'
+            // Gemini interrupted its own audio.
+            if(sc?.interrupted){
+
+              stopLiveAudio();
+
+              setMode(
+                'live',
+                'LISTENING…'
+              );
+
+              els.liveInfo.textContent =
+                'Listening…';
+
+            }
+
+
+            // Gemini audio response.
+            if(
+              sc?.modelTurn?.parts
+            ){
+
+              for(
+                const part
+                of sc.modelTurn.parts
+              ){
+
+                const b =
+                  part.inlineData?.data ||
+                  part.inline_data?.data;
+
+                if(b){
+                  playPcm(b);
+                }
+
+                if(part.text){
+
+                  els.liveInfo.textContent =
+                    part.text;
+
+                }
+
+              }
+
+            }
+
+
+            if(sc?.turnComplete){
+
+              setMode(
+                'live',
+                'LISTENING…'
+              );
+
+              els.liveInfo.textContent =
+                'Listening…';
+
+            }
+
+
+            // Save session resumption handle.
+            if(
+              sc?.sessionResumptionUpdate
+                ?.resumable &&
+              sc
+                .sessionResumptionUpdate
+                .newHandle
+            ){
+
+              resumeToken =
+                sc
+                  .sessionResumptionUpdate
+                  .newHandle;
+
+            }
+
+
+            // Server requests reconnect.
+            if(d.goAway){
+
+              setTimeout(
+                () => reconnectLive(),
+                300
+              );
+
+            }
+
+          }catch(err){
+
+            console.error(
+              'Live message parse error:',
+              err
             );
 
-            els.liveInfo.textContent =
-              'Listening…';
           }
 
-          if (
-            sc?.sessionResumptionUpdate
-              ?.resumable &&
-            sc.sessionResumptionUpdate
-              .newHandle
-          ) {
+        };
 
-            resumeToken =
-              sc.sessionResumptionUpdate
-                .newHandle;
-          }
 
-          if (d.goAway) {
-
-            setTimeout(
-              () => reconnectLive(),
-              300
-            );
-          }
-
-        } catch (error) {
+      liveSocket.onerror =
+        error => {
 
           console.error(
-            'Live message error:',
+            'Gemini Live WebSocket error:',
             error
           );
-        }
-      };
 
-      liveSocket.onerror = () => {
+          setMode(
+            'error',
+            'LIVE ERROR'
+          );
 
-        setMode(
-          'error',
-          'LIVE ERROR'
-        );
+          els.liveInfo.textContent =
+            'Live connection error. Check Gemini Live configuration and browser microphone permission.';
 
-        els.liveInfo.textContent =
-          'Live connection error. Please try again.';
-      };
+        };
 
-      liveSocket.onclose = () => {
 
-        liveSocket = null;
+      liveSocket.onclose =
+        event => {
 
-        if (
-          state.coreMode === 'live'
-        ) {
+          console.warn(
+            'Gemini Live closed:',
+            event.code,
+            event.reason
+          );
+
+          liveSocket =
+            null;
+
+          liveReady =
+            false;
 
           closeMic();
 
-          setMode(
-            'idle',
-            'JARVIS READY'
-          );
-        }
-      };
+          if(
+            state.coreMode === 'live' ||
+            state.coreMode === 'speaking'
+          ){
 
-    } catch (error) {
+            setMode(
+              'idle',
+              'JARVIS READY'
+            );
+
+          }
+
+        };
+
+
+    }catch(e){
 
       console.error(
-        'Live Voice error:',
-        error
+        'Live Voice start error:',
+        e
       );
 
       closeLive();
@@ -2048,44 +2688,60 @@ When the user asks for a prompt, ask only the necessary questions and then creat
       );
 
       els.liveInfo.textContent =
-        'Live Voice could not start. Check microphone permission, Live API configuration and browser support.';
+        'Live Voice could not start. Check microphone permission, Vercel Environment Variables and browser support.';
+
     }
+
   }
 
-  async function reconnectLive() {
 
-    if (!liveSocket) return;
+  async function reconnectLive(){
+
+    if(liveSocket){
+      return;
+    }
 
     closeLive(false);
 
     await new Promise(
-      resolve =>
+      r =>
         setTimeout(
-          resolve,
+          r,
           300
         )
     );
 
-    try {
+    try{
+
       await openLive();
-    } catch (_) {}
+
+    }catch(_){}
+
   }
 
-  function closeLive(hide = true) {
 
-    liveReady = false;
+  function closeLive(
+    hide = true
+  ){
+
+    liveReady =
+      false;
 
     stopLiveAudio();
 
-    try {
-      liveSocket?.close();
-    } catch (_) {}
+    try{
 
-    liveSocket = null;
+      liveSocket?.close();
+
+    }catch(_){}
+
+    liveSocket =
+      null;
 
     closeMic();
 
-    liveToken = null;
+    liveToken =
+      null;
 
     els.live.classList.remove(
       'on'
@@ -2094,36 +2750,51 @@ When the user asks for a prompt, ask only the necessary questions and then creat
     els.live.textContent =
       '🎙 TALK LIVE';
 
-    if (hide) {
+    if(hide){
+
       els.modal.classList.add(
         'hidden'
       );
+
     }
 
     setMode(
       'idle',
       'JARVIS READY'
     );
+
   }
 
-  els.live.onclick = () => {
 
-    if (liveSocket) {
-      closeLive();
-    } else {
-      openLive();
-    }
-  };
+  els.live.onclick =
+    () => {
+
+      if(liveSocket){
+
+        closeLive();
+
+      }else{
+
+        openLive();
+
+      }
+
+    };
+
 
   els.endLive.onclick =
-    () => closeLive();
+    () =>
+      closeLive();
+
 
   window.addEventListener(
     'beforeunload',
-    () => closeLive(false)
+    () =>
+      closeLive(false)
   );
 
 })();
+
 </script>
 
 </body>
