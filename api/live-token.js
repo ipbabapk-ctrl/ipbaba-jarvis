@@ -1,211 +1,169 @@
-const { guard } = require("./_shared");
+export default async function handler(req, res) {
+  // ----------------------------------------------------
+  // CORS
+  // ----------------------------------------------------
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type"
+  );
 
-const LIVE_MODEL =
-  process.env.GEMINI_LIVE_MODEL || "gemini-3.8-live";
-
-module.exports = async (req, res) => {
-
-  if (
-    guard(req, res, {
-      method: "POST",
-      json: true,
-      maxBytes: 10000,
-    })
-  ) {
-    return;
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
   }
 
-  try {
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      ok: false,
+      error: "method_not_allowed"
+    });
+  }
 
-    const apiKey =
-      process.env.GEMINI_API_KEY;
+  // ----------------------------------------------------
+  // Environment
+  // ----------------------------------------------------
+  const apiKey = process.env.GEMINI_API_KEY;
 
-    if (!apiKey) {
+  const model =
+    process.env.GEMINI_LIVE_MODEL ||
+    "gemini-3.8-live";
 
-      return res.status(503).json({
-        error: "gemini_not_configured",
-      });
+  if (!apiKey) {
+    return res.status(500).json({
+      ok: false,
+      error: "gemini_api_key_missing"
+    });
+  }
 
-    }
+  // ----------------------------------------------------
+  // Token lifetime
+  // ----------------------------------------------------
+  const now = Date.now();
 
-    const now =
-      Date.now();
+  const expireTime =
+    new Date(
+      now + 30 * 60 * 1000
+    ).toISOString();
 
-    /*
-     * Keep the token short-lived.
-     *
-     * New sessions are allowed for 60 seconds
-     * after token creation.
-     *
-     * Once the WebSocket session starts,
-     * the token itself remains valid for 30 minutes.
-     */
+  const newSessionExpireTime =
+    new Date(
+      now + 60 * 1000
+    ).toISOString();
 
-    const expireTime =
-      new Date(
-        now + 30 * 60 * 1000
-      ).toISOString();
+  // ----------------------------------------------------
+  // Gemini Ephemeral Live Token
+  // ----------------------------------------------------
+  const payload = {
+    uses: 1,
 
-    const newSessionExpireTime =
-      new Date(
-        now + 60 * 1000
-      ).toISOString();
+    expireTime,
 
+    newSessionExpireTime,
 
-    /*
-     * IMPORTANT:
-     *
-     * Lock the Live configuration on the
-     * server-side ephemeral token.
-     *
-     * This prevents the browser from having
-     * to negotiate the model/configuration
-     * again after the WebSocket opens.
-     */
+    liveConnectConstraints: {
+      model: `models/${model}`,
 
-    const payload = {
-
-      uses: 1,
-
-      expireTime,
-
-      newSessionExpireTime,
-
-      bidiGenerateContentSetup: {
-
-        model:
-          `models/${LIVE_MODEL}`,
+      config: {
+        sessionResumption: {},
 
         responseModalities: [
           "AUDIO"
-        ],
-
-        systemInstruction: {
-
-          parts: [
-
-            {
-              text:
-                [
-                  "You are JARVIS, the AI Assistant of IP BABA.",
-                  "Speak naturally, clearly and briefly.",
-                  "Reply in the user's language.",
-                  "Help with AI, digital marketing, technology, business, websites, SEO, automation, prompts and IP BABA services.",
-                  "Never invent prices, clients, awards, guarantees, certifications, partnerships, revenue, statistics or company facts.",
-                  "If information is unknown, clearly say that it is unknown."
-                ].join(" ")
-            }
-
-          ]
-
-        }
-
+        ]
       }
+    }
+  };
 
-    };
+  try {
 
-
-    console.log(
-      "Creating Gemini Live ephemeral token:",
-      {
-        model: LIVE_MODEL,
-        expiresInSeconds: 1800
-      }
-    );
-
-
-    const response =
+    const upstream =
       await fetch(
         "https://generativelanguage.googleapis.com/v1beta/auth_tokens",
         {
-
           method: "POST",
 
           headers: {
-
             "Content-Type":
               "application/json",
 
             "x-goog-api-key":
               apiKey
-
           },
 
-          body:
-            JSON.stringify(
-              payload
-            )
-
+          body: JSON.stringify(
+            payload
+          )
         }
       );
 
 
     const raw =
-      await response
-        .text()
-        .catch(
-          () => ""
-        );
+      await upstream.text();
 
 
-    if (!response.ok) {
+    let data;
+
+    try {
+      data =
+        JSON.parse(raw);
+    }
+    catch {
+      data = {
+        raw
+      };
+    }
+
+
+    // --------------------------------------------------
+    // Gemini rejected token request
+    // --------------------------------------------------
+    if (!upstream.ok) {
 
       console.error(
-        "Gemini Live token creation failed:",
-        response.status,
-        raw.slice(0, 1500)
+        "Gemini Live token error:",
+        upstream.status,
+        data
       );
 
-
       return res.status(502).json({
-
+        ok: false,
         error:
           "live_token_upstream_error",
 
-        status:
-          response.status
+        upstreamStatus:
+          upstream.status,
 
+        upstreamError:
+          data?.error?.message ||
+          data?.error?.status ||
+          data?.raw ||
+          "Gemini rejected the Live token request."
       });
 
     }
 
 
-    let token;
+    // --------------------------------------------------
+    // Successful token
+    // --------------------------------------------------
+    const token =
+      data?.name;
 
-    try {
 
-      token =
-        JSON.parse(
-          raw
-        );
-
-    } catch {
+    if (!token) {
 
       console.error(
-        "Gemini Live token returned invalid JSON:",
-        raw.slice(0, 1000)
+        "Gemini token response missing name:",
+        data
       );
 
-
       return res.status(502).json({
+        ok: false,
         error:
-          "live_token_invalid_response"
-      });
+          "live_token_missing",
 
-    }
-
-
-    if (!token.name) {
-
-      console.error(
-        "Gemini Live token missing name:",
-        token
-      );
-
-
-      return res.status(502).json({
-        error:
-          "live_token_missing"
+        upstreamError:
+          "Gemini returned a response but no token name was found."
       });
 
     }
@@ -213,28 +171,40 @@ module.exports = async (req, res) => {
 
     return res.status(200).json({
 
-      token:
-        token.name,
+      ok: true,
 
-      model:
-        LIVE_MODEL
+      token,
 
-    });
+      model,
 
+      expiresAt:
+        expireTime,
 
-  } catch (error) {
+      newSessionExpiresAt:
+        newSessionExpireTime
 
-    console.error(
-      "Live token server error:",
-      error
-    );
-
-
-    return res.status(500).json({
-      error:
-        "server_error"
     });
 
   }
+  catch (error) {
 
-};
+    console.error(
+      "Live token fetch failed:",
+      error
+    );
+
+    return res.status(500).json({
+
+      ok: false,
+
+      error:
+        "live_token_server_error",
+
+      message:
+        error?.message ||
+        "Unable to contact Gemini token service."
+
+    });
+
+  }
+}
