@@ -26,17 +26,21 @@ export default async function handler(req, res) {
 
   const now = Date.now();
 
+  // Token remains usable for 30 minutes.
   const expireTime = new Date(
     now + 30 * 60 * 1000
   ).toISOString();
 
+  // Give the browser enough time to establish the Live session.
   const newSessionExpireTime = new Date(
-    now + 60 * 1000
+    now + 10 * 60 * 1000
   ).toISOString();
 
   const payload = {
     uses: 1,
+
     expireTime,
+
     newSessionExpireTime,
 
     bidiGenerateContentSetup: {
@@ -71,10 +75,12 @@ export default async function handler(req, res) {
       "https://generativelanguage.googleapis.com/v1beta/auth_tokens",
       {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
           "x-goog-api-key": apiKey
         },
+
         body: JSON.stringify(payload)
       }
     );
