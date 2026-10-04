@@ -15,7 +15,9 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
-  const model = process.env.GEMINI_LIVE_MODEL || "gemini-3.8-live";
+  const model =
+    process.env.GEMINI_LIVE_MODEL ||
+    "gemini-3.8-live";
 
   if (!apiKey) {
     return res.status(500).json({
@@ -26,48 +28,40 @@ export default async function handler(req, res) {
 
   const now = Date.now();
 
-  // Token remains usable for 30 minutes.
+  /*
+    Ephemeral token lifetime.
+    30 minutes for the token itself.
+  */
   const expireTime = new Date(
     now + 30 * 60 * 1000
   ).toISOString();
 
-  // Give the browser enough time to establish the Live session.
+  /*
+    Give the browser enough time to establish
+    a new Live session.
+  */
   const newSessionExpireTime = new Date(
     now + 10 * 60 * 1000
   ).toISOString();
 
+  /*
+    IMPORTANT:
+    Do NOT include bidiGenerateContentSetup here.
+
+    The client-side WebSocket setup in index.html
+    will provide:
+      - model
+      - generationConfig
+      - systemInstruction
+      - sessionResumption
+
+    This keeps the token as authentication only
+    instead of locking the Live configuration.
+  */
   const payload = {
     uses: 1,
-
     expireTime,
-
-    newSessionExpireTime,
-
-    bidiGenerateContentSetup: {
-      model: `models/${model}`,
-
-      generationConfig: {
-        responseModalities: ["AUDIO"]
-      },
-
-      systemInstruction: {
-        parts: [
-          {
-            text:
-              "You are JARVIS, the AI Assistant of IP BABA. " +
-              "Speak naturally, clearly and briefly. " +
-              "Reply in the user's language. " +
-              "Help with AI, digital marketing, technology, business, websites, automation, prompts and IP BABA services. " +
-              "Never invent prices, clients, testimonials, awards, certifications, partnerships, revenue, statistics, guarantees or company facts. " +
-              "If information is unknown, clearly say that it is unknown. " +
-              "For live voice conversations, sound natural and conversational rather than reading long structured answers. " +
-              "Keep responses concise unless the user specifically asks for detail."
-          }
-        ]
-      },
-
-      sessionResumption: {}
-    }
+    newSessionExpireTime
   };
 
   try {
@@ -92,7 +86,9 @@ export default async function handler(req, res) {
     try {
       data = JSON.parse(raw);
     } catch {
-      data = { raw };
+      data = {
+        raw
+      };
     }
 
     if (!upstream.ok) {
@@ -139,7 +135,8 @@ export default async function handler(req, res) {
       token,
       model,
       expiresAt: expireTime,
-      newSessionExpiresAt: newSessionExpireTime
+      newSessionExpiresAt:
+        newSessionExpireTime
     });
 
   } catch (error) {
