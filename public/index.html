@@ -3,48 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#05080f">
+<meta name="theme-color" content="#04070d">
 <title>JARVIS — IP BABA AI Assistant</title>
 
 <style>
 :root{
   --bg:#03060b;
-  --bg2:#07101a;
-  --panel:#08111b;
-  --line:rgba(104,174,209,.18);
-
-  --sky:#58d9ff;
-  --sky2:#1aa8ff;
-
-  --red:#ff334d;
-  --red2:#d70f2c;
-
-  --white:#f4fbff;
-
-  --muted:#8397aa;
-  --muted2:#607488;
-
-  --success:#4fffc0;
-
-  --appH:100dvh;
+  --panel:#07111d;
+  --panel2:#0a1624;
+  --line:rgba(93,128,167,.28);
+  --muted:#91a7bb;
+  --text:#edf8ff;
+  --cyan:#00e5ff;
+  --blue:#1188ff;
+  --red:#e50914;
+  --green:#45ffaf;
+  --shadow:0 18px 60px rgba(0,0,0,.38);
 }
 
 *{
   box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
 }
 
-html,
-body{
+html,body{
+  margin:0;
   width:100%;
   height:100%;
-  margin:0;
   overflow:hidden;
-
-  background:var(--bg);
-
-  color:var(--white);
-
+  background:
+    radial-gradient(circle at 50% 8%,#0c1b39 0,#03060b 42%,#010204 100%);
+  color:var(--text);
   font-family:
     Inter,
     system-ui,
@@ -54,10 +42,6 @@ body{
     sans-serif;
 }
 
-body{
-  min-height:100dvh;
-}
-
 button,
 textarea{
   font:inherit;
@@ -65,3897 +49,1954 @@ textarea{
 
 button{
   cursor:pointer;
-  border:0;
 }
 
-svg{
-  display:block;
-}
-
-.hidden{
-  display:none!important;
-}
-
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
-.bg{
+body:before{
+  content:"";
   position:fixed;
   inset:0;
-
   pointer-events:none;
-  overflow:hidden;
-
-  z-index:-5;
-
+  opacity:.25;
   background:
-    radial-gradient(
-      circle at 50% 18%,
-      rgba(88,217,255,.08),
-      transparent 27%
-    ),
-
-    radial-gradient(
-      circle at 8% 86%,
-      rgba(255,51,77,.075),
-      transparent 30%
-    ),
-
-    radial-gradient(
-      circle at 92% 15%,
-      rgba(26,168,255,.065),
-      transparent 25%
-    ),
-
-    linear-gradient(
-      145deg,
-      #020409,
-      #050a12 46%,
-      #03050a
-    );
-}
-
-.bg::before{
-  content:"";
-
-  position:absolute;
-
-  inset:-20%;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent 49.8%,
-      rgba(88,217,255,.028) 50%,
-      transparent 50.2%
-    ),
-
-    linear-gradient(
-      transparent 49.8%,
-      rgba(88,217,255,.028) 50%,
-      transparent 50.2%
-    );
-
+    linear-gradient(rgba(0,229,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,229,255,.035) 1px,transparent 1px);
   background-size:44px 44px;
-
-  transform:
-    perspective(900px)
-    rotateX(60deg)
-    translateY(18%);
-
-  transform-origin:
-    center bottom;
-
-  opacity:.45;
-}
-
-.bg::after{
-  content:"";
-
-  position:absolute;
-
-  width:50vw;
-  height:50vw;
-
-  max-width:780px;
-  max-height:780px;
-
-  left:50%;
-  top:35%;
-
-  transform:
-    translate(-50%,-50%);
-
-  border-radius:50%;
-
-  background:
-    conic-gradient(
-      from 0deg,
-      transparent,
-      rgba(88,217,255,.05),
-      transparent,
-      rgba(255,51,77,.05),
-      transparent
+  mask-image:
+    linear-gradient(
+      to bottom,
+      #000 0,
+      #000 55%,
+      transparent 100%
     );
-
-  filter:blur(30px);
-
-  animation:
-    bgSpin 18s linear infinite;
 }
-
-@keyframes bgSpin{
-  to{
-    transform:
-      translate(-50%,-50%)
-      rotate(360deg);
-  }
-}
-
-
-/* =========================================================
-   APP SHELL
-========================================================= */
 
 .app{
-  width:100%;
-
-  height:var(--appH);
-
-  max-width:1320px;
-
+  width:min(1440px,100%);
+  height:100dvh;
   margin:0 auto;
-
-  padding:
-    max(8px,env(safe-area-inset-top))
-    max(10px,env(safe-area-inset-right))
-    max(8px,env(safe-area-inset-bottom))
-    max(10px,env(safe-area-inset-left));
-
+  padding:10px 14px;
   display:grid;
-
-  grid-template-rows:
-    auto
-    minmax(0,1fr);
-
+  grid-template-rows:auto 1fr;
   gap:10px;
-
-  overflow:hidden;
-
   position:relative;
 }
-
-
-/* =========================================================
-   HEADER / LOGO
-========================================================= */
 
 .topbar{
-  min-height:0;
-
-  display:flex;
-
-  flex-direction:column;
-
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
   align-items:center;
-
-  justify-content:center;
-
-  position:relative;
-
-  z-index:10;
+  gap:12px;
+  min-height:58px;
 }
 
-.logo-frame{
+.brand-side{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+.brand-word{
+  font-size:.7rem;
+  letter-spacing:.16em;
+  color:#89a8bc;
+  font-weight:700;
+}
+
+.logo-shell{
+  width:58px;
+  aspect-ratio:1/1;
+  display:grid;
+  place-items:center;
   position:relative;
-
-  width:min(
-    240px,
-    56vw
-  );
-
-  height:58px;
-
-  padding:1px;
-
-  border-radius:13px;
-
-  overflow:hidden;
-
-  isolation:isolate;
-
+  border-radius:15px;
+  background:#fff;
   box-shadow:
-    0 12px 34px rgba(0,0,0,.35),
-    0 0 24px rgba(88,217,255,.06);
+    0 0 24px rgba(0,229,255,.08),
+    0 8px 25px rgba(0,0,0,.28);
+  isolation:isolate;
 }
 
-.logo-frame::before{
+.logo-shell:before{
   content:"";
-
   position:absolute;
-
-  inset:-70%;
-
+  inset:-2px;
+  border-radius:17px;
   background:
     conic-gradient(
       from 0deg,
-      transparent 0 22%,
-      rgba(88,217,255,.9) 28%,
-      transparent 36% 57%,
-      rgba(255,51,77,.75) 63%,
-      transparent 72%
+      var(--red),
+      transparent 28%,
+      var(--cyan) 56%,
+      transparent 76%,
+      var(--red)
     );
-
-  animation:
-    logoOrbit 5.5s linear infinite;
+  z-index:-1;
+  animation:spinBorder 7s linear infinite;
 }
 
-.logo-frame::after{
+.logo-shell:after{
   content:"";
-
   position:absolute;
-
-  inset:1px;
-
-  border-radius:12px;
-
-  border:
-    1px solid
-    rgba(255,255,255,.08);
-
-  background:
-    rgba(255,255,255,.02);
-
-  z-index:1;
+  inset:2px;
+  border-radius:13px;
+  background:#fff;
+  z-index:-1;
 }
 
-@keyframes logoOrbit{
+@keyframes spinBorder{
   to{
     transform:rotate(360deg);
   }
 }
 
-.logo-inner{
-  position:absolute;
-
-  inset:2px;
-
-  z-index:2;
-
-  border-radius:11px;
-
-  background:#fff;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  overflow:hidden;
-}
-
-.logo-inner::before{
-  content:"";
-
-  position:absolute;
-
-  inset:0;
-
-  background:
-    linear-gradient(
-      120deg,
-      rgba(88,217,255,.08),
-      transparent 35%,
-      rgba(255,51,77,.06)
-    );
-
-  pointer-events:none;
-}
-
-.brand-logo{
-  display:block;
-
-  width:auto;
-
-  height:48px;
-
-  max-width:
-    calc(100% - 18px);
-
+.logo-shell img{
+  width:78%;
+  height:78%;
   object-fit:contain;
-
-  position:relative;
-
-  z-index:2;
+  display:block;
 }
 
-.logo-fallback{
-  display:none;
+.title-wrap{
+  text-align:center;
+}
 
-  color:#05080e;
-
-  font-size:1rem;
-
+.title{
+  margin:0;
+  font-size:1.45rem;
+  letter-spacing:.27em;
   font-weight:900;
-
-  letter-spacing:.22em;
 }
 
-.brand-title{
-  margin:
-    5px 0 0;
-
-  font-size:
-    clamp(
-      1.05rem,
-      2.2vw,
-      1.45rem
-    );
-
-  line-height:1;
-
-  font-weight:900;
-
-  letter-spacing:.22em;
-
-  color:#fff;
-
-  text-shadow:
-    0 0 18px
-    rgba(88,217,255,.18);
-}
-
-.brand-subtitle{
-  margin:
-    3px 0 0;
-
-  font-size:.66rem;
-
+.subtitle{
+  margin:2px 0 0;
   color:var(--muted);
-
-  letter-spacing:.08em;
+  font-size:.7rem;
+  letter-spacing:.12em;
 }
 
-
-/* =========================================================
-   WORKSPACE
-========================================================= */
+.secure{
+  justify-self:end;
+  color:#9fc2cf;
+  font-size:.67rem;
+  border:1px solid var(--line);
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(0,229,255,.035);
+  white-space:nowrap;
+}
 
 .workspace{
   min-height:0;
-
   display:grid;
-
-  grid-template-columns:
-    minmax(0,.9fr)
-    minmax(390px,1.1fr);
-
+  grid-template-columns:minmax(360px,43%) minmax(0,57%);
   gap:12px;
-
-  overflow:hidden;
 }
 
-
-/* =========================================================
-   AI PANEL
-========================================================= */
-
-.ai-panel{
-  min-width:0;
+.visual-panel,
+.chat-panel{
   min-height:0;
-
-  position:relative;
-
-  border:
-    1px solid
-    var(--line);
-
-  border-radius:22px;
-
+  border:1px solid var(--line);
   background:
     linear-gradient(
-      155deg,
-      rgba(8,17,28,.92),
-      rgba(3,8,14,.84)
+      180deg,
+      rgba(8,17,29,.9),
+      rgba(4,9,16,.86)
     );
-
-  box-shadow:
-    inset 0 1px 0
-      rgba(255,255,255,.035),
-
-    0 20px 55px
-      rgba(0,0,0,.30);
-
+  border-radius:22px;
+  box-shadow:var(--shadow);
   overflow:hidden;
+}
 
+.visual-panel{
+  position:relative;
   display:flex;
-
+  flex-direction:column;
   align-items:center;
   justify-content:center;
+  padding:14px;
+  isolation:isolate;
 }
 
-.ai-panel::before{
+.visual-panel:after{
   content:"";
-
   position:absolute;
-
-  inset:14px;
-
-  border-radius:17px;
-
-  border:
-    1px solid
-    rgba(88,217,255,.045);
-
-  pointer-events:none;
-}
-
-.ai-panel::after{
-  content:"";
-
-  position:absolute;
-
-  width:42%;
-  height:42%;
-
-  left:29%;
-  top:28%;
-
-  border-radius:50%;
-
+  inset:10%;
   background:
     radial-gradient(
       circle,
-      rgba(88,217,255,.08),
-      rgba(255,51,77,.03),
-      transparent 70%
+      rgba(0,229,255,.12),
+      transparent 65%
     );
-
-  filter:blur(22px);
-
+  filter:blur(26px);
   pointer-events:none;
+  z-index:-1;
 }
 
-.ai-scene{
+.visual-head{
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:#86a0b5;
+  font-size:.68rem;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+.visual-head strong{
+  color:#c8ebf5;
+  font-size:.72rem;
+}
+
+.robot-wrap{
+  position:relative;
+  width:min(560px,100%);
+  aspect-ratio:1/1;
+  display:grid;
+  place-items:center;
+  flex:1;
+  min-height:0;
+}
+
+.robot-wrap canvas{
   width:100%;
   height:100%;
-
-  position:relative;
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  overflow:hidden;
+  display:block;
 }
 
-
-/* =========================================================
-   BINARY STREAMS
-========================================================= */
-
-.binary-flow{
+.binary{
   position:absolute;
-
-  left:8%;
-  right:8%;
-
-  height:90px;
-
-  overflow:hidden;
-
+  inset:4%;
   pointer-events:none;
-
-  opacity:.48;
-
+  overflow:hidden;
+  border-radius:50%;
+  opacity:.45;
   mask-image:
-    linear-gradient(
-      90deg,
-      transparent,
-      black 18%,
-      black 82%,
-      transparent
+    radial-gradient(
+      circle,
+      #000 15%,
+      rgba(0,0,0,.85) 48%,
+      transparent 76%
     );
 }
 
-.binary-flow.top{
-  top:7%;
-}
-
-.binary-flow.bottom{
-  bottom:7%;
-}
-
-.binary-track{
+.binary span{
   position:absolute;
-
-  left:0;
-  right:0;
-
-  display:flex;
-
-  justify-content:space-between;
-
-  color:
-    rgba(88,217,255,.55);
-
-  font-family:
+  color:rgba(0,229,255,.45);
+  font:
+    600 10px/1
     ui-monospace,
     SFMono-Regular,
     Menlo,
     monospace;
-
-  font-size:9px;
-
-  letter-spacing:.28em;
-
   white-space:nowrap;
-
-  writing-mode:
-    vertical-rl;
-
-  text-orientation:
-    mixed;
-}
-
-.binary-flow.top
-.binary-track{
-  top:-120px;
-
   animation:
-    binaryDown
-    6.5s
-    linear
-    infinite;
+    floatCode var(--dur) linear infinite;
+  animation-delay:var(--delay);
+  left:var(--x);
 }
 
-.binary-flow.bottom
-.binary-track{
-  bottom:-120px;
-
-  animation:
-    binaryUp
-    6.5s
-    linear
-    infinite;
-}
-
-.binary-track span:nth-child(2n){
-  animation-delay:-1.2s;
-}
-
-.binary-track span:nth-child(3n){
-  animation-delay:-2.1s;
-}
-
-.binary-track span:nth-child(4n){
-  animation-delay:-3.1s;
-}
-
-@keyframes binaryDown{
-  to{
+@keyframes floatCode{
+  0%{
     transform:
-      translateY(210px);
+      translateY(110%)
+      rotate(var(--rot));
+    opacity:0;
   }
-}
 
-@keyframes binaryUp{
-  to{
-    transform:
-      translateY(-210px);
+  12%,
+  88%{
+    opacity:.65;
   }
-}
 
-
-/* =========================================================
-   ROBOT
-========================================================= */
-
-.robot-wrap{
-  width:
-    min(
-      500px,
-      76%
-    );
-
-  aspect-ratio:1/1;
-
-  position:relative;
-
-  z-index:3;
-}
-
-.robot-wrap::before{
-  content:"";
-
-  position:absolute;
-
-  inset:11%;
-
-  border-radius:50%;
-
-  border:
-    1px solid
-    rgba(88,217,255,.16);
-
-  box-shadow:
-    0 0 0 18px
-      rgba(88,217,255,.015),
-
-    0 0 60px
-      rgba(88,217,255,.06);
-
-  animation:
-    ringPulse
-    3.2s
-    ease-in-out
-    infinite;
-}
-
-@keyframes ringPulse{
-
-  0%,
   100%{
-    transform:scale(.96);
-    opacity:.55;
+    transform:
+      translateY(-25%)
+      rotate(var(--rot));
+    opacity:0;
   }
-
-  50%{
-    transform:scale(1.03);
-    opacity:1;
-  }
-
 }
 
-#robotCanvas{
-  width:100%;
-  height:100%;
-
-  display:block;
-}
-
-.ai-status{
-  position:absolute;
-
-  left:50%;
-  bottom:6.5%;
-
-  transform:
-    translateX(-50%);
-
+.state-line{
   display:flex;
-
+  justify-content:center;
   align-items:center;
-
-  gap:7px;
-
-  padding:
-    5px 9px;
-
-  border:
-    1px solid
-    rgba(88,217,255,.12);
-
-  border-radius:999px;
-
-  background:
-    rgba(3,8,14,.62);
-
-  color:
-    #a4c2d2;
-
-  font-size:.56rem;
-
-  letter-spacing:.16em;
-
-  text-transform:uppercase;
-
-  backdrop-filter:
-    blur(7px);
+  gap:8px;
+  color:#a8c3d4;
+  font-size:.72rem;
+  letter-spacing:.14em;
+  margin-top:3px;
 }
 
 .status-dot{
-  width:6px;
-  height:6px;
-
+  width:8px;
+  height:8px;
   border-radius:50%;
+  background:#4e5e6e;
+}
 
-  background:
-    var(--success);
-
-  box-shadow:
-    0 0 10px
-    var(--success);
+.status-dot.ok{
+  background:var(--green);
+  box-shadow:0 0 12px rgba(69,255,175,.9);
 }
 
 .status-dot.busy{
-  background:
-    var(--sky);
-
-  box-shadow:
-    0 0 10px
-    var(--sky);
-
-  animation:
-    statusPulse
-    1s
-    infinite;
+  background:var(--cyan);
+  box-shadow:0 0 12px rgba(0,229,255,.9);
+  animation:pulse 1s infinite;
 }
 
-.status-dot.error{
-  background:
-    var(--red);
-
-  box-shadow:
-    0 0 10px
-    var(--red);
+.status-dot.err{
+  background:#ff4050;
+  box-shadow:0 0 12px rgba(255,64,80,.9);
 }
 
-@keyframes statusPulse{
+@keyframes pulse{
   50%{
-    transform:scale(.65);
-    opacity:.45;
+    opacity:.35;
+    transform:scale(.75);
   }
 }
 
+.visual-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:center;
+  padding-top:8px;
+}
 
-/* =========================================================
-   CHAT PANEL
-========================================================= */
+.btn{
+  min-height:40px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:rgba(12,22,36,.9);
+  color:#fff;
+  padding:9px 12px;
+  font-weight:750;
+  transition:
+    .18s transform,
+    .18s border-color,
+    .18s background;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  border-color:rgba(0,229,255,.65);
+}
+
+.btn:focus-visible{
+  outline:2px solid var(--cyan);
+  outline-offset:2px;
+}
+
+.btn.primary{
+  border:0;
+  background:
+    linear-gradient(
+      100deg,
+      var(--blue),
+      var(--cyan)
+    );
+  color:#001018;
+}
+
+.btn.live{
+  min-width:175px;
+}
+
+.btn.live.on{
+  background:
+    linear-gradient(
+      100deg,
+      #a90310,
+      var(--red)
+    );
+  color:#fff;
+}
+
+.btn svg{
+  width:18px;
+  height:18px;
+  vertical-align:-4px;
+  margin-right:6px;
+}
+
+.btn.icon{
+  width:44px;
+  padding:8px;
+}
+
+.btn.icon svg{
+  margin:0;
+  width:20px;
+  height:20px;
+}
+
+.btn.danger{
+  border-color:rgba(229,9,20,.55);
+}
 
 .chat-panel{
+  display:flex;
+  flex-direction:column;
+  padding:10px;
   min-width:0;
-  min-height:0;
-
-  display:grid;
-
-  grid-template-rows:
-    auto
-    minmax(0,1fr)
-    auto;
-
-  border:
-    1px solid
-    var(--line);
-
-  border-radius:22px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(8,16,27,.91),
-      rgba(4,9,15,.92)
-    );
-
-  box-shadow:
-    inset 0 1px 0
-      rgba(255,255,255,.03),
-
-    0 20px 55px
-      rgba(0,0,0,.26);
-
-  overflow:hidden;
 }
 
-.chat-top{
-  min-height:58px;
-
+.chat-head{
   display:flex;
-
   align-items:center;
-
   justify-content:space-between;
-
-  gap:8px;
-
-  padding:
-    10px 12px;
-
-  border-bottom:
-    1px solid
-    rgba(104,174,209,.12);
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(14,27,43,.75),
-      rgba(7,13,22,.55)
-    );
-}
-
-.chat-heading{
-  min-width:0;
-}
-
-.chat-heading strong{
-  display:block;
-
-  font-size:.84rem;
-
-  letter-spacing:.03em;
-}
-
-.chat-heading span{
-  display:block;
-
-  margin-top:2px;
-
-  color:var(--muted);
-
-  font-size:.59rem;
-}
-
-.chat-tools{
-  display:flex;
-
-  align-items:center;
-
-  gap:5px;
-
+  padding:3px 4px 9px;
   flex:0 0 auto;
 }
 
-.tool-btn,
-.live-btn{
-  min-height:32px;
-
-  border-radius:9px;
-
-  border:
-    1px solid
-    var(--line);
-
-  color:#d9eff9;
-
-  background:
-    rgba(9,18,30,.88);
-
-  display:inline-flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  gap:5px;
-
-  padding:
-    6px 9px;
-
-  font-size:.61rem;
-
-  font-weight:750;
-
-  transition:.18s ease;
+.chat-head h2{
+  margin:0;
+  font-size:.88rem;
+  letter-spacing:.13em;
+  text-transform:uppercase;
 }
 
-.tool-btn:hover,
-.live-btn:hover{
-  border-color:
-    rgba(88,217,255,.42);
-
-  transform:
-    translateY(-1px);
+.chat-head span{
+  color:#7992a8;
+  font-size:.68rem;
 }
 
-.live-btn{
-  border-color:
-    rgba(255,51,77,.42);
-
-  background:
-    linear-gradient(
-      100deg,
-      #9e1028,
-      #ff334d 72%,
-      #ff6a7b
-    );
-
-  color:#fff;
-
-  box-shadow:
-    0 0 18px
-    rgba(255,51,77,.10);
+.quick{
+  display:flex;
+  gap:7px;
+  overflow:auto;
+  flex:0 0 auto;
+  padding:0 2px 9px;
+  scrollbar-width:thin;
 }
 
-.live-btn.active{
-  background:
-    linear-gradient(
-      100deg,
-      #701020,
-      #d70f2c
-    );
+.quick.hidden{
+  display:none;
 }
 
-.btn-icon{
-  width:14px;
-  height:14px;
-
-  flex:
-    0 0 14px;
+.quick button{
+  white-space:nowrap;
+  min-height:37px;
+  padding:7px 10px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:#091524;
+  color:#d8edf7;
+  font-size:.72rem;
 }
 
-
-/* =========================================================
-   CHAT
-========================================================= */
+.quick button:hover{
+  border-color:rgba(0,229,255,.55);
+}
 
 .chat{
   min-height:0;
-
+  flex:1 1 auto;
   overflow-y:auto;
   overflow-x:hidden;
-
-  padding:11px;
-
+  padding:4px 5px 8px;
   display:flex;
-
   flex-direction:column;
-
-  gap:8px;
-
-  overscroll-behavior:
-    contain;
-
-  scrollbar-width:
-    thin;
-
-  scrollbar-color:
-    rgba(88,217,255,.22)
-    transparent;
-}
-
-.chat::-webkit-scrollbar{
-  width:5px;
-}
-
-.chat::-webkit-scrollbar-thumb{
-  background:
-    rgba(88,217,255,.20);
-
-  border-radius:20px;
-}
-
-.welcome-card{
-  width:
-    min(
-      620px,
-      94%
-    );
-
-  margin:auto;
-
-  padding:16px;
-
-  border:
-    1px solid
-    rgba(88,217,255,.12);
-
-  border-radius:15px;
-
-  background:
-    linear-gradient(
-      150deg,
-      rgba(16,29,44,.80),
-      rgba(7,13,22,.80)
-    );
-}
-
-.welcome-title{
-  font-size:.92rem;
-
-  font-weight:800;
-
-  margin-bottom:5px;
-}
-
-.welcome-text{
-  color:#9eb1c1;
-
-  font-size:.68rem;
-
-  line-height:1.6;
-}
-
-.suggestions{
-  display:grid;
-
-  grid-template-columns:
-    repeat(
-      3,
-      minmax(0,1fr)
-    );
-
-  gap:6px;
-
-  margin-top:10px;
-}
-
-.suggestion{
-  min-width:0;
-
-  padding:
-    8px 9px;
-
-  border-radius:9px;
-
-  border:
-    1px solid
-    rgba(88,217,255,.12);
-
-  background:
-    rgba(5,12,20,.65);
-
-  color:
-    #a9c6d4;
-
-  text-align:left;
-
-  font-size:.59rem;
-
-  line-height:1.35;
-}
-
-.suggestion:hover{
-  border-color:
-    rgba(88,217,255,.35);
-
-  color:#e5f8ff;
+  gap:9px;
+  scroll-behavior:smooth;
 }
 
 .bubble{
-  max-width:
-    min(
-      84%,
-      680px
-    );
-
-  padding:
-    9px 11px;
-
-  border-radius:13px;
-
-  line-height:1.55;
-
-  font-size:.74rem;
-
+  max-width:min(88%,760px);
+  padding:10px 12px;
+  border-radius:15px;
+  line-height:1.58;
+  font-size:.91rem;
   overflow-wrap:anywhere;
 }
 
 .bubble.user{
   align-self:flex-end;
-
   background:
     linear-gradient(
       135deg,
-      rgba(116,31,48,.96),
-      rgba(72,19,32,.96)
+      #123e70,
+      #0a2949
     );
-
-  border:
-    1px solid
-    rgba(255,51,77,.17);
-
-  box-shadow:
-    0 6px 18px
-    rgba(0,0,0,.10);
-
+  border:1px solid rgba(52,146,255,.28);
   white-space:pre-wrap;
 }
 
 .bubble.ai{
   align-self:flex-start;
-
-  background:
-    rgba(11,22,35,.93);
-
-  border:
-    1px solid
-    rgba(88,217,255,.10);
-
-  border-left:
-    2px solid
-    var(--sky);
-
-  box-shadow:
-    0 5px 18px
-    rgba(0,0,0,.10);
+  background:rgba(17,28,43,.94);
+  border:1px solid rgba(0,229,255,.14);
+  border-left:3px solid var(--cyan);
 }
 
 .bubble.ai p{
-  margin:.28em 0;
-}
-
-.bubble.ai h3{
-  margin:
-    .50em 0 .16em;
-
-  color:#bcefff;
-
-  font-size:.82rem;
+  margin:.35em 0;
 }
 
 .bubble.ai ul,
 .bubble.ai ol{
-  margin:.3em 0;
+  margin:.35em 0;
+  padding-left:1.25em;
+}
 
-  padding-left:1.15em;
+.bubble.ai h3{
+  margin:.55em 0 .25em;
+  font-size:.98rem;
+  color:#9deeff;
 }
 
 .bubble.ai code{
-  background:#040a11;
-
-  border:
-    1px solid
-    #1d2a39;
-
-  border-radius:4px;
-
-  padding:
-    1px 4px;
-
-  font-size:.66rem;
+  background:#050b12;
+  border:1px solid #1a2b40;
+  border-radius:5px;
+  padding:1px 4px;
 }
 
 .bubble.ai pre{
   white-space:pre-wrap;
-
-  background:#040a11;
-
-  border:
-    1px solid
-    #1d2a39;
-
-  border-radius:8px;
-
-  padding:8px;
-
+  background:#050b12;
+  border:1px solid #1a2b40;
+  border-radius:9px;
+  padding:10px;
   overflow:auto;
-
-  font-size:.64rem;
-}
-
-.bubble-actions{
-  display:flex;
-
-  flex-wrap:wrap;
-
-  gap:5px;
-
-  margin-top:6px;
-}
-
-.mini-btn{
-  min-height:27px;
-
-  padding:
-    5px 7px;
-
-  border:
-    1px solid
-    var(--line);
-
-  background:#07111c;
-
-  color:#cde8f3;
-
-  border-radius:7px;
-
-  font-size:.57rem;
-}
-
-.mini-btn.cta{
-  border-color:
-    rgba(255,51,77,.36);
-
-  background:
-    linear-gradient(
-      90deg,
-      #7a1020,
-      #c91532
-    );
-
-  color:#fff;
 }
 
 .typing{
-  opacity:.62;
+  opacity:.68;
   font-style:italic;
 }
 
-
-/* =========================================================
-   COMPOSER
-========================================================= */
-
-.composer-wrap{
-  padding:8px;
-
-  border-top:
-    1px solid
-    rgba(104,174,209,.10);
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(4,9,15,.32),
-      rgba(4,9,15,.92)
-    );
+.actions{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:7px;
 }
 
-.composer-hint{
-  margin:
-    0 3px 5px;
+.mini{
+  border:1px solid var(--line);
+  background:#08111c;
+  color:#d8f3ff;
+  border-radius:8px;
+  padding:5px 8px;
+  font-size:.7rem;
+}
 
-  color:
-    var(--muted2);
-
-  font-size:.56rem;
-
-  white-space:nowrap;
-
-  overflow:hidden;
-
-  text-overflow:ellipsis;
+.mini.cta{
+  border-color:rgba(229,9,20,.55);
+  background:
+    linear-gradient(
+      90deg,
+      #a40712,
+      var(--red)
+    );
+  color:#fff;
 }
 
 .composer{
   display:flex;
-
   align-items:flex-end;
-
-  gap:5px;
-
-  width:100%;
-
-  padding:5px;
-
-  border:
-    1px solid
-    rgba(104,174,209,.18);
-
-  border-radius:13px;
-
-  background:
-    rgba(5,12,20,.93);
-
-  box-shadow:
-    0 8px 28px
-    rgba(0,0,0,.24);
+  gap:7px;
+  flex:0 0 auto;
+  margin-top:8px;
+  padding:7px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(6,13,22,.96);
 }
 
 .composer textarea{
   flex:1;
-
-  min-width:0;
-
   resize:none;
-
-  height:38px;
-
-  max-height:92px;
-
+  min-height:44px;
+  max-height:128px;
   border:0;
-
   outline:0;
-
   background:transparent;
-
   color:#fff;
-
-  padding:
-    9px 8px;
-
-  line-height:1.4;
-
-  font-size:.72rem;
+  padding:10px 8px;
+  line-height:1.45;
 }
 
 .composer textarea::placeholder{
-  color:#5f7387;
+  color:#698296;
 }
 
-.icon-btn{
-  width:36px;
-  min-width:36px;
-
-  height:36px;
-
-  border-radius:10px;
-
-  border:
-    1px solid
-    rgba(104,174,209,.18);
-
-  background:#09131f;
-
-  color:#d9edf6;
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
+.send-btn{
+  flex:0 0 auto;
 }
 
-.icon-btn.primary{
-  border-color:
-    transparent;
-
-  background:
-    linear-gradient(
-      135deg,
-      #187bc9,
-      #58d9ff
-    );
-
-  color:#001019;
+.footer{
+  flex:0 0 auto;
+  text-align:center;
+  color:#667d92;
+  font-size:.62rem;
+  padding:7px 0 2px;
 }
 
-.icon-btn:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-}
-
-
-/* =========================================================
-   LIVE OVERLAY
-========================================================= */
+/* ===== LIVE VOICE OVERLAY ===== */
 
 .live-overlay{
   position:fixed;
-
   inset:0;
-
   z-index:100;
+  background:rgba(0,0,0,.74);
+  backdrop-filter:blur(10px);
+  display:grid;
+  place-items:center;
+  padding:14px;
+}
 
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  padding:18px;
-
-  background:
-    radial-gradient(
-      circle at 50% 45%,
-      rgba(88,217,255,.09),
-      transparent 30%
-    ),
-
-    radial-gradient(
-      circle at 50% 75%,
-      rgba(255,51,77,.07),
-      transparent 28%
-    ),
-
-    rgba(1,4,8,.92);
-
-  backdrop-filter:
-    blur(14px);
+.live-overlay.hidden{
+  display:none;
 }
 
 .live-card{
-  width:
-    min(
-      720px,
-      100%
-    );
-
-  height:
-    min(
-      760px,
-      calc(
-        var(--appH) - 30px
-      )
-    );
-
-  min-height:390px;
-
-  position:relative;
-
-  border-radius:25px;
-
-  border:
-    1px solid
-    rgba(88,217,255,.18);
-
-  background:
-    linear-gradient(
-      160deg,
-      rgba(8,18,30,.94),
-      rgba(2,6,11,.97)
-    );
-
-  box-shadow:
-    0 25px 90px
-      rgba(0,0,0,.62),
-
-    0 0 40px
-      rgba(88,217,255,.07);
-
-  overflow:hidden;
-
+  width:min(940px,100%);
+  height:min(760px,calc(100dvh - 28px));
+  background:#07111d;
+  border:1px solid rgba(0,229,255,.3);
+  border-radius:24px;
+  box-shadow:0 28px 100px rgba(0,0,0,.62);
   display:grid;
-
-  grid-template-rows:
-    auto
-    minmax(0,1fr)
-    auto;
+  grid-template-rows:auto 1fr auto;
+  overflow:hidden;
 }
 
-.live-header{
+.live-top{
   display:flex;
-
   align-items:center;
-
   justify-content:space-between;
-
-  padding:
-    13px 15px;
-
-  border-bottom:
-    1px solid
-    rgba(104,174,209,.10);
+  padding:12px 14px;
+  border-bottom:1px solid var(--line);
 }
 
-.live-title{
-  font-size:.82rem;
-
-  font-weight:800;
-
-  letter-spacing:.05em;
+.live-top h3{
+  margin:0;
+  font-size:.9rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
 }
 
-.live-state{
-  margin-top:3px;
-
-  color:#7e9aab;
-
-  font-size:.58rem;
-}
-
-.live-close{
-  width:32px;
-  height:32px;
-
-  border-radius:9px;
-
-  border:
-    1px solid
-    rgba(104,174,209,.17);
-
-  background:#08121e;
-
-  color:#b9cbd7;
-
-  font-size:1rem;
+.live-top span{
+  font-size:.67rem;
+  color:#7690a6;
 }
 
 .live-stage{
+  position:relative;
+  display:grid;
+  place-items:center;
+  padding:16px;
+  background:#f8fbff;
   min-height:0;
-
-  position:relative;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  overflow:hidden;
 }
 
-.live-stage::before,
-.live-stage::after{
+.live-stage:before{
   content:"";
-
   position:absolute;
-
-  width:66%;
-
-  aspect-ratio:1;
-
-  border-radius:50%;
-
-  border:
-    1px solid
-    rgba(88,217,255,.08);
-
-  animation:
-    liveOrbit
-    5s linear infinite;
-}
-
-.live-stage::after{
-  width:48%;
-
-  border-color:
-    rgba(255,51,77,.08);
-
-  animation-direction:
-    reverse;
-
-  animation-duration:
-    3.7s;
-}
-
-@keyframes liveOrbit{
-  to{
-    transform:
-      rotate(360deg);
-  }
-}
-
-#liveRobotCanvas{
-  width:
-    min(
-      78%,
-      540px
+  inset:12% 20%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(0,229,255,.16),
+      transparent 64%
     );
+  filter:blur(18px);
+}
 
-  height:auto;
-
-  aspect-ratio:1;
-
+.live-stage canvas{
+  width:min(620px,100%);
+  height:min(620px,100%);
+  display:block;
   position:relative;
-
-  z-index:2;
+  z-index:1;
 }
 
-.waveform{
-  position:absolute;
+.live-info{
+  padding:11px 14px;
+  border-top:1px solid var(--line);
+  background:#07111d;
+}
 
-  left:12%;
-  right:12%;
-
-  bottom:10%;
-
-  height:66px;
-
+.live-status{
   display:flex;
-
   align-items:center;
-
-  justify-content:center;
-
-  gap:4px;
-
-  z-index:3;
-
-  opacity:.86;
+  justify-content:space-between;
+  gap:12px;
 }
 
-.wavebar{
-  width:3px;
-
-  height:14%;
-
-  min-height:5px;
-
-  border-radius:4px;
-
-  background:
-    linear-gradient(
-      180deg,
-      var(--sky),
-      var(--red)
-    );
-
-  box-shadow:
-    0 0 10px
-    rgba(88,217,255,.12);
-
-  animation:
-    waveIdle
-    .9s
-    ease-in-out
-    infinite
-    alternate;
+.live-status strong{
+  font-size:.75rem;
+  letter-spacing:.13em;
 }
 
-@keyframes waveIdle{
-  from{
-    transform:
-      scaleY(.35);
-  }
-
-  to{
-    transform:
-      scaleY(1);
-  }
+.live-status span{
+  font-size:.72rem;
+  color:#91a7ba;
+  text-align:right;
 }
 
-.live-footer{
-  padding:
-    10px 15px 15px;
-
-  border-top:
-    1px solid
-    rgba(104,174,209,.10);
-
+.live-actions{
   display:flex;
-
-  align-items:center;
-  justify-content:center;
+  justify-content:flex-end;
+  margin-top:9px;
 }
 
-.end-live{
-  min-width:200px;
-
-  min-height:40px;
-
-  padding:
-    9px 16px;
-
-  border-radius:11px;
-
-  border:
-    1px solid
-    rgba(255,51,77,.40);
-
-  background:
-    linear-gradient(
-      100deg,
-      #801224,
-      #d70f2c
-    );
-
-  color:#fff;
-
-  font-weight:800;
-
+.error-box{
+  margin-top:8px;
+  color:#ffc5ca;
+  background:rgba(229,9,20,.08);
+  border:1px solid rgba(229,9,20,.28);
+  padding:8px 9px;
+  border-radius:9px;
   font-size:.7rem;
-
-  box-shadow:
-    0 0 22px
-    rgba(255,51,77,.10);
+  display:none;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
 
-
-/* =========================================================
-   DESKTOP
-========================================================= */
-
-@media(min-width:760px){
+@media(max-width:900px){
 
   .app{
-    padding-left:16px;
-    padding-right:16px;
-    gap:12px;
-  }
-
-  .topbar{
-    padding-bottom:2px;
-  }
-
-  .logo-frame{
-    width:260px;
-    height:62px;
-  }
-
-  .brand-logo{
-    height:51px;
-  }
-
-  .brand-title{
-    font-size:1.42rem;
+    padding:8px 10px;
+    gap:8px;
   }
 
   .workspace{
-    grid-template-columns:
-      minmax(0,1.02fr)
-      minmax(470px,.98fr);
-
-    gap:14px;
+    grid-template-columns:1fr;
+    grid-template-rows:
+      minmax(270px,40%)
+      minmax(0,60%);
   }
 
-  .ai-panel{
-    border-radius:24px;
+  .visual-panel{
+    padding:9px;
+    border-radius:18px;
   }
 
-  .robot-wrap{
-    width:
-      min(
-        560px,
-        76%
-      );
-  }
-
-  .binary-flow{
-    height:120px;
-  }
-
-  .chat-panel{
-    border-radius:24px;
-  }
-
-  .chat-heading strong{
-    font-size:.92rem;
-  }
-
-  .chat-heading span{
+  .visual-head{
     font-size:.61rem;
   }
 
-  .bubble{
-    font-size:.77rem;
-  }
-
-  .composer textarea{
-    font-size:.75rem;
-  }
-
-  .live-card{
-    width:
-      min(
-        780px,
-        100%
-      );
-  }
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:759px){
-
-  .app{
-    padding-top:
-      max(
-        5px,
-        env(safe-area-inset-top)
-      );
-
-    padding-bottom:
-      max(
-        5px,
-        env(safe-area-inset-bottom)
-      );
-
-    gap:6px;
-  }
-
-  .logo-frame{
-    width:
-      min(
-        205px,
-        64vw
-      );
-
-    height:45px;
-
-    border-radius:10px;
-  }
-
-  .logo-inner{
-    border-radius:9px;
-  }
-
-  .brand-logo{
-    height:36px;
-  }
-
-  .brand-title{
-    margin-top:4px;
-
-    font-size:.96rem;
-
-    letter-spacing:.18em;
-  }
-
-  .brand-subtitle{
-    font-size:.54rem;
-  }
-
-  .workspace{
-    grid-template-columns:1fr;
-
-    grid-template-rows:
-      minmax(
-        150px,
-        29vh
-      )
-
-      minmax(
-        0,
-        1fr
-      );
-
-    gap:6px;
-  }
-
-  .ai-panel{
-    border-radius:18px;
-    min-height:0;
-  }
-
-  .ai-panel::before{
-    inset:9px;
-    border-radius:13px;
-  }
-
   .robot-wrap{
-    width:
-      min(
-        245px,
-        66vw
-      );
+    max-height:none;
   }
 
-  .binary-flow{
-    height:66px;
-
-    left:10%;
-    right:10%;
-  }
-
-  .binary-track{
-    font-size:7px;
-    letter-spacing:.22em;
-  }
-
-  .ai-status{
-    bottom:5%;
-
-    font-size:.48rem;
-
-    padding:
-      4px 7px;
+  .visual-actions{
+    padding-top:4px;
   }
 
   .chat-panel{
     border-radius:18px;
+    padding:8px;
   }
 
-  .chat-top{
-    min-height:49px;
-
-    padding:
-      7px 8px;
-  }
-
-  .chat-heading strong{
-    font-size:.72rem;
-  }
-
-  .chat-heading span{
-    font-size:.51rem;
-  }
-
-  .chat-tools{
-    gap:4px;
-  }
-
-  .tool-btn,
-  .live-btn{
-    min-height:29px;
-
-    padding:
-      5px 7px;
-
-    font-size:.54rem;
-
-    border-radius:8px;
-  }
-
-  .btn-icon{
-    width:12px;
-    height:12px;
-
-    flex-basis:12px;
-  }
-
-  .chat{
-    padding:7px;
-    gap:6px;
-  }
-
-  .welcome-card{
-    width:96%;
-    padding:11px;
-  }
-
-  .welcome-title{
-    font-size:.75rem;
-  }
-
-  .welcome-text{
-    font-size:.58rem;
-
-    line-height:1.48;
-  }
-
-  .suggestions{
-    grid-template-columns:1fr;
-
-    gap:4px;
-
-    margin-top:7px;
-  }
-
-  .suggestion{
-    padding:
-      6px 7px;
-
-    font-size:.53rem;
+  .chat-head{
+    padding:0 4px 7px;
   }
 
   .bubble{
     max-width:94%;
-
-    padding:
-      7px 8px;
-
-    border-radius:11px;
-
-    font-size:.65rem;
-
-    line-height:1.48;
   }
 
-  .bubble-actions{
-    gap:4px;
+  .secure{
+    display:none;
   }
-
-  .mini-btn{
-    min-height:24px;
-
-    padding:
-      4px 6px;
-
-    font-size:.52rem;
-  }
-
-  .composer-wrap{
-    padding:6px;
-  }
-
-  .composer-hint{
-    margin-bottom:4px;
-
-    font-size:.50rem;
-  }
-
-  .composer{
-    border-radius:11px;
-    padding:4px;
-  }
-
-  .composer textarea{
-    height:35px;
-
-    max-height:76px;
-
-    padding:
-      8px 6px;
-
-    font-size:.63rem;
-  }
-
-  .icon-btn{
-    width:34px;
-    min-width:34px;
-
-    height:34px;
-
-    border-radius:9px;
-  }
-
-  .live-card{
-    width:100%;
-    height:100%;
-
-    min-height:0;
-
-    border-radius:0;
-
-    border:0;
-  }
-
-  .live-header{
-    padding:
-      10px 11px;
-  }
-
-  .live-title{
-    font-size:.74rem;
-  }
-
-  .live-state{
-    font-size:.52rem;
-  }
-
-  .live-stage::before{
-    width:78%;
-  }
-
-  .live-stage::after{
-    width:54%;
-  }
-
-  #liveRobotCanvas{
-    width:
-      min(
-        74%,
-        360px
-      );
-  }
-
-  .waveform{
-    bottom:11%;
-
-    left:7%;
-    right:7%;
-
-    height:54px;
-
-    gap:3px;
-  }
-
-  .wavebar{
-    width:2px;
-  }
-
-  .end-live{
-    min-width:180px;
-
-    min-height:38px;
-
-    font-size:.64rem;
-  }
-
 }
 
-@media(max-width:360px){
+@media(max-width:560px){
 
-  .logo-frame{
-    height:40px;
-    width:185px;
+  .app{
+    padding:6px 7px;
   }
 
-  .brand-logo{
-    height:32px;
+  .topbar{
+    grid-template-columns:1fr auto;
+    grid-template-areas:
+      "title logo";
+    min-height:52px;
+  }
+
+  .brand-side{
+    display:none;
+  }
+
+  .title-wrap{
+    grid-area:title;
+    text-align:left;
+  }
+
+  .title{
+    font-size:1.18rem;
+    letter-spacing:.2em;
+  }
+
+  .subtitle{
+    font-size:.62rem;
+  }
+
+  .logo-shell{
+    grid-area:logo;
+    width:52px;
   }
 
   .workspace{
     grid-template-rows:
-      minmax(
-        132px,
-        26vh
-      )
-
-      minmax(
-        0,
-        1fr
-      );
+      minmax(230px,36%)
+      minmax(0,64%);
+    gap:7px;
   }
 
-  .robot-wrap{
-    width:205px;
+  .visual-panel{
+    min-height:0;
   }
 
-  .chat-top{
-    min-height:46px;
+  .visual-head strong{
+    font-size:.62rem;
   }
 
-  .tool-btn,
-  .live-btn{
-    min-height:27px;
+  .visual-actions .btn.newchat,
+  .visual-actions .btn.clear{
+    display:none;
+  }
 
-    padding:
-      4px 6px;
+  .quick button{
+    font-size:.68rem;
+  }
 
-    font-size:.49rem;
+  .chat{
+    padding-bottom:4px;
   }
 
   .composer textarea{
-    font-size:.60rem;
+    font-size:.88rem;
+  }
+
+  .footer{
+    font-size:.58rem;
+  }
+
+  .live-card{
+    height:calc(100dvh - 12px);
+    border-radius:18px;
+  }
+
+  .live-stage{
+    padding:8px;
+  }
+
+  .live-status{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:3px;
+  }
+
+  .live-status span{
+    text-align:left;
   }
 }
-
-
-/* =========================================================
-   ACCESSIBILITY
-========================================================= */
 
 @media(prefers-reduced-motion:reduce){
 
   *,
   *:before,
   *:after{
-    animation-duration:.001ms!important;
-
-    animation-iteration-count:
-      1!important;
-
-    scroll-behavior:
-      auto!important;
-
-    transition-duration:
-      .001ms!important;
+    animation:none!important;
+    scroll-behavior:auto!important;
   }
-
 }
 </style>
 </head>
 
 <body>
 
-<div
-  class="bg"
-  aria-hidden="true"
-></div>
+<main class="app" id="jv">
+
+  <header class="topbar">
+
+    <div class="brand-side">
+      <div class="logo-shell">
+        <img
+          src="/assets/ipbaba-logo.png"
+          alt="IP BABA logo"
+          id="brandLogo"
+        >
+      </div>
+
+      <span class="brand-word">
+        IP BABA
+      </span>
+    </div>
+
+    <div class="title-wrap">
+      <h1 class="title">JARVIS</h1>
+      <p class="subtitle">
+        AI Assistant of IP BABA
+      </p>
+    </div>
+
+    <div class="secure">
+      Secure AI Connection
+    </div>
+
+  </header>
 
 
-<main
-  class="app"
-  id="jv"
->
+  <section class="workspace">
+
+    <!-- ================= VISUAL PANEL ================= -->
+
+    <section
+      class="visual-panel"
+      aria-label="JARVIS AI interface"
+    >
+
+      <div class="visual-head">
+        <span>AI Visual Core</span>
+        <strong id="visualState">
+          JARVIS READY
+        </strong>
+      </div>
+
+      <div class="robot-wrap">
+
+        <div
+          class="binary"
+          id="binaryMain"
+        ></div>
+
+        <canvas id="robotMain"></canvas>
+
+      </div>
+
+      <div class="state-line">
+
+        <span
+          id="mainDot"
+          class="status-dot ok"
+        ></span>
+
+        <span id="mainConn">
+          Ready
+        </span>
+
+      </div>
+
+      <div class="visual-actions">
+
+        <button
+          id="liveBtn"
+          class="btn primary live"
+          type="button"
+          aria-label="Start live voice"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect
+              x="9"
+              y="2"
+              width="6"
+              height="13"
+              rx="3"
+            ></rect>
+
+            <path
+              d="M5 10a7 7 0 0 0 14 0M12 17v4M8 21h8"
+            />
+
+          </svg>
+
+          Talk Live
+
+        </button>
 
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
+        <button
+          id="newBtn"
+          class="btn newchat"
+          type="button"
+        >
+          New Chat
+        </button>
 
-<header class="topbar">
 
-  <div class="logo-frame">
+        <button
+          id="clearBtn"
+          class="btn clear"
+          type="button"
+        >
+          Clear
+        </button>
 
-    <div class="logo-inner">
+      </div>
 
-      <img
-        class="brand-logo"
-        id="brandLogo"
-        src="/assets/ipbaba-logo.png"
-        alt="IP BABA logo"
-      >
+    </section>
+
+
+    <!-- ================= CHAT PANEL ================= -->
+
+    <section
+      class="chat-panel"
+      aria-label="JARVIS text chat"
+    >
+
+      <div class="chat-head">
+
+        <h2>
+          Conversation
+        </h2>
+
+        <span>
+          Text Chat
+        </span>
+
+      </div>
+
 
       <div
-        class="logo-fallback"
-        id="logoFallback"
-      >
-        IP BABA
-      </div>
+        id="quick"
+        class="quick"
+      ></div>
 
-    </div>
 
-  </div>
+      <section
+        id="chat"
+        class="chat"
+        aria-live="polite"
+      ></section>
 
 
-  <h1 class="brand-title">
-    JARVIS
-  </h1>
-
-
-  <p class="brand-subtitle">
-    AI Assistant of IP BABA
-  </p>
-
-</header>
-
-
-<!-- =====================================================
-     MAIN WORKSPACE
-===================================================== -->
-
-<section class="workspace">
-
-
-<!-- =====================================================
-     AI BOARD
-===================================================== -->
-
-<section
-  class="ai-panel"
-  aria-label="JARVIS AI visual"
->
-
-  <div class="ai-scene">
-
-
-    <!-- TOP BINARY -->
-
-    <div
-      class="binary-flow top"
-      aria-hidden="true"
-    >
-
-      <div class="binary-track">
-
-        <span>
-          010101011001010110101101001011010011
-        </span>
-
-        <span>
-          101101001010110010100110101101001010
-        </span>
-
-        <span>
-          010110101001011010010110101001011010
-        </span>
-
-        <span>
-          110010101101001010110101001101011001
-        </span>
-
-        <span>
-          001101011010010110100101101001011010
-        </span>
-
-        <span>
-          101001011010110010101101001011010101
-        </span>
-
-        <span>
-          010101101001011010101100101101001011
-        </span>
-
-        <span>
-          110101001011010010110101101001011010
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <!-- ROBOT -->
-
-    <div class="robot-wrap">
-
-      <canvas
-        id="robotCanvas"
-      ></canvas>
-
-    </div>
-
-
-    <!-- BOTTOM BINARY -->
-
-    <div
-      class="binary-flow bottom"
-      aria-hidden="true"
-    >
-
-      <div class="binary-track">
-
-        <span>
-          101001011010110010101101001011010101
-        </span>
-
-        <span>
-          010101101001011010101100101101001011
-        </span>
-
-        <span>
-          110101001011010010110101101001011010
-        </span>
-
-        <span>
-          001101011010010110100101101001011010
-        </span>
-
-        <span>
-          110010101101001010110101001101011001
-        </span>
-
-        <span>
-          010110101001011010010110101001011010
-        </span>
-
-        <span>
-          101101001010110010100110101101001010
-        </span>
-
-        <span>
-          010101011001010110101101001011010011
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <!-- STATUS -->
-
-    <div class="ai-status">
-
-      <span
-        class="status-dot"
-        id="aiStatusDot"
-      ></span>
-
-      <span id="aiStatusText">
-        Ready
-      </span>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     CHAT
-===================================================== -->
-
-<section class="chat-panel">
-
-
-<header class="chat-top">
-
-  <div class="chat-heading">
-
-    <strong>
-      Conversation
-    </strong>
-
-    <span id="connectionText">
-      JARVIS is ready
-    </span>
-
-  </div>
-
-
-  <div class="chat-tools">
-
-
-    <!-- NEW -->
-
-    <button
-      class="tool-btn"
-      id="newBtn"
-      type="button"
-      title="New chat"
-    >
-
-      <svg
-        class="btn-icon"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
+      <form
+        id="composer"
+        class="composer"
       >
 
-        <path
-          d="M12 5v14M5 12h14"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-        />
-
-      </svg>
-
-      New
-
-    </button>
+        <textarea
+          id="input"
+          rows="1"
+          placeholder="Ask JARVIS about AI, marketing, business, IP BABA, or request a professional prompt…"
+        ></textarea>
 
 
-    <!-- CLEAR -->
+        <!-- microphone -->
 
-    <button
-      class="tool-btn"
-      id="clearBtn"
-      type="button"
-      title="Clear conversation"
-    >
+        <button
+          id="micBtn"
+          class="btn icon"
+          type="button"
+          title="Voice typing"
+          aria-label="Voice typing"
+        >
 
-      <svg
-        class="btn-icon"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
 
-        <path
-          d="M6 7h12M9 7V5h6v2M8 10v8M12 10v8M16 10v8M5 7l1 13h12l1-13"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.7"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
+            <rect
+              x="9"
+              y="2"
+              width="6"
+              height="13"
+              rx="3"
+            ></rect>
 
-      </svg>
+            <path
+              d="M5 10a7 7 0 0 0 14 0M12 17v4M8 21h8"
+            />
 
-      Clear
+          </svg>
 
-    </button>
-
-
-    <!-- LIVE -->
-
-    <button
-      class="live-btn"
-      id="liveBtn"
-      type="button"
-      title="Start Live Voice"
-    >
-
-      <svg
-        class="btn-icon"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-
-        <rect
-          x="7"
-          y="3"
-          width="10"
-          height="13"
-          rx="5"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-        />
-
-        <path
-          d="M4 11a8 8 0 0 0 16 0M12 19v3M8 22h8"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-        />
-
-      </svg>
-
-      Talk Live
-
-    </button>
-
-  </div>
-
-</header>
+        </button>
 
 
-<!-- CHAT -->
+        <!-- send -->
 
-<div
-  class="chat"
-  id="chat"
-  aria-live="polite"
-></div>
+        <button
+          id="sendBtn"
+          class="btn primary icon send-btn"
+          type="submit"
+          title="Send"
+          aria-label="Send"
+        >
 
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
 
-<!-- COMPOSER -->
+            <path d="M22 2 11 13"></path>
+            <path d="m22 2-7 20-4-9-9-4Z"></path>
 
-<div class="composer-wrap">
+          </svg>
 
-  <p
-    class="composer-hint"
-    id="composerHint"
-  >
-    Ask about AI, digital marketing, business, websites, prompts, SEO, automation or IP BABA.
-  </p>
+        </button>
 
-
-  <form
-    class="composer"
-    id="composer"
-  >
-
-    <textarea
-      id="input"
-      rows="1"
-      placeholder="Ask JARVIS..."
-      aria-label="Message JARVIS"
-    ></textarea>
+      </form>
 
 
-    <!-- MICROPHONE -->
+      <footer class="footer">
+        IP BABA — Your Digital Growth Partner ·
+        Sargodha, Punjab, Pakistan
+      </footer>
 
-    <button
-      class="icon-btn"
-      id="micBtn"
-      type="button"
-      title="Voice typing"
-      aria-label="Voice typing"
-    >
+    </section>
 
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-
-        <rect
-          x="7"
-          y="3"
-          width="10"
-          height="13"
-          rx="5"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-        />
-
-        <path
-          d="M4 11a8 8 0 0 0 16 0M12 19v3M8 22h8"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-        />
-
-      </svg>
-
-    </button>
-
-
-    <!-- SEND -->
-
-    <button
-      class="icon-btn primary"
-      id="sendBtn"
-      type="submit"
-      title="Send"
-      aria-label="Send"
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-
-        <path
-          d="M4 4l16 8-16 8 3-8-3-8Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linejoin="round"
-        />
-
-        <path
-          d="M7 12h13"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-        />
-
-      </svg>
-
-    </button>
-
-  </form>
-
-</div>
-
-
-</section>
-
-</section>
+  </section>
 
 </main>
 
 
-<!-- =====================================================
-     LIVE VOICE
-===================================================== -->
+<!-- ================= LIVE VOICE ================= -->
 
 <div
-  class="live-overlay hidden"
   id="liveOverlay"
+  class="live-overlay hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="JARVIS Live Voice"
 >
 
-  <section
-    class="live-card"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="liveTitle"
-  >
+  <div class="live-card">
 
+    <div class="live-top">
 
-    <header class="live-header">
+      <h3>
+        JARVIS Live Voice
+      </h3>
 
-      <div>
+      <span>
+        Realtime AI Audio
+      </span>
 
-        <div
-          class="live-title"
-          id="liveTitle"
-        >
-          JARVIS Live Voice
-        </div>
-
-        <div
-          class="live-state"
-          id="liveState"
-        >
-          Connecting secure realtime voice…
-        </div>
-
-      </div>
-
-
-      <button
-        class="live-close"
-        id="liveClose"
-        type="button"
-        title="Close live voice"
-        aria-label="Close live voice"
-      >
-        ×
-      </button>
-
-    </header>
+    </div>
 
 
     <div class="live-stage">
 
-      <canvas
-        id="liveRobotCanvas"
-      ></canvas>
+      <canvas id="robotLive"></canvas>
+
+    </div>
+
+
+    <div class="live-info">
+
+      <div class="live-status">
+
+        <strong id="liveStatus">
+          CONNECTING
+        </strong>
+
+        <span id="liveInfo">
+          Starting secure realtime voice connection…
+        </span>
+
+      </div>
+
 
       <div
-        class="waveform"
-        id="waveform"
-        aria-hidden="true"
+        id="liveError"
+        class="error-box"
       ></div>
 
+
+      <div class="live-actions">
+
+        <button
+          id="endLive"
+          class="btn danger"
+          type="button"
+        >
+          End Conversation
+        </button>
+
+      </div>
+
     </div>
 
-
-    <div class="live-footer">
-
-      <button
-        class="end-live"
-        id="endLive"
-        type="button"
-      >
-        End Conversation
-      </button>
-
-    </div>
-
-  </section>
+  </div>
 
 </div>
 
 
 <script>
-
 (() => {
 
-'use strict';
+  'use strict';
 
 
-/* =====================================================
-   BASIC CONFIG
-===================================================== */
+  /* ======================================================
+     CORE CONFIG
+  ====================================================== */
 
-const API_BASE_URL =
-  window.JARVIS_API_BASE_URL || '';
+  const API_BASE_URL =
+    window.JARVIS_API_BASE_URL || '';
+
+  const LIVE_MODEL_FALLBACK =
+    'gemini-3.8-live';
+
+  const SYSTEM_INSTRUCTION =
+    'You are JARVIS, AI Assistant of IP BABA. ' +
+    'Speak naturally, briefly and helpfully. ' +
+    'Reply in the user language. ' +
+    'Help with AI, digital marketing, technology, business, ' +
+    'IP BABA services and professional prompt generation. ' +
+    'Never invent prices, clients, awards, certifications, ' +
+    'partnerships, revenue, statistics, guarantees or company facts. ' +
+    'If something is unknown, say so clearly.';
 
 
-const $ =
-  id =>
+  const $ = id =>
     document.getElementById(id);
 
 
-const els = {
+  const els = {
 
-  logo:
-    $('brandLogo'),
+    logo:$('brandLogo'),
 
-  logoFallback:
-    $('logoFallback'),
+    mainCanvas:$('robotMain'),
+    liveCanvas:$('robotLive'),
 
-  chat:
-    $('chat'),
+    binaryMain:$('binaryMain'),
 
-  composer:
-    $('composer'),
+    visualState:$('visualState'),
 
-  input:
-    $('input'),
+    mainDot:$('mainDot'),
+    mainConn:$('mainConn'),
 
-  mic:
-    $('micBtn'),
+    live:$('liveBtn'),
+    newBtn:$('newBtn'),
+    clear:$('clearBtn'),
 
-  send:
-    $('sendBtn'),
+    quick:$('quick'),
+    chat:$('chat'),
 
-  newBtn:
-    $('newBtn'),
+    form:$('composer'),
+    input:$('input'),
+    mic:$('micBtn'),
+    send:$('sendBtn'),
 
-  clearBtn:
-    $('clearBtn'),
+    overlay:$('liveOverlay'),
+    liveStatus:$('liveStatus'),
+    liveInfo:$('liveInfo'),
+    liveError:$('liveError'),
 
-  liveBtn:
-    $('liveBtn'),
+    endLive:$('endLive')
 
-  liveOverlay:
-    $('liveOverlay'),
+  };
 
-  liveClose:
-    $('liveClose'),
 
-  endLive:
-    $('endLive'),
+  const state = {
 
-  liveState:
-    $('liveState'),
+    messages:[],
 
-  connectionText:
-    $('connectionText'),
+    coreMode:'idle',
 
-  aiStatusDot:
-    $('aiStatusDot'),
+    recognition:null,
 
-  aiStatusText:
-    $('aiStatusText'),
+    quickVisible:true,
 
-  composerHint:
-    $('composerHint'),
+    intentionalLiveClose:false
 
-  robotCanvas:
-    $('robotCanvas'),
+  };
 
-  liveRobotCanvas:
-    $('liveRobotCanvas'),
 
-  waveform:
-    $('waveform')
+  const QUICK = [
 
-};
+    [
+      'Grow My Business',
+      'Help me understand how I can grow my business digitally.'
+    ],
 
+    [
+      'Meta Ads',
+      'Explain how Meta Ads could help my business and what I should prepare.'
+    ],
 
-const state = {
+    [
+      'Build a Website',
+      'I need a professional website. Guide me on what I need and what IP BABA can provide.'
+    ],
 
-  messages:[],
+    [
+      'AI Automation',
+      'How can AI automation improve my business?'
+    ],
 
-  coreMode:
-    'idle',
+    [
+      'Improve SEO',
+      'My website is not getting enough organic traffic. What should I do?'
+    ],
 
-  recognition:
-    null
+    [
+      'Image Prompt',
+      'Generate a professional AI image prompt. Ask me the required questions first.'
+    ],
 
-};
+    [
+      'Video Prompt',
+      'Generate a professional AI video prompt. Ask me the required questions first.'
+    ],
 
+    [
+      'Ad Prompt',
+      'Create a professional marketing advertisement prompt. Ask me the business, audience, platform, objective and offer first.'
+    ],
 
-/* =====================================================
-   VIEWPORT
-===================================================== */
+    [
+      'Contact IP BABA',
+      'Tell me how I can contact IP BABA.'
+    ]
 
-function updateViewportHeight(){
+  ];
 
-  const h =
-    window.visualViewport
-      ? window.visualViewport.height
-      : window.innerHeight;
 
-  document.documentElement
-    .style
-    .setProperty(
-      '--appH',
-      `${Math.max(280,h)}px`
-    );
+  /* ======================================================
+     TEXT CHAT
+  ====================================================== */
 
-}
+  function escapeHtml(value){
 
+    return String(value).replace(
+      /[&<>"']/g,
 
-updateViewportHeight();
-
-
-window.addEventListener(
-  'resize',
-  updateViewportHeight,
-  {passive:true}
-);
-
-
-window.visualViewport
-  ?.addEventListener(
-    'resize',
-    updateViewportHeight,
-    {passive:true}
-  );
-
-
-/* =====================================================
-   LOGO FALLBACK
-===================================================== */
-
-els.logo.addEventListener(
-  'error',
-  () => {
-
-    els.logo.classList.add(
-      'hidden'
-    );
-
-    els.logoFallback.style.display =
-      'block';
-
-  }
-);
-
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-function setMode(
-  mode,
-  label
-){
-
-  state.coreMode =
-    mode;
-
-
-  const text =
-    label ||
-    mode.toUpperCase();
-
-
-  els.aiStatusText.textContent =
-    text;
-
-
-  els.connectionText.textContent =
-
-    mode === 'idle'
-      ? 'JARVIS is ready'
-
-      :
-
-    mode === 'thinking'
-      ? 'Processing your request'
-
-      :
-
-    mode === 'listening'
-      ? 'Listening for your voice'
-
-      :
-
-    mode === 'live'
-      ? 'Live Voice connected'
-
-      :
-
-    mode === 'speaking'
-      ? 'JARVIS is speaking'
-
-      :
-
-    mode === 'error'
-      ? 'Connection error'
-
-      :
-
-    'JARVIS is working';
-
-
-  els.aiStatusDot.className =
-    'status-dot';
-
-
-  if(
-    mode === 'error'
-  ){
-
-    els.aiStatusDot.classList.add(
-      'error'
-    );
-
-  }
-
-  else if(
-    mode !== 'idle'
-  ){
-
-    els.aiStatusDot.classList.add(
-      'busy'
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   ESCAPE
-===================================================== */
-
-function escapeHtml(
-  value
-){
-
-  return String(
-    value
-  ).replace(
-    /[&<>'"]/g,
-    char =>
-      ({
-
+      c => ({
         '&':'&amp;',
         '<':'&lt;',
         '>':'&gt;',
-
-        "'":
-          '&#39;',
-
-        '"':
-          '&quot;'
-
-      }[char])
-  );
-
-}
-
-
-/* =====================================================
-   MARKDOWN
-===================================================== */
-
-function renderMarkdown(
-  source
-){
-
-  let html =
-    escapeHtml(
-      source
+        '"':'&quot;',
+        "'":'&#39;'
+      }[c])
     );
-
-
-  const blocks =
-    [];
-
-
-  html =
-    html.replace(
-
-      /```(?:\w+)?\n?([\s\S]*?)```/g,
-
-      (
-        _,
-        code
-      ) => {
-
-        const index =
-          blocks.length;
-
-
-        blocks.push(
-          `<pre>${
-            code.trim()
-          }</pre>`
-        );
-
-
-        return (
-          `@@BLOCK${index}@@`
-        );
-
-      }
-
-    );
-
-
-  html =
-    html
-
-      .replace(
-        /^### (.+)$/gm,
-        '<h3>$1</h3>'
-      )
-
-      .replace(
-        /\*\*(.+?)\*\*/g,
-        '<strong>$1</strong>'
-      )
-
-      .replace(
-        /`([^`]+)`/g,
-        '<code>$1</code>'
-      )
-
-      .replace(
-        /^(?:[-*]) (.+)$/gm,
-        '<li>$1</li>'
-      )
-
-      .replace(
-        /(<li>.*<\/li>)/gs,
-        '<ul>$1</ul>'
-      )
-
-      .replace(
-        /\n{2,}/g,
-        '</p><p>'
-      )
-
-      .replace(
-        /\n/g,
-        '<br>'
-      );
-
-
-  html =
-    `<p>${html}</p>`;
-
-
-  html =
-    html.replace(
-      /@@BLOCK(\d+)@@/g,
-      (
-        _,
-        index
-      ) =>
-        blocks[
-          Number(index)
-        ]
-    );
-
-
-  return html;
-
-}
-
-
-/* =====================================================
-   COPY
-===================================================== */
-
-async function copyText(
-  text
-){
-
-  try{
-
-    await navigator
-      .clipboard
-      .writeText(text);
-
-    return true;
-
-  }catch(_){
-
-    const ta =
-      document.createElement(
-        'textarea'
-      );
-
-
-    ta.value =
-      text;
-
-
-    ta.style.position =
-      'fixed';
-
-
-    ta.style.opacity =
-      '0';
-
-
-    document.body.appendChild(
-      ta
-    );
-
-
-    ta.select();
-
-
-    let ok =
-      false;
-
-
-    try{
-
-      ok =
-        document.execCommand(
-          'copy'
-        );
-
-    }catch(_){
-
-      ok =
-        false;
-
-    }
-
-
-    ta.remove();
-
-
-    return ok;
 
   }
 
-}
+
+  function renderMarkdown(src){
+
+    let s =
+      escapeHtml(src);
+
+    const blocks=[];
 
 
-/* =====================================================
-   CHAT BUBBLE
-===================================================== */
+    s=s.replace(
+      /```(?:\w+)?\n?([\s\S]*?)```/g,
 
-function addBubble(
-  role,
-  text,
-  actions = true
-){
+      (_,code)=>{
 
-  const box =
-    document.createElement(
-      'div'
-    );
+        const i=blocks.length;
 
-
-  box.className =
-    `bubble ${
-      role === 'user'
-        ? 'user'
-        : 'ai'
-    }`;
-
-
-  box.innerHTML =
-    role === 'user'
-
-      ?
-
-        escapeHtml(
-          text
-        )
-
-      :
-
-        renderMarkdown(
-          text
+        blocks.push(
+          '<pre>' +
+          code.trim() +
+          '</pre>'
         );
 
-
-  if(
-    role === 'assistant' &&
-    actions
-  ){
-
-    const row =
-      document.createElement(
-        'div'
-      );
-
-
-    row.className =
-      'bubble-actions';
-
-
-    const copy =
-      document.createElement(
-        'button'
-      );
-
-
-    copy.className =
-      'mini-btn';
-
-
-    copy.type =
-      'button';
-
-
-    copy.textContent =
-      'Copy';
-
-
-    copy.addEventListener(
-      'click',
-      async () => {
-
-        const old =
-          copy.textContent;
-
-
-        const ok =
-          await copyText(
-            text
-          );
-
-
-        copy.textContent =
-          ok
-            ? 'Copied'
-            : 'Copy failed';
-
-
-        setTimeout(
-          () => {
-
-            copy.textContent =
-              old;
-
-          },
-          1200
-        );
+        return '@@CODE'+i+'@@';
 
       }
     );
 
 
-    row.appendChild(
-      copy
+    s=s.replace(
+      /^### (.+)$/gm,
+      '<h3>$1</h3>'
     );
 
 
-    const clean =
-      text
-        .replace(
-          /\[\[CTA\]\]/g,
-          ''
-        )
-        .trim();
+    s=s.replace(
+      /\*\*(.+?)\*\*/g,
+      '<strong>$1</strong>'
+    );
 
 
-    const usefulCTA =
-      text.includes(
-        '[[CTA]]'
-      ) ||
+    s=s.replace(
+      /`([^`]+)`/g,
+      '<code>$1</code>'
+    );
 
-      /IP BABA|contact|quote|pricing|service|website|marketing|branding|seo|ads|automation|chatbot|prompt|design|business/i
-        .test(
-          clean
-        );
+
+    s=s.replace(
+      /^(?:[-*]) (.+)$/gm,
+      '<li>$1</li>'
+    );
+
+
+    s=s.replace(
+      /(<li>.*<\/li>)/gs,
+      '<ul>$1</ul>'
+    );
+
+
+    s=s.replace(
+      /\n{2,}/g,
+      '</p><p>'
+    );
+
+
+    s=s.replace(
+      /\n/g,
+      '<br>'
+    );
+
+
+    s='<p>'+s+'</p>';
+
+
+    s=s.replace(
+      /@@CODE(\d+)@@/g,
+      (_,i)=>blocks[Number(i)]
+    );
+
+
+    return s;
+
+  }
+
+
+  function addBubble(
+    role,
+    text,
+    actions=true
+  ){
+
+    const box =
+      document.createElement('div');
+
+
+    box.className =
+      'bubble ' +
+      (role==='user'
+        ? 'user'
+        : 'ai');
+
+
+    box.innerHTML =
+      role==='user'
+        ? escapeHtml(text)
+        : renderMarkdown(text);
 
 
     if(
-      usefulCTA
+      role==='assistant' &&
+      actions
     ){
 
-      const contact =
-        document.createElement(
-          'button'
-        );
+      const act =
+        document.createElement('div');
+
+      act.className='actions';
 
 
-      contact.className =
-        'mini-btn cta';
+      const copy =
+        document.createElement('button');
+
+      copy.className='mini';
+
+      copy.type='button';
+
+      copy.textContent='Copy';
+
+      copy.onclick=() =>
+        navigator.clipboard
+          ?.writeText(text)
+          .catch(()=>{});
 
 
-      contact.type =
-        'button';
+      act.append(copy);
 
 
-      contact.textContent =
-        'Contact IP BABA';
+      const clean =
+        text
+          .replace(/\[\[CTA\]\]/g,'')
+          .trim();
 
 
-      contact.addEventListener(
-        'click',
-        () => {
+      const useful =
+        text.includes('[[CTA]]') ||
+        /IP BABA|contact|quote|pricing|service|website|marketing|branding|seo|ads|automation|chatbot|prompt|design|business/i
+          .test(clean);
 
+
+      if(useful){
+
+        const c =
+          document.createElement('button');
+
+        c.className='mini cta';
+
+        c.type='button';
+
+        c.textContent=
+          'Contact IP BABA';
+
+        c.onclick=() =>
           window.open(
             'https://wa.me/923443225533',
             '_blank',
             'noopener'
           );
 
-        }
-      );
+        act.append(c);
+
+      }
 
 
-      row.appendChild(
-        contact
-      );
+      box.appendChild(act);
 
     }
 
 
-    box.appendChild(
-      row
-    );
+    els.chat.appendChild(box);
+
+    els.chat.scrollTop =
+      els.chat.scrollHeight;
+
+
+    return box;
 
   }
 
 
-  els.chat.appendChild(
-    box
-  );
+  function welcome(){
 
-
-  requestAnimationFrame(
-    () => {
-
-      els.chat.scrollTop =
-        els.chat.scrollHeight;
-
-    }
-  );
-
-
-  return box;
-
-}
-
-
-/* =====================================================
-   WELCOME
-===================================================== */
-
-const suggestionData = [
-
-  [
-    'Grow my business',
-    'How can I grow my business digitally?'
-  ],
-
-  [
-    'Create a prompt',
-    'I need a professional AI prompt. Ask me the required questions first.'
-  ],
-
-  [
-    'Improve SEO',
-    'My website needs a better SEO strategy. Guide me.'
-  ]
-
-];
-
-
-function welcome(){
-
-  if(
-    els.chat.children.length
-  ){
-
-    return;
-
-  }
-
-
-  const card =
-    document.createElement(
-      'div'
-    );
-
-
-  card.className =
-    'welcome-card';
-
-
-  const title =
-    document.createElement(
-      'div'
-    );
-
-
-  title.className =
-    'welcome-title';
-
-
-  title.textContent =
-    'Welcome to JARVIS';
-
-
-  const text =
-    document.createElement(
-      'div'
-    );
-
-
-  text.className =
-    'welcome-text';
-
-
-  text.textContent =
-    'Ask about AI, digital marketing, business, websites, SEO, automation, IP BABA services, or professional prompts.';
-
-
-  const suggestions =
-    document.createElement(
-      'div'
-    );
-
-
-  suggestions.className =
-    'suggestions';
-
-
-  suggestionData.forEach(
-    ([label,value]) => {
-
-      const button =
-        document.createElement(
-          'button'
-        );
-
-
-      button.className =
-        'suggestion';
-
-
-      button.type =
-        'button';
-
-
-      button.textContent =
-        label;
-
-
-      button.addEventListener(
-        'click',
-        () => {
-
-          els.input.value =
-            value;
-
-          autoSize();
-
-          sendText();
-
-        }
-      );
-
-
-      suggestions.appendChild(
-        button
-      );
-
-    }
-  );
-
-
-  card.append(
-    title,
-    text,
-    suggestions
-  );
-
-
-  els.chat.appendChild(
-    card
-  );
-
-}
-
-
-welcome();
-
-
-/* =====================================================
-   TEXTAREA
-===================================================== */
-
-function autoSize(){
-
-  els.input.style.height =
-    'auto';
-
-
-  els.input.style.height =
-    `${
-      Math.min(
-        92,
-        els.input.scrollHeight
-      )
-    }px`;
-
-}
-
-
-els.input.addEventListener(
-  'input',
-  autoSize
-);
-
-
-/* =====================================================
-   BUSY
-===================================================== */
-
-function setBusy(
-  loading
-){
-
-  els.send.disabled =
-    loading;
-
-
-  if(
-    loading
-  ){
-
-    setMode(
-      'thinking',
-      'Processing…'
-    );
-
-
-    els.composerHint.textContent =
-      'JARVIS is preparing your response…';
-
-  }
-
-  else{
-
-    if(
-      state.coreMode ===
-      'thinking'
-    ){
-
-      setMode(
-        'idle',
-        'Ready'
-      );
-
-    }
-
-
-    els.composerHint.textContent =
-      'Ask about AI, digital marketing, business, websites, prompts, SEO, automation or IP BABA.';
-
-  }
-
-}
-
-
-/* =====================================================
-   CHAT SEND
-===================================================== */
-
-async function sendText(){
-
-  const text =
-    els.input.value.trim();
-
-
-  if(
-    !text ||
-    els.send.disabled
-  ){
-
-    return;
-
-  }
-
-
-  const welcomeCard =
-    els.chat.querySelector(
-      '.welcome-card'
-    );
-
-
-  welcomeCard?.remove();
-
-
-  els.input.value =
-    '';
-
-
-  autoSize();
-
-
-  addBubble(
-    'user',
-    text,
-    false
-  );
-
-
-  state.messages.push({
-    role:'user',
-    text
-  });
-
-
-  setBusy(
-    true
-  );
-
-
-  const typing =
-    addBubble(
-      'assistant',
-      'Thinking…',
-      false
-    );
-
-
-  typing.classList.add(
-    'typing'
-  );
-
-
-  try{
-
-    const response =
-      await fetch(
-        API_BASE_URL +
-        '/api/chat',
-        {
-
-          method:
-            'POST',
-
-          headers:{
-            'Content-Type':
-              'application/json'
-          },
-
-          body:
-            JSON.stringify({
-              messages:
-                state.messages
-                  .slice(-24)
-            })
-
-        }
-      );
-
-
-    const data =
-      await response
-        .json()
-        .catch(
-          () => ({})
-        );
-
-
-    if(
-      !response.ok
-    ){
-
-      throw new Error(
-        data.error ||
-        'backend_error'
-      );
-
-    }
-
-
-    typing.remove();
-
-
-    const reply =
-      typeof data.reply ===
-      'string' &&
-
-      data.reply.trim()
-
-        ?
-
-        data.reply
-
-        :
-
-        'JARVIS received the request but did not return a usable response.';
-
-
-    state.messages.push({
-      role:'assistant',
-      text:reply
-    });
+    if(els.chat.children.length)
+      return;
 
 
     addBubble(
       'assistant',
-      reply,
-      true
-    );
 
+      'Hello! I’m JARVIS — the AI Assistant of IP BABA.\n\n' +
 
-  }catch(error){
+      'I can help with AI, digital marketing, websites, ' +
+      'business problems, IP BABA services, and professional ' +
+      'image/video/marketing prompts.'
 
-    console.error(
-      'JARVIS chat error:',
-      error
-    );
-
-
-    typing.remove();
-
-
-    addBubble(
-      'assistant',
-      'JARVIS backend سے connection نہیں بن سکا۔ Vercel deployment، GEMINI_API_KEY اور /api/chat endpoint چیک کریں۔'
-    );
-
-
-    setMode(
-      'error',
-      'Connection error'
-    );
-
-
-  }finally{
-
-    setBusy(
-      false
     );
 
   }
 
-}
+
+  function setMode(
+    mode,
+    label
+  ){
+
+    state.coreMode=mode;
+
+    els.visualState.textContent =
+      label || mode.toUpperCase();
 
 
-/* =====================================================
-   FORM EVENTS
-===================================================== */
+    els.mainDot.className =
+      'status-dot ' +
+      (
+        mode==='error'
+          ? 'err'
+          : mode==='idle'
+            ? 'ok'
+            : 'busy'
+      );
 
-els.composer.addEventListener(
-  'submit',
-  event => {
 
-    event.preventDefault();
-
-    sendText();
+    els.mainConn.textContent =
+      mode==='idle'
+        ? 'Ready'
+        : mode==='live'
+          ? 'Live Voice'
+          : mode[0].toUpperCase() +
+            mode.slice(1);
 
   }
-);
 
 
-els.input.addEventListener(
-  'keydown',
-  event => {
+  function hideQuick(){
 
-    if(
-      event.key === 'Enter' &&
-      !event.shiftKey
-    ){
+    if(!state.quickVisible)
+      return;
 
-      event.preventDefault();
+    state.quickVisible=false;
 
-      sendText();
+    els.quick.classList.add(
+      'hidden'
+    );
+
+  }
+
+
+  QUICK.forEach(
+    ([label,text]) => {
+
+      const b =
+        document.createElement('button');
+
+      b.type='button';
+
+      b.textContent=label;
+
+      b.onclick=()=>{
+
+        hideQuick();
+
+        els.input.value=text;
+
+        autoSize();
+
+        sendText();
+
+      };
+
+      els.quick.appendChild(b);
 
     }
-
-  }
-);
-
-
-/* =====================================================
-   RESET
-===================================================== */
-
-function resetChat(){
-
-  state.messages =
-    [];
-
-
-  els.chat.innerHTML =
-    '';
+  );
 
 
   welcome();
 
 
-  setMode(
-    'idle',
-    'Ready'
+  async function sendText(){
+
+    const text =
+      els.input.value.trim();
+
+
+    if(
+      !text ||
+      els.send.disabled
+    )
+      return;
+
+
+    hideQuick();
+
+    els.input.value='';
+
+    autoSize();
+
+
+    addBubble(
+      'user',
+      text,
+      false
+    );
+
+
+    state.messages.push({
+      role:'user',
+      text
+    });
+
+
+    els.send.disabled=true;
+
+    setMode(
+      'thinking',
+      'PROCESSING…'
+    );
+
+
+    const typing =
+      addBubble(
+        'assistant',
+        'Thinking…',
+        false
+      );
+
+
+    typing.classList.add(
+      'typing'
+    );
+
+
+    try{
+
+      const controller =
+        new AbortController();
+
+
+      const timer =
+        setTimeout(
+          () => controller.abort(),
+          45000
+        );
+
+
+      const r =
+        await fetch(
+          API_BASE_URL +
+          '/api/chat',
+
+          {
+            method:'POST',
+
+            headers:{
+              'Content-Type':
+                'application/json'
+            },
+
+            body:JSON.stringify({
+              messages:
+                state.messages.slice(-24)
+            }),
+
+            signal:controller.signal
+          }
+        );
+
+
+      clearTimeout(timer);
+
+
+      const d =
+        await r.json().catch(
+          () => ({})
+        );
+
+
+      if(!r.ok)
+        throw new Error(
+          d.error ||
+          'backend_error'
+        );
+
+
+      typing.remove();
+
+
+      const reply =
+        String(d.reply || '');
+
+
+      state.messages.push({
+        role:'assistant',
+        text:reply
+      });
+
+
+      addBubble(
+        'assistant',
+        reply,
+        true
+      );
+
+
+      setMode(
+        'idle',
+        'JARVIS READY'
+      );
+
+    }
+    catch(e){
+
+      typing.remove();
+
+      console.error(
+        'Text chat error:',
+        e
+      );
+
+
+      addBubble(
+        'assistant',
+        'JARVIS backend سے connect نہیں ہو سکا۔ ' +
+        'براہِ کرم Vercel deployment اور Environment Variables چیک کریں۔'
+      );
+
+
+      setMode(
+        'error',
+        'CONNECTION ERROR'
+      );
+
+    }
+    finally{
+
+      els.send.disabled=false;
+
+    }
+
+  }
+
+
+  els.form.addEventListener(
+    'submit',
+    e=>{
+      e.preventDefault();
+      sendText();
+    }
   );
 
 
-  els.input.focus({
-    preventScroll:true
-  });
+  els.input.addEventListener(
+    'keydown',
+    e=>{
 
-}
+      if(
+        e.key==='Enter' &&
+        !e.shiftKey
+      ){
 
+        e.preventDefault();
 
-els.newBtn.addEventListener(
-  'click',
-  resetChat
-);
+        sendText();
 
+      }
 
-els.clearBtn.addEventListener(
-  'click',
-  resetChat
-);
-
-
-/* =====================================================
-   BROWSER VOICE TYPING
-===================================================== */
-
-const SpeechRecognition =
-  window.SpeechRecognition ||
-  window.webkitSpeechRecognition;
+    }
+  );
 
 
-if(
-  SpeechRecognition
-){
+  function autoSize(){
 
-  const recognition =
-    new SpeechRecognition();
+    els.input.style.height='auto';
 
+    els.input.style.height =
+      Math.min(
+        128,
+        els.input.scrollHeight
+      )+'px';
 
-  recognition.lang =
-    navigator.language ||
-    'en-US';
-
-
-  recognition.interimResults =
-    true;
+  }
 
 
-  recognition.continuous =
-    false;
+  els.input.addEventListener(
+    'input',
+    autoSize
+  );
 
 
-  recognition.onstart =
-    () => {
+  function reset(){
 
+    state.messages=[];
+
+    els.chat.innerHTML='';
+
+    state.quickVisible=true;
+
+    els.quick.classList.remove(
+      'hidden'
+    );
+
+    welcome();
+
+    setMode(
+      'idle',
+      'JARVIS READY'
+    );
+
+  }
+
+
+  els.newBtn.onclick=reset;
+
+  els.clear.onclick=reset;
+
+
+  /* ======================================================
+     VOICE TYPING
+  ====================================================== */
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+  if(SpeechRecognition){
+
+    const r =
+      new SpeechRecognition();
+
+
+    r.lang =
+      navigator.language ||
+      'en-US';
+
+
+    r.interimResults=true;
+
+    r.continuous=false;
+
+
+    r.onstart=() =>
       setMode(
         'listening',
-        'Listening…'
+        'LISTENING…'
       );
 
-    };
 
+    r.onresult=e=>{
 
-  recognition.onresult =
-    event => {
-
-      let transcript =
-        '';
+      let text='';
 
 
       for(
-        let i =
-          event.resultIndex;
-
-        i <
-        event.results.length;
-
+        let i=e.resultIndex;
+        i<e.results.length;
         i++
       ){
 
-        transcript +=
-          event.results[i][0]
+        text +=
+          e.results[i][0]
             .transcript;
 
       }
 
 
-      els.input.value =
-        transcript;
-
+      els.input.value=text;
 
       autoSize();
 
     };
 
 
-  recognition.onerror =
-    error => {
+    r.onerror=e=>{
 
-      console.error(
-        'Speech recognition error:',
-        error
+      console.warn(
+        'Voice typing error:',
+        e.error
       );
-
 
       setMode(
         'error',
-        'Mic error'
+        'MIC ERROR'
       );
 
     };
 
 
-  recognition.onend =
-    () => {
+    r.onend=()=>{
 
       if(
-        state.coreMode ===
+        state.coreMode===
         'listening'
       ){
 
         setMode(
           'idle',
-          'Ready'
+          'JARVIS READY'
         );
 
       }
@@ -3963,787 +2004,901 @@ if(
     };
 
 
-  state.recognition =
-    recognition;
+    state.recognition=r;
 
 
-  els.mic.addEventListener(
-    'click',
-    () => {
+    els.mic.onclick=()=>{
 
       try{
-
-        recognition.start();
-
-      }catch(_){
-
-        /* Already running. */
-
+        r.start();
       }
+      catch(_){}
 
-    }
-  );
+    };
 
-}
-else{
+  }
+  else{
 
-  els.mic.title =
-    'Voice typing is not supported';
+    els.mic.title =
+      'Voice typing is not supported';
 
 
-  els.mic.addEventListener(
-    'click',
-    () => {
-
+    els.mic.onclick=() =>
       alert(
-        'Voice typing is not supported in this browser. Use a current Chrome or Chromium browser.'
-      );
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   ROBOT RENDERER
-===================================================== */
-
-class RobotRenderer{
-
-  constructor(
-    canvas
-  ){
-
-    this.canvas =
-      canvas;
-
-
-    this.ctx =
-      canvas.getContext(
-        '2d'
-      );
-
-
-    this.width =
-      0;
-
-
-    this.height =
-      0;
-
-
-    this.dpr =
-      1;
-
-
-    this.particles =
-      [];
-
-
-    this.resize =
-      this.resize.bind(
-        this
-      );
-
-
-    this.draw =
-      this.draw.bind(
-        this
-      );
-
-
-    window.addEventListener(
-      'resize',
-      this.resize,
-      {
-        passive:true
-      }
-    );
-
-
-    this.resize();
-
-
-    requestAnimationFrame(
-      this.draw
-    );
-
-  }
-
-
-  resize(){
-
-    if(
-      !this.canvas
-    ){
-
-      return;
-
-    }
-
-
-    const rect =
-      this.canvas
-        .getBoundingClientRect();
-
-
-    this.dpr =
-      Math.min(
-        window.devicePixelRatio ||
-        1,
-        2
-      );
-
-
-    this.width =
-      Math.max(
-        1,
-        Math.floor(
-          rect.width *
-          this.dpr
-        )
-      );
-
-
-    this.height =
-      Math.max(
-        1,
-        Math.floor(
-          rect.height *
-          this.dpr
-        )
-      );
-
-
-    this.canvas.width =
-      this.width;
-
-
-    this.canvas.height =
-      this.height;
-
-
-    this.particles =
-      Array.from(
-        {
-          length:70
-        },
-        () => ({
-
-          a:
-            Math.random() *
-            Math.PI *
-            2,
-
-          r:
-            .42 +
-            Math.random() *
-            .28,
-
-          z:
-            .2 +
-            Math.random() *
-            .8,
-
-          speed:
-            .0013 +
-            Math.random() *
-            .0035,
-
-          phase:
-            Math.random() *
-            Math.PI *
-            2
-
-        })
+        'Voice typing is not supported in this browser. ' +
+        'Please use current Chrome/Chromium or type your message.'
       );
 
   }
 
 
-  draw(
-    timeMs
+  /* ======================================================
+     BINARY STREAM
+  ====================================================== */
+
+  function seedBinary(
+    container,
+    count
   ){
 
-    if(
-      !this.ctx ||
-      !this.width ||
-      !this.height
-    ){
+    const words=[
+      '010101',
+      '101001',
+      '001101',
+      '110100',
+      'JARVIS',
+      'AI_CORE',
+      'IP_BABA',
+      'PROMPT',
+      'VOICE'
+    ];
 
-      requestAnimationFrame(
-        this.draw
-      );
-
-      return;
-
-    }
-
-
-    const t =
-      timeMs *
-      .001;
-
-
-    const ctx =
-      this.ctx;
-
-
-    const W =
-      this.width;
-
-
-    const H =
-      this.height;
-
-
-    const cx =
-      W / 2;
-
-
-    const cy =
-      H / 2;
-
-
-    const unit =
-      Math.min(
-        W,
-        H
-      );
-
-
-    const mode =
-      state.coreMode;
-
-
-    const activity =
-
-      mode ===
-      'thinking'
-
-        ?
-
-        1.9
-
-        :
-
-      mode === 'live' ||
-      mode === 'speaking'
-
-        ?
-
-        2.8
-
-        :
-
-        1;
-
-
-    ctx.clearRect(
-      0,
-      0,
-      W,
-      H
-    );
-
-
-    ctx.save();
-
-
-    ctx.translate(
-      cx,
-      cy
-    );
-
-
-    ctx.globalCompositeOperation =
-      'lighter';
-
-
-    /* OUTER HUD */
 
     for(
       let i=0;
-      i<4;
+      i<count;
       i++
     ){
 
-      const radius =
-        unit *
-        (
-          .235 +
-          i *
-          .075
-        );
+      const s =
+        document.createElement('span');
 
 
-      const rotation =
-        t *
-        (
-          .06 +
-          i *
-          .025
-        ) *
-        (
-          i % 2
-            ? -1
-            : 1
-        );
+      s.textContent =
+        words[i % words.length] +
+        ' ' +
+        Math.random()
+          .toString(2)
+          .slice(2,10);
 
 
-      ctx.save();
-
-
-      ctx.rotate(
-        rotation
+      s.style.setProperty(
+        '--x',
+        (4+Math.random()*88)+'%'
       );
 
 
+      s.style.setProperty(
+        '--rot',
+        (Math.random()*28-14)+'deg'
+      );
+
+
+      s.style.setProperty(
+        '--dur',
+        (8+Math.random()*9)+'s'
+      );
+
+
+      s.style.setProperty(
+        '--delay',
+        (-Math.random()*14)+'s'
+      );
+
+
+      container.appendChild(s);
+
+    }
+
+  }
+
+
+  seedBinary(
+    els.binaryMain,
+    28
+  );
+
+
+  /* ======================================================
+     SAME ROBOT RENDERER
+     Used by TEXT and LIVE Voice
+  ====================================================== */
+
+  function RobotRenderer(
+    canvas,
+    getMode
+  ){
+
+    const ctx =
+      canvas.getContext('2d');
+
+
+    let w=0;
+    let h=0;
+    let dpr=1;
+
+
+    const sparks =
+      Array.from(
+        {length:42},
+        () => ({
+          a:Math.random() *
+            Math.PI*2,
+
+          r:.46 +
+            Math.random()*.36,
+
+          s:.001 +
+            .003*Math.random(),
+
+          p:Math.random()*6.28
+        })
+      );
+
+
+    function resize(){
+
+      const rect =
+        canvas.getBoundingClientRect();
+
+
+      dpr =
+        Math.min(
+          window.devicePixelRatio || 1,
+          2
+        );
+
+
+      w =
+        Math.max(
+          1,
+          Math.floor(
+            rect.width*dpr
+          )
+        );
+
+
+      h =
+        Math.max(
+          1,
+          Math.floor(
+            rect.height*dpr
+          )
+        );
+
+
+      canvas.width=w;
+
+      canvas.height=h;
+
+    }
+
+
+    function pathRoundRect(
+      x,
+      y,
+      ww,
+      hh,
+      r
+    ){
+
       ctx.beginPath();
 
+      ctx.roundRect(
+        x,
+        y,
+        ww,
+        hh,
+        r
+      );
+
+    }
+
+
+    function drawCircuit(
+      cx,
+      cy,
+      scale,
+      time,
+      mode
+    ){
+
+      ctx.save();
+
+      ctx.translate(
+        cx,
+        cy
+      );
+
+      ctx.scale(
+        scale,
+        scale
+      );
+
+      ctx.globalCompositeOperation =
+        'source-over';
+
+
+      /* glow */
+
+      const glow =
+        ctx.createRadialGradient(
+          0,0,
+          12,
+          0,0,
+          230
+        );
+
+
+      glow.addColorStop(
+        0,
+        'rgba(0,229,255,.18)'
+      );
+
+
+      glow.addColorStop(
+        1,
+        'rgba(0,229,255,0)'
+      );
+
+
+      ctx.fillStyle=glow;
+
+      ctx.beginPath();
 
       ctx.arc(
         0,
         0,
-        radius,
+        240,
         0,
-        Math.PI *
-        2
+        Math.PI*2
       );
 
+      ctx.fill();
+
+
+      /* orbital circuit lines */
 
       ctx.strokeStyle =
+        'rgba(0,229,255,.35)';
 
-        i === 2
-
-          ?
-
-          `rgba(
-            255,
-            51,
-            77,
-            ${
-              .12 +
-              .025 *
-              Math.sin(
-                t * 2
-              )
-            }
-          )`
-
-          :
-
-          `rgba(
-            88,
-            217,
-            255,
-            ${
-              .08 +
-              i * .012
-            }
-          )`;
+      ctx.lineWidth=2;
 
 
-      ctx.lineWidth =
-        Math.max(
-          1,
-          this.dpr *
-          1.2
+      for(
+        let i=0;
+        i<7;
+        i++
+      ){
+
+        const a =
+          time*
+          (.12+i*.015) +
+          (i%2 ? .7 : 0);
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+          0,
+          0,
+          165+i*9,
+          a,
+          a+
+          Math.PI*
+          (.45+.1*(i%3))
         );
 
+        ctx.stroke();
 
-      ctx.setLineDash(
-        i === 1
+      }
 
-          ?
 
-          [
-            unit*.012,
-            unit*.025
-          ]
+      /* antenna */
 
-          :
+      ctx.strokeStyle='#0f8cff';
 
-          [
-            unit*.02,
-            unit*.055
-          ]
+      ctx.lineWidth=5;
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        0,
+        -152
       );
 
+      ctx.lineTo(
+        0,
+        -185
+      );
 
       ctx.stroke();
 
 
+      ctx.fillStyle =
+        mode==='speaking'
+          ? '#e50914'
+          : '#00e5ff';
+
+
+      ctx.beginPath();
+
+      ctx.arc(
+        0,
+        -191,
+        8 +
+        Math.sin(time*5)*1.4,
+        0,
+        Math.PI*2
+      );
+
+      ctx.fill();
+
+
+      /* head board */
+
+      pathRoundRect(
+        -118,
+        -118,
+        236,
+        158,
+        34
+      );
+
+
+      const headGrad =
+        ctx.createLinearGradient(
+          -118,
+          -118,
+          118,
+          40
+        );
+
+
+      headGrad.addColorStop(
+        0,
+        '#0d1a2a'
+      );
+
+
+      headGrad.addColorStop(
+        .5,
+        '#081321'
+      );
+
+
+      headGrad.addColorStop(
+        1,
+        '#101f31'
+      );
+
+
+      ctx.fillStyle=headGrad;
+
+      ctx.fill();
+
+
+      ctx.strokeStyle='#1c98ff';
+
+      ctx.lineWidth=2.8;
+
+      ctx.stroke();
+
+
+      /* top traces */
+
+      ctx.strokeStyle =
+        'rgba(0,229,255,.55)';
+
+      ctx.lineWidth=2;
+
+
+      for(
+        let i=-80;
+        i<=80;
+        i+=40
+      ){
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          i,
+          -108
+        );
+
+        ctx.lineTo(
+          i+18,
+          -126
+        );
+
+        ctx.lineTo(
+          i+48,
+          -126
+        );
+
+        ctx.stroke();
+
+      }
+
+
+      /* eye glow */
+
+      const eyeY=-46;
+
+
+      const eyeGlow=
+        ctx.createRadialGradient(
+          -45,
+          eyeY,
+          2,
+          -45,
+          eyeY,
+          34
+        );
+
+
+      eyeGlow.addColorStop(
+        0,
+        'rgba(0,229,255,.85)'
+      );
+
+      eyeGlow.addColorStop(
+        1,
+        'rgba(0,229,255,0)'
+      );
+
+
+      ctx.fillStyle=eyeGlow;
+
+      ctx.beginPath();
+
+      ctx.arc(
+        -45,
+        eyeY,
+        34,
+        0,
+        Math.PI*2
+      );
+
+      ctx.fill();
+
+
+      const eyeGlow2=
+        ctx.createRadialGradient(
+          45,
+          eyeY,
+          2,
+          45,
+          eyeY,
+          34
+        );
+
+
+      eyeGlow2.addColorStop(
+        0,
+        'rgba(0,229,255,.85)'
+      );
+
+      eyeGlow2.addColorStop(
+        1,
+        'rgba(0,229,255,0)'
+      );
+
+
+      ctx.fillStyle=eyeGlow2;
+
+      ctx.beginPath();
+
+      ctx.arc(
+        45,
+        eyeY,
+        34,
+        0,
+        Math.PI*2
+      );
+
+      ctx.fill();
+
+
+      /* eyes */
+
+      ctx.fillStyle='#dffcff';
+
+      ctx.shadowBlur=18;
+
+      ctx.shadowColor='#00e5ff';
+
+
+      pathRoundRect(
+        -64,
+        eyeY-7,
+        38,
+        12,
+        6
+      );
+
+      ctx.fill();
+
+
+      pathRoundRect(
+        26,
+        eyeY-7,
+        38,
+        12,
+        6
+      );
+
+      ctx.fill();
+
+
+      ctx.shadowBlur=0;
+
+
+      /* mouth equalizer */
+
+      ctx.strokeStyle =
+        mode==='speaking'
+          ? '#e50914'
+          : '#00e5ff';
+
+
+      ctx.lineWidth=3;
+
+
+      for(
+        let i=-5;
+        i<=5;
+        i++
+      ){
+
+        const bh =
+          mode==='speaking'
+            ? 10 +
+              Math.abs(
+                Math.sin(
+                  time*8+i
+                )
+              )*26
+
+            : 8 +
+              Math.abs(
+                Math.sin(
+                  time*2+i
+                )
+              )*7;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          i*9,
+          15-bh/2
+        );
+
+        ctx.lineTo(
+          i*9,
+          15+bh/2
+        );
+
+        ctx.stroke();
+
+      }
+
+
+      /* neck */
+
+      ctx.strokeStyle='#0c7cff';
+
+      ctx.lineWidth=9;
+
+      ctx.beginPath();
+
+      ctx.moveTo(-26,40);
+
+      ctx.lineTo(-26,68);
+
+      ctx.moveTo(26,40);
+
+      ctx.lineTo(26,68);
+
+      ctx.stroke();
+
+
+      /* body */
+
+      pathRoundRect(
+        -154,
+        67,
+        308,
+        154,
+        42
+      );
+
+
+      ctx.fillStyle='#07111e';
+
+      ctx.fill();
+
+
+      ctx.strokeStyle='#126fff';
+
+      ctx.lineWidth=3;
+
+      ctx.stroke();
+
+
+      /* chest */
+
+      ctx.fillStyle='#0b2136';
+
+
+      pathRoundRect(
+        -54,
+        92,
+        108,
+        86,
+        22
+      );
+
+
+      ctx.fill();
+
+
+      ctx.strokeStyle =
+        mode==='thinking'
+          ? '#e50914'
+          : '#00e5ff';
+
+
+      ctx.lineWidth=3;
+
+      ctx.stroke();
+
+
+      const pulse =
+        38 +
+        Math.sin(
+          time *
+          (
+            mode==='thinking'
+              ? 6
+              : 2.8
+          )
+        ) *
+        6;
+
+
+      ctx.shadowBlur=22;
+
+      ctx.shadowColor =
+        mode==='speaking'
+          ? '#e50914'
+          : '#00e5ff';
+
+
+      ctx.fillStyle =
+        mode==='speaking'
+          ? '#e50914'
+          : '#00e5ff';
+
+
+      ctx.beginPath();
+
+      ctx.arc(
+        0,
+        136,
+        pulse*.42,
+        0,
+        Math.PI*2
+      );
+
+      ctx.fill();
+
+
+      ctx.shadowBlur=0;
+
+
+      /* arms */
+
+      ctx.strokeStyle='#167dff';
+
+      ctx.lineWidth=9;
+
+      ctx.lineCap='round';
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        -147,
+        98
+      );
+
+      ctx.lineTo(
+        -181,
+        130
+      );
+
+      ctx.lineTo(
+        -191,
+        176
+      );
+
+
+      ctx.moveTo(
+        147,
+        98
+      );
+
+      ctx.lineTo(
+        181,
+        130
+      );
+
+      ctx.lineTo(
+        191,
+        176
+      );
+
+      ctx.stroke();
+
+
+      ctx.fillStyle='#00e5ff';
+
+
+      [-191,191].forEach(
+        x=>{
+
+          ctx.beginPath();
+
+          ctx.arc(
+            x,
+            176,
+            7,
+            0,
+            Math.PI*2
+          );
+
+          ctx.fill();
+
+        }
+      );
+
+
+      /* circuit traces */
+
+      ctx.strokeStyle =
+        'rgba(0,229,255,.48)';
+
+      ctx.lineWidth=2;
+
+
+      const traces=[
+
+        [-120,98,-82,98,-82,116],
+
+        [-120,126,-66,126,-66,150],
+
+        [120,100,84,100,84,120],
+
+        [120,130,66,130,66,151],
+
+        [-90,194,-90,214,-42,214],
+
+        [90,194,90,214,42,214]
+
+      ];
+
+
+      traces.forEach(
+        a=>{
+
+          ctx.beginPath();
+
+          ctx.moveTo(
+            a[0],
+            a[1]
+          );
+
+
+          for(
+            let i=2;
+            i<a.length;
+            i+=2
+          ){
+
+            ctx.lineTo(
+              a[i],
+              a[i+1]
+            );
+
+          }
+
+
+          ctx.stroke();
+
+        }
+      );
+
+
       ctx.restore();
 
-    }
+
+      /* particles */
+
+      ctx.save();
+
+      ctx.translate(
+        cx,
+        cy
+      );
 
 
-    /* PARTICLES */
+      for(
+        let i=0;
+        i<sparks.length;
+        i++
+      ){
 
-    this.particles.forEach(
-      p => {
+        const p=sparks[i];
 
-        p.a +=
-          p.speed *
-          activity;
+        p.a += p.s;
 
-
-        const radius =
-          unit *
-          p.r;
+        const rr =
+          Math.min(
+            w,
+            h
+          ) * .40 * p.r;
 
 
         const x =
           Math.cos(
             p.a
-          ) *
-          radius;
+          ) * rr;
 
 
         const y =
           Math.sin(
             p.a
-          ) *
-          radius *
-          .58;
+          ) * rr * .72;
 
 
-        const size =
-          this.dpr *
-          (
-            .7 +
-            p.z *
-            1.8
+        const alpha =
+          .18 +
+          .65 *
+          Math.abs(
+            Math.sin(
+              time*2+p.p
+            )
           );
+
+
+        ctx.fillStyle =
+          `rgba(0,229,255,${alpha})`;
 
 
         ctx.beginPath();
 
-
         ctx.arc(
           x,
           y,
-          size,
+          (1.1+alpha*1.8)*dpr,
           0,
-          Math.PI *
-          2
+          Math.PI*2
         );
-
-
-        ctx.fillStyle =
-          `rgba(
-            88,
-            217,
-            255,
-            ${
-              .18 +
-              .48 *
-              p.z
-            }
-          )`;
-
 
         ctx.fill();
 
       }
-    );
-
-
-    /* CIRCUIT */
-
-    ctx.strokeStyle =
-      'rgba(88,217,255,.17)';
-
-
-    ctx.lineWidth =
-      Math.max(
-        1,
-        this.dpr
-      );
-
-
-    for(
-      let i=0;
-      i<8;
-      i++
-    ){
-
-      const offset =
-        (
-          i -
-          3.5
-        ) *
-        unit *
-        .035;
-
-
-      ctx.beginPath();
-
-
-      ctx.moveTo(
-        -unit*.26,
-        offset
-      );
-
-
-      ctx.lineTo(
-        -unit*.19,
-        offset
-      );
-
-
-      ctx.lineTo(
-        -unit*.15,
-        offset*1.6
-      );
-
-
-      ctx.stroke();
-
-
-      ctx.beginPath();
-
-
-      ctx.moveTo(
-        unit*.26,
-        offset
-      );
-
-
-      ctx.lineTo(
-        unit*.19,
-        offset
-      );
-
-
-      ctx.lineTo(
-        unit*.15,
-        offset*1.6
-      );
-
-
-      ctx.stroke();
-
-    }
-
-
-    /* BOARD */
-
-    const boardW =
-      unit *
-      .34;
-
-
-    const boardH =
-      unit *
-      .29;
-
-
-    const radius =
-      unit *
-      .055;
-
-
-    ctx.shadowBlur =
-      unit *
-      .035;
-
-
-    ctx.shadowColor =
-      'rgba(88,217,255,.40)';
-
-
-    ctx.fillStyle =
-      'rgba(6,16,27,.94)';
-
-
-    ctx.strokeStyle =
-      'rgba(88,217,255,.70)';
-
-
-    ctx.lineWidth =
-      this.dpr *
-      2;
-
-
-    roundRect(
-      ctx,
-      -boardW/2,
-      -boardH/2,
-      boardW,
-      boardH,
-      radius
-    );
-
-
-    ctx.fill();
-    ctx.stroke();
-
-
-    ctx.shadowBlur =
-      0;
-
-
-    /* RED ACCENTS */
-
-    ctx.strokeStyle =
-      'rgba(255,51,77,.58)';
-
-
-    ctx.lineWidth =
-      this.dpr *
-      1.5;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-      -boardW*.58,
-      -boardH*.21
-    );
-
-
-    ctx.lineTo(
-      -boardW*.72,
-      -boardH*.21
-    );
-
-
-    ctx.lineTo(
-      -boardW*.78,
-      -boardH*.06
-    );
-
-
-    ctx.stroke();
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-      boardW*.58,
-      -boardH*.21
-    );
-
-
-    ctx.lineTo(
-      boardW*.72,
-      -boardH*.21
-    );
-
-
-    ctx.lineTo(
-      boardW*.78,
-      -boardH*.06
-    );
-
-
-    ctx.stroke();
-
-
-    /* EYES */
-
-    const eyeY =
-      -boardH *
-      .05;
-
-
-    const eyeX =
-      boardW *
-      .19;
-
-
-    const eyeR =
-      unit *
-      .026;
-
-
-    const eyeGlow =
-      ctx.createRadialGradient(
-        0,
-        0,
-        0,
-        0,
-        0,
-        eyeR*2.7
-      );
-
-
-    eyeGlow.addColorStop(
-      0,
-      'rgba(255,255,255,.95)'
-    );
-
-
-    eyeGlow.addColorStop(
-      .22,
-      'rgba(88,217,255,.95)'
-    );
-
-
-    eyeGlow.addColorStop(
-      1,
-      'rgba(88,217,255,0)'
-    );
-
-
-    for(
-      const x of [
-        -eyeX,
-        eyeX
-      ]
-    ){
-
-      ctx.save();
-
-
-      ctx.translate(
-        x,
-        eyeY
-      );
-
-
-      ctx.fillStyle =
-        eyeGlow;
-
-
-      ctx.beginPath();
-
-
-      ctx.arc(
-        0,
-        0,
-        eyeR*2.4,
-        0,
-        Math.PI *
-        2
-      );
-
-
-      ctx.fill();
-
-
-      ctx.fillStyle =
-        '#62ddff';
-
-
-      ctx.beginPath();
-
-
-      ctx.roundRect(
-        -eyeR*.9,
-        -eyeR*.45,
-        eyeR*1.8,
-        eyeR*.9,
-        eyeR*.28
-      );
-
-
-      ctx.fill();
 
 
       ctx.restore();
@@ -4751,1642 +2906,1097 @@ class RobotRenderer{
     }
 
 
-    /* BOARD LINES */
-
-    ctx.strokeStyle =
-      'rgba(88,217,255,.31)';
-
-
-    ctx.lineWidth =
-      this.dpr;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-      -boardW*.24,
-      boardH*.18
-    );
-
-
-    ctx.lineTo(
-      boardW*.24,
-      boardH*.18
-    );
-
-
-    ctx.stroke();
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-      -boardW*.11,
-      boardH*.27
-    );
-
-
-    ctx.lineTo(
-      boardW*.11,
-      boardH*.27
-    );
-
-
-    ctx.stroke();
-
-
-    /* RED LED */
-
-    const ledPulse =
-      .45 +
-      .35 *
-      (
-        .5 +
-        .5 *
-        Math.sin(
-          t *
-          (
-            2.3 *
-            activity
-          )
-        )
-      );
-
-
-    ctx.fillStyle =
-      `rgba(
-        255,
-        51,
-        77,
-        ${ledPulse}
-      )`;
-
-
-    ctx.shadowBlur =
-      unit *
-      .035;
-
-
-    ctx.shadowColor =
-      'rgba(255,51,77,.52)';
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-      0,
-      -boardH*.31,
-      unit*.014,
-      0,
-      Math.PI *
-      2
-    );
-
-
-    ctx.fill();
-
-
-    ctx.shadowBlur =
-      0;
-
-
-    /* ANTENNA */
-
-    ctx.strokeStyle =
-      'rgba(88,217,255,.55)';
-
-
-    ctx.lineWidth =
-      this.dpr *
-      1.3;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-      0,
-      -boardH/2
-    );
-
-
-    ctx.lineTo(
-      0,
-      -boardH*.69
-    );
-
-
-    ctx.stroke();
-
-
-    ctx.fillStyle =
-      '#58d9ff';
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-      0,
-      -boardH*.74,
-      unit*.012,
-      0,
-      Math.PI *
-      2
-    );
-
-
-    ctx.fill();
-
-
-    /* HALO */
-
-    const halo =
-      ctx.createRadialGradient(
-        0,
-        0,
-        boardW*.25,
-        0,
-        0,
-        boardW*1.0
-      );
-
-
-    halo.addColorStop(
-      0,
-      `rgba(
-        88,
-        217,
-        255,
-        ${.12*activity}
-      )`
-    );
-
-
-    halo.addColorStop(
-      .34,
-      'rgba(88,217,255,.045)'
-    );
-
-
-    halo.addColorStop(
-      .66,
-      'rgba(255,51,77,.018)'
-    );
-
-
-    halo.addColorStop(
-      1,
-      'rgba(0,0,0,0)'
-    );
-
-
-    ctx.fillStyle =
-      halo;
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-      0,
-      0,
-      boardW*1.0,
-      0,
-      Math.PI *
-      2
-    );
-
-
-    ctx.fill();
-
-
-    ctx.restore();
-
-
-    requestAnimationFrame(
-      this.draw
-    );
-
-  }
-
-}
-
-
-function roundRect(
-  ctx,
-  x,
-  y,
-  w,
-  h,
-  r
-){
-
-  const rr =
-    Math.min(
-      r,
-      Math.abs(w)/2,
-      Math.abs(h)/2
-    );
-
-
-  ctx.beginPath();
-
-
-  ctx.moveTo(
-    x+rr,
-    y
-  );
-
-
-  ctx.arcTo(
-    x+w,
-    y,
-    x+w,
-    y+h,
-    rr
-  );
-
-
-  ctx.arcTo(
-    x+w,
-    y+h,
-    x,
-    y+h,
-    rr
-  );
-
-
-  ctx.arcTo(
-    x,
-    y+h,
-    x,
-    y,
-    rr
-  );
-
-
-  ctx.arcTo(
-    x,
-    y,
-    x+w,
-    y,
-    rr
-  );
-
-
-  ctx.closePath();
-
-}
-
-
-new RobotRenderer(
-  els.robotCanvas
-);
-
-
-new RobotRenderer(
-  els.liveRobotCanvas
-);
-
-
-/* =====================================================
-   LIVE WAVEFORM
-===================================================== */
-
-const waveBars =
-  [];
-
-
-function buildWaveform(){
-
-  els.waveform.innerHTML =
-    '';
-
-
-  waveBars.length =
-    0;
-
-
-  for(
-    let i=0;
-    i<48;
-    i++
-  ){
-
-    const bar =
-      document.createElement(
-        'span'
-      );
-
-
-    bar.className =
-      'wavebar';
-
-
-    bar.style.animationDelay =
-      `${-(i*.037)}s`;
-
-
-    bar.style.animationDuration =
-      `${
-        .7 +
-        (i%7)*.08
-      }s`;
-
-
-    els.waveform.appendChild(
-      bar
-    );
-
-
-    waveBars.push(
-      bar
-    );
-
-  }
-
-}
-
-
-buildWaveform();
-
-
-let waveformRAF =
-  0;
-
-
-let liveAudioLevel =
-  0;
-
-
-function animateWave(
-  level,
-  speaking
-){
-
-  const safeLevel =
-    Math.max(
-      0,
-      Math.min(
-        1,
-        level || 0
-      )
-    );
-
-
-  waveBars.forEach(
-    (
-      bar,
-      index
-    ) => {
-
-      const center =
-        1 -
-        Math.abs(
-          index -
-          waveBars.length/2
-        ) /
-        (
-          waveBars.length/2
-        );
-
+    function frame(t){
 
       const time =
-        performance.now() *
-        .004 +
-        index *
-        .33;
+        t*.001;
 
 
-      const natural =
-        .18 +
-        Math.abs(
-          Math.sin(time)
-        ) *
-        .25;
+      ctx.clearRect(
+        0,
+        0,
+        w,
+        h
+      );
 
 
-      const boost =
-        speaking
-          ? .18
-          : .06;
+      const m =
+        getMode();
 
 
-      const height =
-        Math.max(
-          .06,
+      const scale =
+        Math.min(
+          w,
+          h
+        )*.00102;
+
+
+      drawCircuit(
+        w/(dpr*2),
+        h/(dpr*2),
+        scale,
+        time,
+        m
+      );
+
+
+      requestAnimationFrame(
+        frame
+      );
+
+    }
+
+
+    window.addEventListener(
+      'resize',
+      resize
+    );
+
+
+    resize();
+
+    requestAnimationFrame(
+      frame
+    );
+
+  }
+
+
+  let robotMode='idle';
+
+
+  /*
+     SAME renderer used twice:
+     1) Text Chat visual
+     2) Live Voice visual
+  */
+
+  RobotRenderer(
+    els.mainCanvas,
+    () => robotMode
+  );
+
+
+  RobotRenderer(
+    els.liveCanvas,
+    () => robotMode
+  );
+
+
+  /* ======================================================
+     LIVE VOICE VARIABLES
+  ====================================================== */
+
+  let liveSocket=null;
+
+  let liveToken=null;
+
+  let resumeToken=null;
+
+  let liveReady=false;
+
+  let setupTimer=null;
+
+  let liveAudioCtx=null;
+
+  let mediaStream=null;
+
+  let sourceNode=null;
+
+  let workletNode=null;
+
+  let scriptNode=null;
+
+  let liveAudioSources=[];
+
+  let nextPlayTime=0;
+
+
+  /* ======================================================
+     BASE64
+  ====================================================== */
+
+  function b64ToBytes(b64){
+
+    const bin=
+      atob(b64);
+
+
+    const bytes=
+      new Uint8Array(
+        bin.length
+      );
+
+
+    for(
+      let i=0;
+      i<bin.length;
+      i++
+    ){
+
+      bytes[i]=
+        bin.charCodeAt(i);
+
+    }
+
+
+    return bytes;
+
+  }
+
+
+  function bytesToB64(bytes){
+
+    let out='';
+
+    const step=0x6000;
+
+
+    for(
+      let i=0;
+      i<bytes.length;
+      i+=step
+    ){
+
+      let chunk='';
+
+
+      for(
+        let j=i;
+        j<
           Math.min(
-            .95,
-            natural +
-            safeLevel*.72*center +
-            boost
-          )
+            i+step,
+            bytes.length
+          );
+        j++
+      ){
+
+        chunk +=
+          String.fromCharCode(
+            bytes[j]
+          );
+
+      }
+
+
+      out += chunk;
+
+    }
+
+
+    return btoa(out);
+
+  }
+
+
+  /* ======================================================
+     LIVE UI
+  ====================================================== */
+
+  function showLiveText(
+    status,
+    message,
+    error=''
+  ){
+
+    els.liveStatus.textContent=
+      status;
+
+
+    els.liveInfo.textContent=
+      message;
+
+
+    els.liveError.textContent=
+      error;
+
+
+    els.liveError.style.display =
+      error
+        ? 'block'
+        : 'none';
+
+  }
+
+
+  function showLive(){
+
+    els.overlay.classList.remove(
+      'hidden'
+    );
+
+  }
+
+
+  function hideLive(){
+
+    els.overlay.classList.add(
+      'hidden'
+    );
+
+  }
+
+
+  /* ======================================================
+     LIVE TOKEN
+  ====================================================== */
+
+  async function getLiveToken(){
+
+    const controller =
+      new AbortController();
+
+
+    const timer =
+      setTimeout(
+        () => controller.abort(),
+        15000
+      );
+
+
+    try{
+
+      const r =
+        await fetch(
+          API_BASE_URL +
+          '/api/live-token',
+
+          {
+            method:'POST',
+
+            headers:{
+              'Content-Type':
+                'application/json'
+            },
+
+            body:'{}',
+
+            signal:controller.signal
+          }
         );
 
 
-      bar.style.height =
-        `${height*100}%`;
+      const d =
+        await r.json().catch(
+          () => ({})
+        );
 
 
-      bar.style.opacity =
-        `${.35 + height*.7}`;
+      if(!r.ok)
+        throw new Error(
+          d.error ||
+          ('LIVE_TOKEN_HTTP_'+
+           r.status)
+        );
+
+
+      const token =
+        d.token ||
+        d.name;
+
+
+      const model =
+        d.model ||
+        LIVE_MODEL_FALLBACK;
+
+
+      if(!token)
+        throw new Error(
+          'Server returned no Live token.'
+        );
+
+
+      return {
+        token,
+        model
+      };
 
     }
-  );
+    finally{
 
-}
+      clearTimeout(timer);
 
-
-function waveLoop(){
-
-  if(
-    !waveformRAF
-  ){
-
-    return;
+    }
 
   }
 
 
-  animateWave(
-    liveAudioLevel,
-    state.coreMode ===
-      'speaking'
-  );
-
-
-  requestAnimationFrame(
-    waveLoop
-  );
-
-}
-
-
-/* =====================================================
-   LIVE VARIABLES
-===================================================== */
-
-let liveSocket =
-  null;
-
-
-let liveToken =
-  null;
-
-
-let resumeToken =
-  null;
-
-
-let mediaStream =
-  null;
-
-
-let audioCtx =
-  null;
-
-
-let sourceNode =
-  null;
-
-
-let workletNode =
-  null;
-
-
-let analyserNode =
-  null;
-
-
-let analyserData =
-  null;
-
-
-let liveReady =
-  false;
-
-
-let liveManualClose =
-  false;
-
-
-let livePlaying =
-  [];
-
-
-let nextPlayTime =
-  0;
-
-
-/* =====================================================
-   LIVE STATE
-===================================================== */
-
-function setLiveState(
-  text
-){
-
-  els.liveState.textContent =
-    text;
-
-}
-
-
-function openLiveOverlay(){
-
-  els.liveOverlay.classList.remove(
-    'hidden'
-  );
-
-
-  document.body.style.overflow =
-    'hidden';
-
-
-  waveformRAF =
-    1;
-
-
-  requestAnimationFrame(
-    waveLoop
-  );
-
-}
-
-
-function closeLiveOverlay(){
-
-  els.liveOverlay.classList.add(
-    'hidden'
-  );
-
-
-  document.body.style.overflow =
-    '';
-
-
-  waveformRAF =
-    0;
-
-
-  liveAudioLevel =
-    0;
-
-}
-
-
-/* =====================================================
-   MIC LEVEL
-===================================================== */
-
-function updateMicLevel(){
-
-  if(
-    !analyserNode ||
-    !analyserData
-  ){
-
-    liveAudioLevel *=
-      .88;
-
-    return;
-
-  }
-
-
-  analyserNode.getByteTimeDomainData(
-    analyserData
-  );
-
-
-  let sum =
-    0;
-
-
-  for(
-    let i=0;
-    i<analyserData.length;
-    i++
-  ){
-
-    const n =
-      (
-        analyserData[i] -
-        128
-      ) /
-      128;
-
-
-    sum +=
-      n*n;
-
-  }
-
-
-  const rms =
-    Math.sqrt(
-      sum /
-      analyserData.length
-    );
-
-
-  liveAudioLevel =
-    Math.min(
-      1,
-      liveAudioLevel*.72 +
-      rms*2.3*.28
-    );
-
-}
-
-
-function liveMeterLoop(){
-
-  if(
-    !liveSocket &&
-    !mediaStream
-  ){
-
-    return;
-
-  }
-
-
-  updateMicLevel();
-
-
-  requestAnimationFrame(
-    liveMeterLoop
-  );
-
-}
-
-
-/* =====================================================
-   BASE64
-===================================================== */
-
-function b64ToBytes(
-  b64
-){
-
-  const binary =
-    atob(
-      b64
-    );
-
-
-  const output =
-    new Uint8Array(
-      binary.length
-    );
-
-
-  for(
-    let i=0;
-    i<binary.length;
-    i++
-  ){
-
-    output[i] =
-      binary.charCodeAt(
-        i
+  /* ======================================================
+     PCM PLAYBACK
+  ====================================================== */
+
+  function pcm16ToFloat(bytes){
+
+    const view =
+      new DataView(
+        bytes.buffer,
+        bytes.byteOffset,
+        bytes.byteLength
       );
 
-  }
 
-
-  return output;
-
-}
-
-
-function bytesToB64(
-  bytes
-){
-
-  let binary =
-    '';
-
-
-  const chunk =
-    0x8000;
-
-
-  for(
-    let i=0;
-    i<bytes.length;
-    i+=chunk
-  ){
-
-    binary +=
-      String.fromCharCode(
-        ...
-          bytes.subarray(
-            i,
-            i+chunk
-          )
-      );
-
-  }
-
-
-  return btoa(
-    binary
-  );
-
-}
-
-
-/* =====================================================
-   PCM
-===================================================== */
-
-function pcm16ToFloat(
-  bytes
-){
-
-  const view =
-    new DataView(
-      bytes.buffer,
-      bytes.byteOffset,
-      bytes.byteLength
-    );
-
-
-  const output =
-    new Float32Array(
-      Math.floor(
-        bytes.byteLength /
-        2
-      )
-    );
-
-
-  for(
-    let i=0;
-    i<output.length;
-    i++
-  ){
-
-    output[i] =
-      Math.max(
-        -1,
-        Math.min(
-          1,
-          view.getInt16(
-            i*2,
-            true
-          ) /
-          32768
+    const out =
+      new Float32Array(
+        Math.floor(
+          bytes.byteLength/2
         )
       );
 
-  }
 
+    for(
+      let i=0;
+      i<out.length;
+      i++
+    ){
 
-  return output;
-
-}
-
-
-/* =====================================================
-   STOP AUDIO
-===================================================== */
-
-function stopLiveAudio(){
-
-  livePlaying.forEach(
-    node => {
-
-      try{
-
-        node.stop();
-
-      }catch(_){}
+      out[i]=
+        Math.max(
+          -1,
+          Math.min(
+            1,
+            view.getInt16(
+              i*2,
+              true
+            )/32768
+          )
+        );
 
     }
-  );
 
 
-  livePlaying =
-    [];
-
-
-  nextPlayTime =
-    0;
-
-}
-
-
-/* =====================================================
-   PLAY PCM
-===================================================== */
-
-function playPcm(
-  b64
-){
-
-  if(
-    !audioCtx
-  ){
-
-    return;
+    return out;
 
   }
 
 
-  const bytes =
-    b64ToBytes(
-      b64
+  function playPcm(b64){
+
+    if(!liveAudioCtx)
+      return;
+
+
+    const bytes =
+      b64ToBytes(b64);
+
+
+    const floats =
+      pcm16ToFloat(bytes);
+
+
+    /*
+       Gemini Live output:
+       PCM 16-bit / 24kHz
+    */
+
+    const buffer =
+      liveAudioCtx.createBuffer(
+        1,
+        floats.length,
+        24000
+      );
+
+
+    buffer.copyToChannel(
+      floats,
+      0
     );
 
 
-  const floatData =
-    pcm16ToFloat(
-      bytes
-    );
+    const src =
+      liveAudioCtx.createBufferSource();
 
 
-  const buffer =
-    audioCtx.createBuffer(
-      1,
-      floatData.length,
-      24000
-    );
+    src.buffer=buffer;
 
 
-  buffer.copyToChannel(
-    floatData,
-    0
-  );
+    const gain =
+      liveAudioCtx.createGain();
 
 
-  const source =
-    audioCtx.createBufferSource();
+    gain.gain.value=.96;
 
 
-  const gain =
-    audioCtx.createGain();
-
-
-  source.buffer =
-    buffer;
-
-
-  gain.gain.value =
-    .94;
-
-
-  source
-    .connect(
+    src.connect(
       gain
-    )
-    .connect(
-      audioCtx.destination
+    ).connect(
+      liveAudioCtx.destination
     );
 
 
-  const now =
-    audioCtx.currentTime;
+    const now =
+      liveAudioCtx.currentTime;
 
 
-  nextPlayTime =
-    Math.max(
-      nextPlayTime,
-      now+.02
+    nextPlayTime =
+      Math.max(
+        nextPlayTime,
+        now+.02
+      );
+
+
+    src.start(
+      nextPlayTime
     );
 
 
-  source.start(
-    nextPlayTime
-  );
+    nextPlayTime +=
+      buffer.duration;
 
 
-  nextPlayTime +=
-    buffer.duration;
+    liveAudioSources.push(
+      src
+    );
 
 
-  livePlaying.push(
-    source
-  );
+    robotMode='speaking';
 
 
-  source.onended =
-    () => {
+    src.onended=()=>{
 
-      livePlaying =
-        livePlaying.filter(
-          node =>
-            node !== source
+      liveAudioSources =
+        liveAudioSources.filter(
+          x=>x!==src
         );
 
 
       if(
-        livePlaying.length ===
-        0 &&
+        !liveAudioSources.length &&
         liveReady
       ){
 
-        setMode(
-          'live',
-          'Listening…'
-        );
-
-
-        setLiveState(
-          'Listening…'
-        );
+        robotMode='listening';
 
       }
 
     };
 
-
-  setMode(
-    'speaking',
-    'Speaking…'
-  );
+  }
 
 
-  setLiveState(
-    'JARVIS is speaking…'
-  );
+  function stopLiveAudio(){
 
-}
+    liveAudioSources.forEach(
+      source=>{
 
-
-/* =====================================================
-   LIVE TOKEN
-===================================================== */
-
-async function getLiveToken(){
-
-  const response =
-    await fetch(
-      API_BASE_URL +
-      '/api/live-token',
-      {
-
-        method:'POST',
-
-        headers:{
-          'Content-Type':
-            'application/json'
-        },
-
-        body:'{}'
+        try{
+          source.stop();
+        }
+        catch(_){}
 
       }
     );
 
 
-  const data =
-    await response
-      .json()
-      .catch(
-        () => ({})
+    liveAudioSources=[];
+
+    nextPlayTime=0;
+
+  }
+
+
+  /* ======================================================
+     RESAMPLE MIC TO 16kHz PCM
+  ====================================================== */
+
+  function resampleAndSend(
+    input
+  ){
+
+    if(
+      !liveReady ||
+      !liveSocket ||
+      liveSocket.readyState !==
+        WebSocket.OPEN ||
+      !liveAudioCtx
+    ){
+
+      return;
+
+    }
+
+
+    const inRate =
+      liveAudioCtx.sampleRate;
+
+
+    const outRate=16000;
+
+
+    const ratio =
+      inRate/outRate;
+
+
+    const outLen =
+      Math.floor(
+        input.length/ratio
       );
 
 
-  if(
-    !response.ok
-  ){
+    const pcm =
+      new Int16Array(
+        outLen
+      );
 
-    throw new Error(
-      data.error ||
-      'live_token_error'
-    );
+
+    for(
+      let i=0;
+      i<outLen;
+      i++
+    ){
+
+      const pos=i*ratio;
+
+      const left=
+        Math.floor(pos);
+
+      const right=
+        Math.min(
+          left+1,
+          input.length-1
+        );
+
+      const mix=
+        pos-left;
+
+
+      let s =
+        input[left]*
+        (1-mix) +
+        input[right]*
+        mix;
+
+
+      s=
+        Math.max(
+          -1,
+          Math.min(
+            1,
+            s
+          )
+        );
+
+
+      pcm[i] =
+        s<0
+          ? s*0x8000
+          : s*0x7fff;
+
+    }
+
+
+    try{
+
+      liveSocket.send(
+        JSON.stringify({
+          realtimeInput:{
+            audio:{
+              data:
+                bytesToB64(
+                  new Uint8Array(
+                    pcm.buffer
+                  )
+                ),
+              mimeType:
+                'audio/pcm;rate=16000'
+            }
+          }
+        })
+      );
+
+    }
+    catch(e){
+
+      console.warn(
+        'Live audio send failed:',
+        e
+      );
+
+    }
 
   }
 
 
-  if(
-    !data.token
-  ){
+  /* ======================================================
+     MICROPHONE
+  ====================================================== */
 
-    throw new Error(
-      'missing_live_token'
-    );
+  async function setupMic(){
 
-  }
+    if(
+      !navigator.mediaDevices?.getUserMedia
+    ){
 
+      throw new Error(
+        'This browser does not support microphone access. ' +
+        'Use HTTPS and a current Chrome/Chromium browser.'
+      );
 
-  if(
-    !data.model
-  ){
-
-    throw new Error(
-      'missing_live_model'
-    );
-
-  }
+    }
 
 
-  return data;
-
-}
-
-
-/* =====================================================
-   MICROPHONE SETUP
-===================================================== */
-
-async function setupMic(){
-
-  if(
-    !navigator.mediaDevices
-      ?.getUserMedia
-  ){
-
-    throw new Error(
-      'microphone_not_supported'
-    );
-
-  }
+    mediaStream =
+      await navigator.mediaDevices
+        .getUserMedia({
+          audio:{
+            channelCount:1,
+            echoCancellation:true,
+            noiseSuppression:true,
+            autoGainControl:true
+          }
+        });
 
 
-  mediaStream =
-    await navigator
-      .mediaDevices
-      .getUserMedia({
-
-        audio:{
-
-          channelCount:1,
-
-          echoCancellation:
-            true,
-
-          noiseSuppression:
-            true,
-
-          autoGainControl:
-            true
-
-        }
-
-      });
-
-
-  audioCtx =
-    new (
+    const AC =
       window.AudioContext ||
-      window.webkitAudioContext
-    )();
+      window.webkitAudioContext;
 
 
-  await audioCtx.resume();
+    if(!AC){
+
+      throw new Error(
+        'Web Audio is not supported in this browser.'
+      );
+
+    }
 
 
-  sourceNode =
-    audioCtx
-      .createMediaStreamSource(
+    liveAudioCtx =
+      new AC();
+
+
+    await liveAudioCtx.resume();
+
+
+    sourceNode =
+      liveAudioCtx.createMediaStreamSource(
         mediaStream
       );
 
 
-  /* analyser */
+    /*
+       Primary method:
+       AudioWorklet
+    */
 
-  analyserNode =
-    audioCtx.createAnalyser();
+    if(
+      liveAudioCtx.audioWorklet
+    ){
 
+      const code = `
+        class JARVISPCM extends AudioWorkletProcessor{
 
-  analyserNode.fftSize =
-    256;
+          process(inputs){
 
+            const input =
+              inputs[0] &&
+              inputs[0][0];
 
-  analyserData =
-    new Uint8Array(
-      analyserNode.fftSize
-    );
+            if(input){
 
+              const data =
+                new Float32Array(
+                  input.length
+                );
 
-  sourceNode.connect(
-    analyserNode
-  );
+              data.set(input);
 
-
-  /* audio worklet */
-
-  const processorCode = `
-
-    class PCMProcessor
-    extends AudioWorkletProcessor{
-
-      constructor(){
-
-        super();
-
-        this.buffer=[];
-
-      }
-
-      process(inputs){
-
-        const input =
-          inputs[0] &&
-          inputs[0][0];
-
-        if(input){
-
-          for(
-            let i=0;
-            i<input.length;
-            i++
-          ){
-
-            this.buffer.push(
-              input[i]
-            );
-
-          }
-
-
-          if(
-            this.buffer.length >=
-            2048
-          ){
-
-            const output =
-              new Float32Array(
-                this.buffer
+              this.port.postMessage(
+                data,
+                [data.buffer]
               );
 
+            }
 
-            this.buffer=[];
-
-
-            this.port.postMessage(
-              output
-            );
-
+            return true;
           }
 
         }
 
-        return true;
-
-      }
-
-    }
-
-
-    registerProcessor(
-      'ipbaba-pcm-processor',
-      PCMProcessor
-    );
-
-  `;
-
-
-  const blob =
-    new Blob(
-      [processorCode],
-      {
-        type:
-          'application/javascript'
-      }
-    );
-
-
-  const url =
-    URL.createObjectURL(
-      blob
-    );
-
-
-  await audioCtx
-    .audioWorklet
-    .addModule(
-      url
-    );
-
-
-  URL.revokeObjectURL(
-    url
-  );
-
-
-  workletNode =
-    new AudioWorkletNode(
-      audioCtx,
-      'ipbaba-pcm-processor'
-    );
-
-
-  sourceNode.connect(
-    workletNode
-  );
-
-
-  workletNode.port.onmessage =
-    event => {
-
-      if(
-        !liveReady ||
-        !liveSocket ||
-        liveSocket.readyState !==
-          WebSocket.OPEN
-      ){
-
-        return;
-
-      }
-
-
-      const input =
-        event.data;
-
-
-      const inputRate =
-        audioCtx.sampleRate;
-
-
-      const outputRate =
-        16000;
-
-
-      const ratio =
-        inputRate /
-        outputRate;
-
-
-      const outputLength =
-        Math.floor(
-          input.length /
-          ratio
+        registerProcessor(
+          'jarvis-pcm',
+          JARVISPCM
         );
+      `;
 
 
-      const pcm =
-        new Int16Array(
-          outputLength
-        );
-
-
-      for(
-        let i=0;
-        i<outputLength;
-        i++
-      ){
-
-        const index =
-          Math.min(
-            input.length-1,
-            Math.floor(
-              i*ratio
-            )
-          );
-
-
-        let sample =
-          Math.max(
-            -1,
-            Math.min(
-              1,
-              input[index]
-            )
-          );
-
-
-        pcm[i] =
-          sample < 0
-            ? sample * 0x8000
-            : sample * 0x7fff;
-
-      }
-
-
-      try{
-
-        liveSocket.send(
-          JSON.stringify({
-
-            realtimeInput:{
-
-              audio:{
-
-                data:
-                  bytesToB64(
-                    new Uint8Array(
-                      pcm.buffer
-                    )
-                  ),
-
-                mimeType:
-                  'audio/pcm;rate=16000'
-
-              }
-
+      const url =
+        URL.createObjectURL(
+          new Blob(
+            [code],
+            {
+              type:
+                'application/javascript'
             }
-
-          })
+          )
         );
 
-      }catch(error){
 
-        console.error(
-          'Live audio send error:',
-          error
-        );
-
-      }
-
-    };
+      await liveAudioCtx
+        .audioWorklet
+        .addModule(url);
 
 
-  /* mute worklet */
-
-  const mute =
-    audioCtx.createGain();
-
-
-  mute.gain.value =
-    0;
-
-
-  workletNode
-    .connect(
-      mute
-    )
-    .connect(
-      audioCtx.destination
-    );
-
-
-  requestAnimationFrame(
-    liveMeterLoop
-  );
-
-}
-
-
-/* =====================================================
-   CLOSE MICROPHONE
-===================================================== */
-
-function closeMic(){
-
-  try{
-    workletNode?.disconnect();
-  }catch(_){}
-
-
-  try{
-    sourceNode?.disconnect();
-  }catch(_){}
-
-
-  try{
-    analyserNode?.disconnect();
-  }catch(_){}
-
-
-  mediaStream
-    ?.getTracks()
-    .forEach(
-      track => {
-
-        try{
-          track.stop();
-        }catch(_){}
-
-      }
-    );
-
-
-  workletNode =
-    null;
-
-
-  sourceNode =
-    null;
-
-
-  analyserNode =
-    null;
-
-
-  analyserData =
-    null;
-
-
-  mediaStream =
-    null;
-
-
-  if(
-    audioCtx
-  ){
-
-    audioCtx
-      .close()
-      .catch(
-        () => {}
+      URL.revokeObjectURL(
+        url
       );
 
 
-    audioCtx =
-      null;
+      workletNode =
+        new AudioWorkletNode(
+          liveAudioCtx,
+          'jarvis-pcm'
+        );
 
-  }
 
-}
+      sourceNode.connect(
+        workletNode
+      );
 
 
-/* =====================================================
-   OPEN LIVE
-===================================================== */
+      workletNode.port.onmessage =
+        event =>
+          resampleAndSend(
+            event.data
+          );
 
-async function openLive(){
 
-  if(
-    liveSocket
-  ){
+      const mute =
+        liveAudioCtx.createGain();
 
-    return;
+
+      mute.gain.value=0;
+
+
+      workletNode
+        .connect(mute)
+        .connect(
+          liveAudioCtx.destination
+        );
+
+    }
+
+    /*
+       Fallback:
+       ScriptProcessor
+    */
+
+    else{
+
+      scriptNode =
+        liveAudioCtx.createScriptProcessor(
+          4096,
+          1,
+          1
+        );
+
+
+      sourceNode.connect(
+        scriptNode
+      );
+
+
+      const mute =
+        liveAudioCtx.createGain();
+
+
+      mute.gain.value=0;
+
+
+      scriptNode
+        .connect(mute)
+        .connect(
+          liveAudioCtx.destination
+        );
+
+
+      scriptNode.onaudioprocess =
+        event =>
+          resampleAndSend(
+            event.inputBuffer
+              .getChannelData(0)
+          );
+
+    }
 
   }
 
 
-  liveManualClose =
-    false;
+  function closeMic(){
+
+    try{
+      workletNode?.disconnect();
+    }
+    catch(_){}
 
 
-  liveReady =
-    false;
+    try{
+      scriptNode?.disconnect();
+    }
+    catch(_){}
 
 
-  openLiveOverlay();
+    try{
+      sourceNode?.disconnect();
+    }
+    catch(_){}
 
 
-  els.liveBtn.classList.add(
-    'active'
-  );
+    mediaStream
+      ?.getTracks()
+      .forEach(
+        track =>
+          track.stop()
+      );
 
 
-  els.liveBtn.textContent =
-    'Live Active';
+    workletNode=null;
+
+    scriptNode=null;
+
+    sourceNode=null;
+
+    mediaStream=null;
 
 
-  setMode(
-    'live',
-    'Connecting…'
-  );
+    if(liveAudioCtx){
 
+      liveAudioCtx
+        .close()
+        .catch(()=>{});
 
-  setLiveState(
-    'Requesting secure Live token…'
-  );
-
-
-  try{
-
-    const tokenData =
-      await getLiveToken();
-
-
-    liveToken =
-      tokenData.token;
-
-
-    if(
-      liveManualClose
-    ){
-
-      closeMic();
-
-      closeLiveOverlay();
-
-      return;
+      liveAudioCtx=null;
 
     }
 
+  }
 
-    setLiveState(
-      'Opening microphone and realtime connection…'
+
+  function clearSetupTimer(){
+
+    if(setupTimer){
+
+      clearTimeout(
+        setupTimer
+      );
+
+      setupTimer=null;
+
+    }
+
+  }
+
+
+  function failLive(
+    message,
+    detail=''
+  ){
+
+    liveReady=false;
+
+    robotMode='idle';
+
+    clearSetupTimer();
+
+
+    showLiveText(
+      'LIVE ERROR',
+      message,
+      detail
     );
 
 
-    await setupMic();
+    setMode(
+      'error',
+      'LIVE VOICE ERROR'
+    );
+
+  }
 
 
-    if(
-      liveManualClose
-    ){
+  /* ======================================================
+     OPEN LIVE
+  ====================================================== */
 
-      closeMic();
+  async function openLive(){
 
-      closeLiveOverlay();
-
+    if(liveSocket)
       return;
 
-    }
+
+    state.intentionalLiveClose=false;
 
 
-    const endpoint =
+    showLive();
 
-      'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token=' +
 
-      encodeURIComponent(
-        liveToken
+    els.live.classList.add(
+      'on'
+    );
+
+
+    setMode(
+      'live',
+      'CONNECTING LIVE…'
+    );
+
+
+    robotMode='thinking';
+
+
+    showLiveText(
+      'CONNECTING',
+      'Requesting secure short-lived Live token…'
+    );
+
+
+    try{
+
+      const tokenData =
+        await getLiveToken();
+
+
+      liveToken=
+        tokenData.token;
+
+
+      showLiveText(
+        'CONNECTING',
+        'Requesting microphone permission…'
       );
 
 
-    liveSocket =
-      new WebSocket(
-        endpoint
-      );
+      await setupMic();
 
 
-    /* ================= OPEN ================= */
+      /*
+         IMPORTANT:
+         Ephemeral token uses the
+         Constrained Live endpoint.
+      */
 
-    liveSocket.onopen =
-      () => {
+      const ws =
+        'wss://generativelanguage.googleapis.com/ws/' +
+        'google.ai.generativelanguage.v1beta.' +
+        'GenerativeService.' +
+        'BidiGenerateContentConstrained' +
+        '?access_token=' +
+        encodeURIComponent(
+          liveToken
+        );
 
-        const setupMessage = {
 
+      liveSocket =
+        new WebSocket(ws);
+
+
+      liveSocket.onopen=()=>{
+
+        /*
+           The first message MUST be setup.
+           responseModalities is intentionally
+           placed directly in setup.
+        */
+
+        const setup={
           setup:{
-
             model:
               'models/' +
               tokenData.model,
 
+            responseModalities:[
+              'AUDIO'
+            ],
 
-            generationConfig:{
+            inputAudioTranscription:{},
 
-              responseModalities:[
-                'AUDIO'
-              ]
-
-            },
-
+            outputAudioTranscription:{},
 
             systemInstruction:{
-
               parts:[
-
                 {
-
                   text:
-                    'You are JARVIS, AI Assistant of IP BABA. Speak naturally and briefly. Reply in the user language. Help with AI, digital marketing, technology, business, IP BABA services and professional prompt generation. Never invent prices, clients, awards, guarantees, certifications, partnerships, revenue, statistics or company facts. If information is unknown, say so clearly.'
-
+                    SYSTEM_INSTRUCTION
                 }
-
               ]
-
-            },
-
-
-            ...(resumeToken
-
-              ?
-
-                {
-                  sessionResumption:{
-                    handle:
-                      resumeToken
-                  }
-                }
-
-              :
-
-                {}
-            )
-
+            }
           }
-
         };
+
+
+        if(resumeToken){
+
+          setup.setup.sessionResumption={
+            handle:resumeToken
+          };
+
+        }
 
 
         try{
 
           liveSocket.send(
-            JSON.stringify(
-              setupMessage
-            )
+            JSON.stringify(setup)
           );
 
 
-          setLiveState(
-            'Connected. Preparing live audio…'
-          );
-
-        }catch(error){
-
-          console.error(
-            'Live setup send error:',
-            error
+          showLiveText(
+            'CONNECTING',
+            'Configuration sent. Waiting for Live setup…'
           );
 
 
-          setLiveState(
-            'Could not send Live setup.'
+          setMode(
+            'live',
+            'CONNECTING…'
+          );
+
+
+          clearSetupTimer();
+
+
+          /*
+             Never allow the UI to hang
+             indefinitely.
+          */
+
+          setupTimer =
+            setTimeout(
+              ()=>{
+
+                if(
+                  !liveReady &&
+                  liveSocket
+                ){
+
+                  console.warn(
+                    'Live setup timeout'
+                  );
+
+
+                  try{
+                    liveSocket.close();
+                  }
+                  catch(_){}
+
+
+                  failLive(
+                    'Live setup did not complete within 10 seconds.',
+                    'No setupComplete message was received. Check /api/live-token, the Live model, and your Gemini project configuration.'
+                  );
+
+                }
+
+              },
+              10000
+            );
+
+        }
+        catch(e){
+
+          failLive(
+            'Could not send Live setup.',
+            e.message ||
+            String(e)
           );
 
         }
@@ -6394,63 +4004,65 @@ async function openLive(){
       };
 
 
-    /* ================= MESSAGE ================= */
+      liveSocket.onmessage=
+        event=>{
 
-    liveSocket.onmessage =
-      event => {
+          let data;
 
-        try{
 
-          const data =
-            JSON.parse(
-              event.data
+          try{
+
+            data =
+              JSON.parse(
+                event.data
+              );
+
+          }
+          catch(e){
+
+            console.warn(
+              'Live JSON parse error:',
+              e
             );
 
+            return;
 
-          /* Important */
-
-          if(
-            data.error
-          ){
-
-            console.error(
-              'Gemini Live API error:',
-              data.error
-            );
+          }
 
 
-            const message =
+          /*
+             Real Gemini error:
+             never leave screen stuck.
+          */
 
-              data.error.message ||
+          if(data.error){
 
-              data.error.status ||
-
-              data.error.code ||
-
-              'Unknown Live API error';
-
-
-            liveReady =
-              false;
+            const er =
+              data.error ||
+              {};
 
 
-            setMode(
-              'error',
-              'Live error'
-            );
+            const detail =
+              [
+                er.status,
+                er.code,
+                er.message
+              ]
+                .filter(Boolean)
+                .join(' | ');
 
 
-            setLiveState(
-              'Gemini error: ' +
-              message
+            failLive(
+              'Gemini Live rejected the connection.',
+              detail ||
+              'Unknown Gemini Live API error.'
             );
 
 
             try{
-
               liveSocket.close();
-
-            }catch(_){}
+            }
+            catch(_){}
 
 
             return;
@@ -6458,24 +4070,28 @@ async function openLive(){
           }
 
 
-          /* SETUP COMPLETE */
+          /*
+             SETUP COMPLETE
+          */
 
-          if(
-            data.setupComplete
-          ){
+          if(data.setupComplete){
 
-            liveReady =
-              true;
+            liveReady=true;
+
+            clearSetupTimer();
+
+            robotMode='listening';
 
 
             setMode(
               'live',
-              'Listening…'
+              'LISTENING…'
             );
 
 
-            setLiveState(
-              'Listening…'
+            showLiveText(
+              'LISTENING',
+              'JARVIS is listening. Speak naturally.'
             );
 
 
@@ -6484,91 +4100,141 @@ async function openLive(){
           }
 
 
-          const serverContent =
+          /*
+             Session resumption
+          */
+
+          if(
+            data.sessionResumptionUpdate
+          ){
+
+            const h =
+              data
+                .sessionResumptionUpdate
+                .newHandle ||
+              data
+                .sessionResumptionUpdate
+                .token;
+
+
+            if(h)
+              resumeToken=h;
+
+          }
+
+
+          /*
+             Server reconnect notice
+          */
+
+          if(data.goAway){
+
+            showLiveText(
+              'RECONNECTING',
+              'Live session is preparing a secure reconnect…'
+            );
+
+
+            setTimeout(
+              () => reconnectLive(),
+              450
+            );
+
+
+            return;
+
+          }
+
+
+          const sc =
             data.serverContent;
 
 
-          /* RESUMPTION */
+          if(!sc)
+            return;
+
+
+          /*
+             Input transcription
+          */
 
           if(
-            serverContent
-              ?.sessionResumptionUpdate
-              ?.resumable &&
-
-            serverContent
-              .sessionResumptionUpdate
-              .newHandle
+            sc.inputTranscription?.text
           ){
 
-            resumeToken =
-              serverContent
-                .sessionResumptionUpdate
-                .newHandle;
+            showLiveText(
+              'LISTENING',
+              sc.inputTranscription.text
+            );
 
           }
 
 
-          /* INTERRUPTION */
+          /*
+             Output transcription
+          */
 
           if(
-            serverContent
-              ?.interrupted
+            sc.outputTranscription?.text
           ){
+
+            showLiveText(
+              'SPEAKING',
+              sc.outputTranscription.text
+            );
+
+          }
+
+
+          /*
+             User interrupted JARVIS
+          */
+
+          if(sc.interrupted){
 
             stopLiveAudio();
 
+            robotMode='listening';
 
-            if(
-              liveReady
-            ){
-
-              setMode(
-                'live',
-                'Listening…'
-              );
-
-
-              setLiveState(
-                'Listening…'
-              );
-
-            }
+            setMode(
+              'live',
+              'LISTENING…'
+            );
 
           }
 
 
-          /* MODEL AUDIO */
+          /*
+             Audio response
+          */
 
           if(
-            serverContent
-              ?.modelTurn
-              ?.parts
+            sc.modelTurn?.parts
           ){
 
             for(
               const part
-              of
-              serverContent
-                .modelTurn
-                .parts
+              of sc.modelTurn.parts
             ){
 
-              const audio =
-                part
-                  .inlineData
-                  ?.data ||
-
-                part
-                  .inline_data
-                  ?.data;
+              const b =
+                part.inlineData?.data ||
+                part.inline_data?.data;
 
 
-              if(
-                audio
-              ){
+              if(b)
+                playPcm(b);
 
-                playPcm(
-                  audio
+
+              const t=
+                part.text;
+
+
+              if(t){
+
+                showLiveText(
+                  'SPEAKING',
+                  t
                 );
 
               }
@@ -6578,377 +4244,366 @@ async function openLive(){
           }
 
 
-          /* TURN COMPLETE */
+          /*
+             Turn complete
+          */
 
-          if(
-            serverContent
-              ?.turnComplete
-          ){
+          if(sc.turnComplete){
 
             if(
-              livePlaying.length ===
-              0
+              !liveAudioSources.length
             ){
 
-              setMode(
-                'live',
-                'Listening…'
-              );
+              robotMode='listening';
+
+            }
 
 
-              setLiveState(
-                'Listening…'
+            setMode(
+              'live',
+              'LISTENING…'
+            );
+
+
+            if(
+              !sc.outputTranscription?.text &&
+              !liveAudioSources.length
+            ){
+
+              showLiveText(
+                'LISTENING',
+                'JARVIS is listening.'
               );
 
             }
 
           }
 
+        };
 
-          if(
-            data.goAway
-          ){
 
-            setLiveState(
-              'Refreshing Live connection…'
+      liveSocket.onerror =
+        e=>{
+
+          console.warn(
+            'Live WebSocket error:',
+            e
+          );
+
+
+          if(!liveReady){
+
+            failLive(
+              'Live WebSocket connection failed.',
+              'The browser could not establish a valid Gemini Live session.'
+            );
+
+          }
+          else{
+
+            showLiveText(
+              'LIVE ERROR',
+              'The realtime connection reported an error.',
+              'Try ending the conversation and start Live Voice again.'
             );
 
           }
 
-        }catch(error){
+        };
 
-          console.error(
-            'Live message parse error:',
-            error
-          );
 
-        }
+      liveSocket.onclose =
+        e=>{
 
-      };
+          clearSetupTimer();
 
 
-    /* ================= ERROR ================= */
+          const wasIntentional =
+            state.intentionalLiveClose;
 
-    liveSocket.onerror =
-      error => {
 
-        console.error(
-          'Gemini Live WebSocket error:',
-          error
-        );
+          liveSocket=null;
 
+          liveReady=false;
 
-        setMode(
-          'error',
-          'Live error'
-        );
+          closeMic();
 
 
-        setLiveState(
-          'Live connection error. Check Gemini Live configuration and microphone permission.'
-        );
+          if(
+            !wasIntentional &&
+            e.code!==1000
+          ){
 
-      };
+            showLiveText(
+              'LIVE CLOSED',
+              'Live connection closed.',
+              e.reason ||
+              (
+                'WebSocket close code ' +
+                e.code
+              )
+            );
 
 
-    /* ================= CLOSE ================= */
+            setMode(
+              'error',
+              'LIVE CLOSED'
+            );
 
-    liveSocket.onclose =
-      event => {
 
-        console.warn(
-          'Gemini Live closed:',
-          event.code,
-          event.reason ||
-          ''
-        );
+            robotMode='idle';
 
+          }
+          else if(
+            !wasIntentional &&
+            state.coreMode==='live'
+          ){
 
-        liveSocket =
-          null;
+            setMode(
+              'idle',
+              'JARVIS READY'
+            );
 
 
-        liveReady =
-          false;
+            robotMode='idle';
 
+          }
 
-        closeMic();
+        };
 
+    }
+    catch(e){
 
-        stopLiveAudio();
+      console.error(
+        'Live start error:',
+        e
+      );
 
 
-        if(
-          !liveManualClose
-        ){
+      let msg;
 
-          els.liveBtn.classList.remove(
-            'active'
-          );
 
+      if(
+        e.name===
+        'NotAllowedError'
+      ){
 
-          els.liveBtn.textContent =
-            'Talk Live';
+        msg =
+          'Microphone permission was denied. Allow microphone access for this site and try again.';
 
+      }
+      else if(
+        e.name===
+        'NotFoundError'
+      ){
 
-          setMode(
-            'idle',
-            'Ready'
-          );
+        msg =
+          'No microphone was found on this device.';
 
-        }
+      }
+      else if(
+        e.name===
+        'NotReadableError'
+      ){
 
-      };
+        msg =
+          'The microphone is busy or unavailable. Close other apps using it and try again.';
 
+      }
+      else if(
+        e.name===
+        'AbortError'
+      ){
 
-  }catch(error){
+        msg =
+          'The Live request timed out. Please try again.';
 
-    console.error(
-      'Live start error:',
-      error
-    );
+      }
+      else{
 
+        msg =
+          e.message ||
+          'Live Voice could not start.';
 
-    setMode(
-      'error',
-      'Live voice error'
-    );
+      }
 
 
-    setLiveState(
+      failLive(
+        msg,
+        msg
+      );
 
-      error.message ===
-      'microphone_not_supported'
 
-        ?
-
-        'This browser does not provide microphone access.'
-
-        :
-
-        'Live Voice could not start. Check microphone permission and Vercel Live configuration.'
-
-    );
-
-
-    closeMic();
-
-
-    liveSocket =
-      null;
-
-
-    liveReady =
-      false;
-
-
-    els.liveBtn.classList.remove(
-      'active'
-    );
-
-
-    els.liveBtn.textContent =
-      'Talk Live';
-
-  }
-
-}
-
-
-/* =====================================================
-   CLOSE LIVE
-===================================================== */
-
-function closeLive(){
-
-  liveManualClose =
-    true;
-
-
-  liveReady =
-    false;
-
-
-  stopLiveAudio();
-
-
-  try{
-
-    liveSocket
-      ?.close();
-
-  }catch(_){}
-
-
-  liveSocket =
-    null;
-
-
-  liveToken =
-    null;
-
-
-  closeMic();
-
-
-  els.liveBtn.classList.remove(
-    'active'
-  );
-
-
-  els.liveBtn.textContent =
-    'Talk Live';
-
-
-  closeLiveOverlay();
-
-
-  setMode(
-    'idle',
-    'Ready'
-  );
-
-}
-
-
-/* =====================================================
-   LIVE BUTTON
-===================================================== */
-
-els.liveBtn.addEventListener(
-  'click',
-  () => {
-
-    if(
-      liveSocket
-    ){
-
-      closeLive();
-
-    }else{
-
-      openLive();
+      closeMic();
 
     }
 
   }
-);
 
 
-/* =====================================================
-   LIVE CLOSE
-===================================================== */
+  /* ======================================================
+     RECONNECT
+  ====================================================== */
 
-els.liveClose.addEventListener(
-  'click',
-  closeLive
-);
-
-
-els.endLive.addEventListener(
-  'click',
-  closeLive
-);
-
-
-els.liveOverlay.addEventListener(
-  'click',
-  event => {
+  async function reconnectLive(){
 
     if(
-      event.target ===
-      els.liveOverlay
-    ){
-
-      closeLive();
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   ESC
-===================================================== */
-
-document.addEventListener(
-  'keydown',
-  event => {
-
-    if(
-      event.key ===
-      'Escape' &&
-
-      !els.liveOverlay
-        .classList
-        .contains(
-          'hidden'
-        )
-    ){
-
-      closeLive();
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   UNLOAD
-===================================================== */
-
-window.addEventListener(
-  'beforeunload',
-  () => {
-
-    liveManualClose =
-      true;
+      state.intentionalLiveClose
+    )
+      return;
 
 
     try{
 
-      liveSocket?.close();
+      if(liveSocket){
 
-    }catch(_){}
+        try{
+          liveSocket.close();
+        }
+        catch(_){}
+
+
+        liveSocket=null;
+
+      }
+
+
+      closeMic();
+
+      liveReady=false;
+
+      robotMode='thinking';
+
+
+      await new Promise(
+        resolve =>
+          setTimeout(
+            resolve,
+            350
+          )
+      );
+
+
+      await openLive();
+
+    }
+    catch(e){
+
+      failLive(
+        'Live reconnect failed.',
+        e.message ||
+        String(e)
+      );
+
+    }
+
+  }
+
+
+  /* ======================================================
+     CLOSE LIVE
+  ====================================================== */
+
+  function closeLive(){
+
+    state.intentionalLiveClose=true;
+
+    liveReady=false;
+
+    clearSetupTimer();
+
+    stopLiveAudio();
+
+
+    try{
+
+      liveSocket?.close(
+        1000,
+        'User ended conversation'
+      );
+
+    }
+    catch(_){}
+
+
+    liveSocket=null;
 
 
     closeMic();
 
-  }
-);
+
+    liveToken=null;
 
 
-/* =====================================================
-   MOBILE KEYBOARD SAFETY
-===================================================== */
+    robotMode='idle';
 
-if(
-  window.visualViewport
-){
 
-  window.visualViewport
-    .addEventListener(
-      'resize',
-      () => {
-
-        requestAnimationFrame(
-          () => {
-
-            els.chat.scrollTop =
-              els.chat.scrollHeight;
-
-          }
-        );
-
-      },
-      {
-        passive:true
-      }
+    els.live.classList.remove(
+      'on'
     );
 
-}
+
+    hideLive();
+
+
+    setMode(
+      'idle',
+      'JARVIS READY'
+    );
+
+  }
+
+
+  els.live.onclick =
+    () =>
+      liveSocket
+        ? closeLive()
+        : openLive();
+
+
+  els.endLive.onclick =
+    closeLive;
+
+
+  els.overlay.addEventListener(
+    'click',
+    e=>{
+
+      if(
+        e.target ===
+        els.overlay
+      ){
+
+        closeLive();
+
+      }
+
+    }
+  );
+
+
+  window.addEventListener(
+    'beforeunload',
+    closeLive
+  );
+
+
+  /* ======================================================
+     FRONTEND ERROR LOGGER
+  ====================================================== */
+
+  window.addEventListener(
+    'error',
+    e=>{
+
+      console.error(
+        'JARVIS frontend error:',
+        e.error ||
+        e.message
+      );
+
+    }
+  );
 
 })();
 </script>
