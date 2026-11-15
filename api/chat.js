@@ -155,6 +155,8 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
 
               return res.status(502).json({
                 error: "gemini_upstream_error",
+                upstreamStatus: response.status,
+                hint: response.status === 400 || response.status === 404 ? "Check the configured Gemini model name." : response.status === 401 || response.status === 403 ? "Check Gemini API key and API access." : "Gemini rejected the request; inspect deployment logs for details."
               });
             }
           }
@@ -183,6 +185,8 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
 
     return res.status(503).json({
       error: "gemini_temporarily_unavailable",
+      upstreamStatus: lastStatus || null,
+      hint: lastStatus === 429 ? "Gemini quota or rate limit reached." : lastStatus === 400 || lastStatus === 404 ? "The configured Gemini model may not exist or may not support generateContent." : "Inspect Vercel Function Logs for the Gemini request error."
     });
   } catch (error) {
     console.error(
