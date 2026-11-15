@@ -11,7 +11,10 @@ const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 async function callGemini(model, key, system, contents) {
-  return fetch(
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), Number(process.env.GEMINI_REQUEST_TIMEOUT_MS || 25000));
+  try {
+  return await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
       model
     )}:generateContent`,
@@ -21,6 +24,7 @@ async function callGemini(model, key, system, contents) {
         "Content-Type": "application/json",
         "x-goog-api-key": key,
       },
+      signal: controller.signal,
       body: JSON.stringify({
         systemInstruction: {
           parts: [{ text: system }],
@@ -32,6 +36,9 @@ async function callGemini(model, key, system, contents) {
       }),
     }
   );
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 module.exports = async (req, res) => {
@@ -106,7 +113,7 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
     let lastDetail = "";
 
     for (const model of models) {
-      for (let attempt = 0; attempt < 3; attempt++) {
+      for (let attempt = 0; attempt < 2; attempt++) {
         try {
           const response = await callGemini(
             model,
@@ -172,8 +179,8 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
           lastDetail = String(error);
         }
 
-        if (attempt < 2) {
-          await sleep(700 * Math.pow(2, attempt));
+        if (attempt < 1) {
+          await sleep(350 * Math.pow(2, attempt));
         }
       }
     }
