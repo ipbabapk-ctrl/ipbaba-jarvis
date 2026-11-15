@@ -2,10 +2,10 @@ const { guard, BRAND, RULES, verifyFirebaseUser } = require("./_shared");
 const KNOWLEDGE = require("../data/jarvis-knowledge.json");
 
 const PRIMARY_MODEL =
-  process.env.GEMINI_MODEL || "gemini-3.7-flash";
+  process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
 const FALLBACK_MODEL =
-  process.env.GEMINI_FALLBACK_MODEL || "gemini-3.8-flash";
+  process.env.GEMINI_FALLBACK_MODEL || "gemini-2.0-flash";
 
 const sleep = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
