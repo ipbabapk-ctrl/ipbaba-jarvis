@@ -7024,7 +7024,7 @@ async function loadSdk(){
   fb.onAuthStateChanged(auth,async user=>{
    activeUser=user||null;window.jarvisUser=activeUser;
    if(user){
-    gate.hidden=true;userBar.hidden=false;
+    gate.hidden=true;userBar.hidden=false;profileToggle.hidden=false;
     $("jarvisUserEmail").textContent=user.email||"Signed in";
     const displayName=user.displayName||((user.email||"JARVIS User").split("@")[0]);
     $("jarvisProfileName").textContent=displayName;
@@ -7033,7 +7033,7 @@ async function loadSdk(){
     window.jarvisGetIdToken=()=>user.getIdToken();
     try{window.jarvisLocalConversations=await storage.getConversations(user.uid);}catch(err){console.warn(err);}
    }else{
-    gate.hidden=false;userBar.hidden=true;window.jarvisGetIdToken=null;profilePanel.hidden=true;settingsPanel.hidden=true;profileToggle.setAttribute("aria-expanded","false");
+    gate.hidden=false;userBar.hidden=true;profileToggle.hidden=true;profilePanel.hidden=true;settingsPanel.hidden=true;window.jarvisGetIdToken=null;profilePanel.hidden=true;settingsPanel.hidden=true;profileToggle.setAttribute("aria-expanded","false");
    }
   });
   authReady=true;
