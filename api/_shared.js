@@ -168,7 +168,7 @@ function guard(req, res, options = {}) {
         const preview = /^ipbaba-jarvis-[a-z0-9-]+-jarvis-429f\.vercel\.app$/.test(host);
         return u.protocol === "https:" &&
           (host === "ipbaba-jarvis.vercel.app" || preview ||
-           String(process.env.ALLOWED_ORIGINS || "").split(",").map(v => v.trim().replace(/\\/$/, "")).includes(requestOrigin.replace(/\\/$/, "")));
+           String(process.env.ALLOWED_ORIGINS || "").split(",").map(v => v.trim().replace(/\/$/, "")).includes(requestOrigin.replace(/\/$/, "")));
       } catch (_) { return false; }
     })();
 
