@@ -12,6 +12,10 @@ module.exports = async (req, res) => {
     service: "IP BABA JARVIS",
     status: "online",
     geminiConfigured: Boolean(process.env.GEMINI_API_KEY),
+    firebaseAdminConfigured: Boolean(process.env.FIREBASE_SERVICE_ACCOUNT_JSON),
+    adminEmailConfigured: Boolean(process.env.ADMIN_EMAIL),
+    apiOriginAllowlistConfigured: Boolean(process.env.ALLOWED_ORIGINS),
+    textModel: process.env.GEMINI_MODEL || "gemini-3.7-flash",
     elevenLabsConfigured: Boolean(process.env.ELEVENLABS_API_KEY),
     elevenLabsVoiceConfigured: Boolean(
       process.env.ELEVENLABS_VOICE_ID
