@@ -237,3 +237,25 @@ module.exports = {
   RULES,
   guard,
 };
+
+let firebaseAdminAppPromise;
+async function verifyFirebaseUser(req) {
+  const header = String(req.headers.authorization || '');
+  const match = header.match(/^Bearer\\s+(.+)$/i);
+  if (!match) return { error: 'authentication_required' };
+  const raw = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
+  if (!raw) return { error: 'firebase_admin_not_configured' };
+  try {
+    const admin = await import('firebase-admin/app');
+    const authMod = await import('firebase-admin/auth');
+    if (!firebaseAdminAppPromise) firebaseAdminAppPromise = (async () => {
+      const serviceAccount = JSON.parse(raw);
+      return admin.getApps().length ? admin.getApps()[0] : admin.initializeApp({ credential: admin.cert(serviceAccount) });
+    })();
+    const app = await firebaseAdminAppPromise;
+    const decoded = await authMod.getAuth(app).verifyIdToken(match[1], true);
+    if (!decoded.email || decoded.email_verified !== true) return { error: 'verified_email_required' };
+    return { user: { uid: decoded.uid, email: decoded.email, admin: decoded.email.toLowerCase() === String(process.env.ADMIN_EMAIL || 'ipbaba.pk@gmail.com').toLowerCase() } };
+  } catch (error) { console.error('Firebase token verification failed', error && error.message); return { error: 'invalid_authentication' }; }
+}
+module.exports.verifyFirebaseUser = verifyFirebaseUser;
