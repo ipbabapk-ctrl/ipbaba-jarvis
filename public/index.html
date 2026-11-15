@@ -5331,8 +5331,8 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
             method:"POST",
 
             headers:{
-              "Content-Type":
-                "application/json"
+              "Content-Type":"application/json",
+              "Authorization":"Bearer " + await window.jarvisGetIdToken()
             },
 
             body:
@@ -5388,6 +5388,7 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
         state.messages.slice(
           -24
         );
+      if (window.jarvisSaveLocalConversation) await window.jarvisSaveLocalConversation({ id:"current", title:String(state.messages.find(m=>m.role==="user")?.text || "New chat").slice(0,72), messages:state.messages });
 
       addMessage(
         "ai",
