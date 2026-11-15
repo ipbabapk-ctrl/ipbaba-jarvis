@@ -241,7 +241,7 @@ module.exports = {
 let firebaseAdminAppPromise;
 async function verifyFirebaseUser(req) {
   const header = String(req.headers.authorization || '');
-  const match = header.match(/^Bearer\\s+(.+)$/i);
+  const match = header.match(/^Bearer\s+(.+)$/i);
   if (!match) return { error: 'authentication_required' };
   const raw = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
   if (!raw) return { error: 'firebase_admin_not_configured' };
