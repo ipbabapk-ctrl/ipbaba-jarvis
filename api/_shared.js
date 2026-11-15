@@ -180,17 +180,30 @@ function guard(req, res, options = {}) {
 
   const origin = req.headers.origin;
 
-  const allowedOrigins = String(
-    process.env.ALLOWED_ORIGINS || ""
-  )
+  const allowedOrigins = String(process.env.ALLOWED_ORIGINS || "")
     .split(",")
-    .map(v => v.trim())
+    .map(v => v.trim().replace(/\/$/, ""))
     .filter(Boolean);
 
-  if (origin && allowedOrigins.length && !allowedOrigins.includes(origin)) {
-    res.status(403).json({
-      error: "forbidden_origin",
-    });
+  // Permit only this Vercel project's stable host and its generated
+  // preview aliases. Do not broadly trust arbitrary *.vercel.app origins.
+  const isTrustedJarvisOrigin = (value) => {
+    try {
+      const url = new URL(value);
+      if (url.protocol !== "https:") return false;
+      const host = url.hostname.toLowerCase();
+      return host === "ipbaba-jarvis.vercel.app" ||
+        /^ipbaba-jarvis-[a-z0-9-]+-jarvis-429f\.vercel\.app$/.test(host);
+    } catch (_) {
+      return false;
+    }
+  };
+  const originAllowed = !origin ||
+    allowedOrigins.includes(String(origin).replace(/\/$/, "")) ||
+    isTrustedJarvisOrigin(origin);
+
+  if (!originAllowed) {
+    res.status(403).json({ error: "forbidden_origin", hint: "This origin is not approved for the IP BABA JARVIS API." });
     return true;
   }
 
@@ -207,11 +220,7 @@ function guard(req, res, options = {}) {
 
   res.setHeader(
     "Access-Control-Allow-Origin",
-    origin && allowedOrigins.includes(origin)
-      ? origin
-      : allowedOrigins.length
-        ? allowedOrigins[0]
-        : "*"
+    origin || (allowedOrigins[0] || "https://ipbaba-jarvis.vercel.app")
   );
 
   res.setHeader(
