@@ -7024,7 +7024,7 @@ async function loadSdk(){
   fb.onAuthStateChanged(auth,async user=>{
    activeUser=user||null;window.jarvisUser=activeUser;
    if(user){
-    gate.hidden=true;userBar.hidden=false;profileToggle.hidden=false;
+    gate.hidden=true;userBar.hidden=false;profileToggle.hidden=false;profileToggle.hidden=false;
     $("jarvisUserEmail").textContent=user.email||"Signed in";
     const displayName=user.displayName||((user.email||"JARVIS User").split("@")[0]);
     $("jarvisProfileName").textContent=displayName;
