@@ -3142,6 +3142,34 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
 #jarvisUserBar button{cursor:pointer}
 @media(max-width:760px){.ipbaba-nav{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;border-radius:12px;margin-bottom:8px}.ipbaba-nav a{flex:0 0 auto}.energy-sphere{width:min(55vw,190px)}.energy-core-label{bottom:0}}
 
+
+/* White holographic IP BABA Live Voice stage */
+.live-overlay{background:radial-gradient(circle at 50% 38%,#e8fbff 0,#f8fdff 44%,#eaf8f3 100%)!important;backdrop-filter:blur(16px)!important}
+.live-frame{background:linear-gradient(145deg,#ffffff,#f3fbff 58%,#f0fff8)!important;border:1px solid #bfe4ed!important;box-shadow:0 35px 100px #1a607522,0 0 55px #8be8e355!important}
+.live-topbar{border-bottom:1px solid #dceef3!important}
+.live-title strong{color:#173f55!important}
+.live-title span:not(.live-logo-dot){color:#6a8999!important}
+.live-logo-dot{background:radial-gradient(circle at 34% 30%,#fff,#26c9ef 25%,#1686c3 60%,#25c69a 80%)!important;box-shadow:0 0 20px #4bcde888!important}
+.live-stage{background:radial-gradient(ellipse at center,#fff 0,#f2fbff 55%,#effcf6 100%)!important}
+.live-stage:before{background-image:linear-gradient(#8fcbd51b 1px,transparent 1px),linear-gradient(90deg,#8fcbd51b 1px,transparent 1px)!important}
+.live-energy{background:radial-gradient(circle,#8deeff66,#a8f4df55 43%,transparent 72%)!important;filter:blur(12px)!important}
+.live-orbit{border-color:#58bcd566!important;box-shadow:0 0 60px #5ccddd22!important}
+.live-orbit:before{border-color:#43cbb866!important}.live-orbit:after{border-color:#68bce755!important}
+.live-node{background:#1ba5d1!important;box-shadow:0 0 18px #36c9eb!important}.live-node.n2,.live-node.n3{background:#28b991!important;box-shadow:0 0 18px #48dfb4!important}
+.live-code{opacity:.18!important}.live-code span{color:#258eb4!important}
+.live-robot{filter:drop-shadow(0 20px 28px #247a982b)!important}
+.live-robot .live-mouth{transform-box:fill-box;transform-origin:center;transition:transform .07s ease}
+.live-robot .live-mouth-glow{opacity:.7;transition:opacity .08s ease}
+.live-stage.is-speaking .live-mouth{animation:jarvisLipSync .16s ease-in-out infinite alternate}
+.live-stage.is-speaking .live-mouth-glow{animation:jarvisLipGlow .16s ease-in-out infinite alternate}
+@keyframes jarvisLipSync{from{transform:scaleY(.6) scaleX(.82)}to{transform:scaleY(3.1) scaleX(1.08)}}
+@keyframes jarvisLipGlow{from{opacity:.25}to{opacity:1}}
+.live-status strong{color:#087fa8!important}.live-status span{color:#688697!important}
+.live-end-wrap{border-top:1px solid #dceef3!important}
+.live-end{background:linear-gradient(120deg,#0c91c6,#20b995)!important;box-shadow:0 8px 22px #1aa8b844!important}
+.live-close{color:#2e6176!important;border-color:#c9e4ec!important;background:#fff!important}
+@media(max-width:700px){.live-frame{border-radius:18px!important}.live-robot{width:min(72%,360px)!important;min-width:220px!important}}
+
 </style>
 </head>
 
@@ -4162,17 +4190,14 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
 
           <!-- mouth -->
 
-          <path
-            d="M108 101h44"
-            stroke="rgba(66,217,255,.56)"
-            stroke-width="2"
+          <path class="live-mouth"
+            d="M108 102 Q130 102 152 102"
+            fill="none" stroke="#087fa8" stroke-width="3"
             stroke-linecap="round"
           />
-
-          <path
-            d="M118 104h24"
-            stroke="rgba(240,43,66,.34)"
-            stroke-width="1"
+          <path class="live-mouth-glow"
+            d="M118 106 Q130 106 142 106"
+            fill="none" stroke="#25c6aa" stroke-width="1.5"
             stroke-linecap="round"
           />
 
@@ -4233,33 +4258,10 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
             stroke="rgba(66,217,255,.30)"
           />
 
-          <path
-            d="M108 143h18
-               M108 150h27
-               M108 157h18
-               M134 143h16
-               M140 150h11
-               M139 157h12"
-            stroke="rgba(66,217,255,.45)"
-            stroke-width="1.6"
-            stroke-linecap="round"
-          />
-
-          <circle
-            cx="149"
-            cy="143"
-            r="2.5"
-            fill="#f02b42"
-            filter="url(#liveGlow)"
-          />
-
-          <circle
-            cx="149"
-            cy="158"
-            r="2.5"
-            fill="#42d9ff"
-            filter="url(#liveGlow)"
-          />
+          <rect x="109" y="140" width="42" height="22" rx="5" fill="#f7fdff" stroke="#a8dce9"/>
+          <text x="130" y="154" text-anchor="middle" font-size="8" font-weight="900" letter-spacing=".7" fill="#087fa8">IP BABA</text>
+          <circle cx="105" cy="151" r="2.3" fill="#25c6aa" filter="url(#liveGlow)"/>
+          <circle cx="155" cy="151" r="2.3" fill="#168ed1" filter="url(#liveGlow)"/>
 
 
           <!-- side circuits -->
@@ -4579,6 +4581,8 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
         : mode === "live"
         ? "LIVE AUDIO ACTIVE"
         : "SYSTEM ONLINE";
+
+    els.liveStage.classList.toggle("is-speaking", mode === "speaking");
   }
 
   /* =======================================================
