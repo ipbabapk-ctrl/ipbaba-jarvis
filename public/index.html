@@ -3037,6 +3037,52 @@ textarea:focus-visible{
     scroll-behavior:auto !important;
   }
 }
+
+/* IP BABA premium light experience */
+:root{--bg:#f5f9fc;--bg2:#eef6fa;--panel:#ffffff;--panel2:#f7fbfd;--white:#102b40;--text:#17364b;--muted:#627b8d;--muted2:#8297a5;--sky:#00a9d6;--sky2:#1689bc;--blue:#287cff;--red:#e52c49;--red2:#f04b62;--green:#21a878;--line:rgba(31,91,122,.14);--line2:rgba(0,169,214,.28);--shadow:0 20px 55px rgba(36,76,102,.10)}
+html,body{background:#f5f9fc!important;color:#17364b!important;color-scheme:light!important}
+body::before{background:radial-gradient(circle at 12% 12%,rgba(63,196,151,.13),transparent 30%),radial-gradient(circle at 88% 8%,rgba(49,177,226,.16),transparent 34%),linear-gradient(145deg,#fbfdff,#f0f8fb 55%,#f7fcfa)!important}
+body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(28,120,155,.035) 1px,transparent 1px)!important}
+.panel{background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(247,251,253,.98))!important;border-color:rgba(38,104,137,.14)!important;box-shadow:0 18px 48px rgba(30,76,102,.09),inset 0 1px 0 #fff!important}
+.system-status,.top-btn,.welcome-card,.quick-card{background:rgba(255,255,255,.82)!important;border-color:rgba(35,112,148,.16)!important;color:#426276!important}
+.top-btn{color:#2c647f!important}.top-btn:hover{color:#087da8!important}
+.micro-label,.chat-header-sub,.robot-caption-sub,.quick-sub{color:#71899a!important}
+.micro-state,.welcome-kicker{color:#078db7!important}
+.robot-caption-title,.chat-header-title,.welcome-card h2{color:#163b53!important}
+.chat-agent-orb{box-shadow:0 0 20px rgba(0,169,214,.22)!important}
+.chat-header{border-bottom-color:rgba(38,104,137,.12)!important}
+.chat-scroll{scrollbar-color:rgba(0,169,214,.28) transparent!important}
+.welcome-card p{color:#627d90!important}
+.quick-card{color:#23495f!important}
+.quick-card:hover{background:#f1f9fc!important;border-color:rgba(0,169,214,.35)!important}
+.message.user{background:linear-gradient(135deg,#e2f3ff,#dceeff)!important;border-color:#c7e2f4!important;color:#173d58!important}
+.message.ai{background:linear-gradient(145deg,#fff,#f6fafc)!important;border-color:#dce8ee!important;color:#24475b!important}
+.message.ai strong{color:#123b55!important}.message.ai h3{color:#078db7!important}
+.message.ai code{background:#edf5f8!important;border-color:#dce8ee!important;color:#23495f!important}
+.chat-state{color:#658396!important}
+.live-main-btn{background:linear-gradient(105deg,#168db8,#36b9d7 55%,#36a984)!important;box-shadow:0 12px 28px rgba(0,145,184,.16)!important}
+.live-main-btn.on{background:linear-gradient(105deg,#187c9c,#1d9e8a)!important}
+.robot-orbit{border-color:rgba(0,155,198,.18)!important;box-shadow:0 0 70px rgba(0,155,198,.06),inset 0 0 60px rgba(42,175,140,.035)!important}
+.robot-orbit::before{border-color:rgba(36,169,135,.18)!important}.robot-orbit::after{border-color:rgba(0,155,198,.14)!important}
+.robot-floor{background:radial-gradient(ellipse,rgba(0,169,214,.13),rgba(57,190,144,.08) 42%,transparent 70%)!important}
+.code-stream span{color:rgba(0,135,177,.14)!important}.code-stream span.red{color:rgba(218,55,83,.12)!important}
+.robot-shell{stroke:rgba(0,133,179,.48)!important}.robot-dark{fill:#e9f4f8!important;stroke:rgba(0,133,179,.22)!important}
+.robot-board{fill:rgba(247,252,255,.97)!important;stroke:rgba(0,153,196,.4)!important}
+.robot-circuit{stroke:rgba(0,153,196,.55)!important}.robot-circuit.red{stroke:rgba(225,54,82,.45)!important}
+.robot-eye-blue{fill:#00a9d6!important}.robot-eye-red{fill:#e52c49!important}
+@media(max-width:760px){.app{padding-left:10px!important;padding-right:10px!important}.panel{border-radius:15px!important}.topbar{gap:8px!important}}
+/* Authentication gate */
+#jarvisAuthGate{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 15% 15%,rgba(61,193,151,.16),transparent 34%),radial-gradient(circle at 85% 12%,rgba(54,177,226,.18),transparent 36%),#f5f9fc}
+#jarvisAuthGate[hidden]{display:none!important}
+.jarvis-auth-card{width:min(100%,430px);padding:30px;border:1px solid #dceaf0;border-radius:24px;background:rgba(255,255,255,.94);box-shadow:0 24px 80px rgba(34,78,101,.14);text-align:center}
+.jarvis-auth-logo{width:76px;height:76px;object-fit:contain;background:#fff;border-radius:18px;padding:5px;margin:0 auto 14px;box-shadow:0 8px 25px rgba(35,86,112,.1)}
+.jarvis-auth-card h1{margin:5px 0;color:#153b54;font-size:1.45rem}.jarvis-auth-card p{color:#688294;font-size:.88rem;line-height:1.55}
+.jarvis-auth-form{display:grid;gap:10px;margin-top:20px}.jarvis-auth-form input{width:100%;padding:13px 14px;border:1px solid #d6e5ec;border-radius:11px;background:#fbfdfe;color:#17364b;outline:none}.jarvis-auth-form input:focus{border-color:#27a9cf;box-shadow:0 0 0 3px rgba(39,169,207,.12)}
+.jarvis-auth-btn{width:100%;padding:13px;border:0;border-radius:11px;background:linear-gradient(110deg,#138db8,#35b9d4 60%,#32a77d);color:#fff;font-weight:800;cursor:pointer}
+.jarvis-auth-secondary{background:#fff;color:#24516a;border:1px solid #d7e6ed}.jarvis-auth-error{min-height:20px;color:#c52d4c;font-size:.8rem}.jarvis-auth-switch{color:#087da8;background:none;border:0;padding:7px;cursor:pointer}
+#jarvisUserBar{position:fixed;right:18px;bottom:16px;z-index:60;display:flex;gap:8px;align-items:center;padding:7px 10px;border:1px solid #dceaf0;border-radius:999px;background:rgba(255,255,255,.9);box-shadow:0 5px 20px rgba(32,78,102,.1);font-size:11px;color:#45677a}
+#jarvisUserBar button{border:0;background:#eaf5f8;color:#176482;border-radius:999px;padding:6px 10px;cursor:pointer}
+
 </style>
 </head>
 
@@ -7499,14 +7545,46 @@ textarea:focus-visible{
   );
 
 })();
-<script type="module">
-import { auth } from "js/firebase.js";
 
-import {
-  saveConversation,
-  getConversations
-} from "js/chat-storage.js";
+<script type="module">
+import { auth, googleProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "./js/firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+import { saveConversation, getConversations } from "./js/chat-storage.js";
+const gate=document.getElementById("jarvisAuthGate"), form=document.getElementById("jarvisAuthForm"), email=document.getElementById("jarvisAuthEmail"), password=document.getElementById("jarvisAuthPassword"), errorBox=document.getElementById("jarvisAuthError"), modeBtn=document.getElementById("jarvisAuthMode"), googleBtn=document.getElementById("jarvisGoogleSubmit"), userBar=document.getElementById("jarvisUserBar");
+let createMode=false, activeUser=null, lastSaved="";
+const showError=e=>{errorBox.textContent=e?.code?.replace("auth/","").replaceAll("-"," ")||e?.message||"Authentication failed. Please try again.";};
+window.jarvisAuthReady=new Promise(resolve=>onAuthStateChanged(auth,async user=>{
+ activeUser=user||null; window.jarvisUser=user||null;
+ if(user){gate.hidden=true;userBar.hidden=false;document.getElementById("jarvisUserEmail").textContent=user.email||"Signed in";window.jarvisGetIdToken=()=>user.getIdToken();try{const chats=await getConversations(user.uid);window.jarvisLocalConversations=chats;}catch(e){console.warn("Local history unavailable",e);} }
+ else{gate.hidden=false;userBar.hidden=true;window.jarvisGetIdToken=null;}
+ resolve(user||null);
+}));
+form.addEventListener("submit",async e=>{e.preventDefault();errorBox.textContent="";try{if(createMode)await createUserWithEmailAndPassword(auth,email.value.trim(),password.value);else await signInWithEmailAndPassword(auth,email.value.trim(),password.value);}catch(e){showError(e);}});
+googleBtn.addEventListener("click",async()=>{errorBox.textContent="";try{await signInWithPopup(auth,googleProvider);}catch(e){showError(e);}});
+modeBtn.addEventListener("click",()=>{createMode=!createMode;document.getElementById("jarvisEmailSubmit").textContent=createMode?"Create account":"Sign in with email";modeBtn.textContent=createMode?"I already have an account":"Create a new account";password.autocomplete=createMode?"new-password":"current-password";});
+document.getElementById("jarvisSignOut").addEventListener("click",()=>signOut(auth));
+window.jarvisSaveLocalConversation=async conversation=>{if(!activeUser)return;try{await saveConversation(activeUser.uid,conversation);}catch(e){console.warn("Could not save local chat",e);}};
+window.jarvisGetLocalConversations=async()=>activeUser?getConversations(activeUser.uid):[];
 </script>
+
+
+<div id="jarvisAuthGate">
+ <section class="jarvis-auth-card" aria-labelledby="jarvisAuthTitle">
+  <img class="jarvis-auth-logo" src="https://drive.google.com/uc?export=view&id=1Jmscd_rCXU-aAgZG9dvcfgosLrf3Auw6" alt="IP BABA logo" onerror="this.style.display='none'">
+  <div style="font-size:11px;letter-spacing:.2em;font-weight:800;color:#138db8">IP BABA • DIGITAL GROWTH PARTNER</div>
+  <h1 id="jarvisAuthTitle">Welcome to JARVIS</h1>
+  <p>Sign in to securely access your AI assistant. Your chat history stays in this browser on this device.</p>
+  <form class="jarvis-auth-form" id="jarvisAuthForm">
+   <input id="jarvisAuthEmail" type="email" autocomplete="email" placeholder="Email address" required>
+   <input id="jarvisAuthPassword" type="password" autocomplete="current-password" placeholder="Password" minlength="6" required>
+   <button class="jarvis-auth-btn" id="jarvisEmailSubmit" type="submit">Sign in with email</button>
+   <button class="jarvis-auth-btn jarvis-auth-secondary" id="jarvisGoogleSubmit" type="button">Continue with Google</button>
+   <button class="jarvis-auth-switch" id="jarvisAuthMode" type="button">Create a new account</button>
+   <div class="jarvis-auth-error" id="jarvisAuthError" role="status"></div>
+  </form>
+ </section>
+</div>
+<div id="jarvisUserBar" hidden><span id="jarvisUserEmail"></span><button id="jarvisSignOut" type="button">Sign out</button></div>
 
 </body>
 </html>
