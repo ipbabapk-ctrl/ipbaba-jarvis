@@ -3,11 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f5f9fc">
 <meta name="color-scheme" content="light">
-<meta name="description" content="JARVIS AI Assistant by IP BABA">
-<title>JARVIS — IP BABA AI Assistant</title>
+<meta name="description" content="IP BABA JARVIS is an AI assistant for digital services, AI prompts, marketing, automation and business growth. Built by IP BABA in Sargodha, Pakistan.">
+<meta name="author" content="Muhammad Zaheer — IP BABA">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#f6fbfd">
+<link rel="canonical" href="https://ipbaba-jarvis.vercel.app/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<title>IP BABA JARVIS — AI Assistant & Digital Growth Partner</title>
 
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"IP BABA","url":"https://www.ipbaba.online/","email":"ipbaba.pk@gmail.com","telephone":"+923443225533","address":{"@type":"PostalAddress","addressLocality":"Sargodha","addressRegion":"Punjab","addressCountry":"PK"},"founder":{"@type":"Person","name":"Muhammad Zaheer"},"description":"AI, digital marketing, technology and business growth services."}
+</script>
 <style>
 /* =========================================================
    IP BABA — JARVIS PREMIUM INTERFACE
@@ -3170,6 +3179,64 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
 .live-close{color:#2e6176!important;border-color:#c9e4ec!important;background:#fff!important}
 @media(max-width:700px){.live-frame{border-radius:18px!important}.live-robot{width:min(72%,360px)!important;min-width:220px!important}}
 
+
+/* IP BABA premium responsive refresh — additive, isolated styles */
+:root{--bg:#f5f9fc;--text:#17364b;--sky:#00a9d6;--green:#21a878}
+html,body{background:#f5f9fc!important;color:#17364b!important;color-scheme:light}
+body::before{background:radial-gradient(circle at 12% 12%,#dff7ec,transparent 32%),radial-gradient(circle at 88% 8%,#def4fc,transparent 35%),linear-gradient(145deg,#fbfdff,#f0f8fb 55%,#f7fcfa)!important}
+.panel{background:linear-gradient(145deg,#fff,#f7fbfd)!important;border-color:#dcebf1!important;box-shadow:0 16px 42px #1e4c6614!important}
+.menu-trigger{width:42px;height:42px;display:grid;place-items:center;border:1px solid #d7e8ef;border-radius:12px;background:#fff;color:#15516d;cursor:pointer}
+.menu-trigger svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.menu-scrim{position:fixed;inset:0;z-index:1000;background:#102b3d66;backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:.22s}
+.side-drawer{position:fixed;z-index:1001;inset:0 auto 0 0;width:min(86vw,340px);padding:calc(18px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));background:#fff;box-shadow:20px 0 60px #173b522b;transform:translateX(-105%);transition:transform .24s ease;display:flex;flex-direction:column;gap:14px;overflow:auto}
+body.drawer-open .menu-scrim{opacity:1;visibility:visible}body.drawer-open .side-drawer{transform:translateX(0)}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid #e4eff3}
+.drawer-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#173b52;font-weight:900;letter-spacing:.12em}
+.drawer-brand img{width:42px;height:42px;object-fit:contain}
+.drawer-close{width:38px;height:38px;border:0;border-radius:10px;background:#eff7fa;color:#28566d;font-size:24px;cursor:pointer}
+.drawer-section{padding:6px 10px 0;color:#7894a2;font-size:10px;font-weight:850;letter-spacing:.18em;text-transform:uppercase}
+.drawer-links{display:grid;gap:4px}.drawer-links a{display:flex;align-items:center;gap:10px;padding:12px;border-radius:10px;text-decoration:none;color:#254b60;font-size:14px;font-weight:650}
+.drawer-links a:hover{background:#edf8fb;color:#087fa8}.drawer-links .premium-link{margin-top:8px;background:#f4fafc;border:1px solid #deedf2}.premium-link svg{width:18px;height:18px;fill:none;stroke:#1288aa;stroke-width:1.8}
+.drawer-footer{margin-top:auto;padding:13px;border-radius:12px;background:linear-gradient(120deg,#eff9fd,#f0fbf5);color:#34728a;font-size:11px;font-weight:750}
+.command-workstation{position:relative;z-index:4;width:min(82%,430px);aspect-ratio:1.32;display:grid;place-items:center;filter:drop-shadow(0 18px 26px #28657a20)}
+.work-monitor{position:absolute;top:12%;width:68%;height:55%;border:6px solid #b5d1dc;border-radius:14px;background:linear-gradient(145deg,#0c334b,#071b2a);box-shadow:inset 0 0 0 2px #f5ffff,0 0 0 1px #83cbd8,0 0 32px #45c1de33;overflow:hidden}
+.work-screen-glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 48%,#2dd3d3aa,#167ec677 38%,transparent 72%);animation:ipbPulse 2.8s ease-in-out infinite alternate}
+.work-core{position:absolute;inset:22% 31%;border:1px solid #69e5e6;border-radius:50%;box-shadow:0 0 18px #25cde8aa,inset 0 0 18px #25cde866;animation:ipbSpin 14s linear infinite}
+.work-core:before,.work-core:after{content:"";position:absolute;inset:18%;border:1px dashed #8ce9e8;border-radius:50%}.work-core:after{inset:37%;background:#3dd4c5;box-shadow:0 0 24px #30d6c5}
+.work-data-line{position:absolute;left:12%;right:12%;bottom:12%;height:2px;background:linear-gradient(90deg,transparent,#27c4dd,transparent);box-shadow:0 -12px #2bb8d255,0 -24px #2bb8d233}
+.work-stand{position:absolute;top:67%;width:14%;height:12%;background:linear-gradient(90deg,#9bbdca,#eaf8fb,#7ea7b7);clip-path:polygon(38% 0,62% 0,76% 82%,100% 100%,0 100%,24% 82%)}
+.work-base{position:absolute;top:78%;width:43%;height:5%;border-radius:50%;background:linear-gradient(#d7eef4,#789ead)}
+.work-orbit{position:absolute;inset:1% 8%;border:1px solid #2aaacb55;border-radius:50%;animation:ipbSpin 22s linear infinite}
+.work-label{position:absolute;bottom:1%;font-size:clamp(8px,1vw,11px);font-weight:850;letter-spacing:.2em;color:#1687a8}
+@keyframes ipbSpin{to{transform:rotate(360deg)}}@keyframes ipbPulse{to{opacity:.55;transform:scale(.95)}}
+.robot-caption-title,.chat-header-title{color:#163b53!important}.robot-caption-sub{color:#71899a!important}
+.chat-header{background:linear-gradient(100deg,#f3fbff,#effff8)!important;border-bottom:1px solid #dceef3!important}
+.chat-scroll{background:#fbfdff!important}.composer-shell{background:#f8fcff!important;border-top:1px solid #dcecf2!important}
+.message.user{background:linear-gradient(135deg,#e2f3ff,#dceeff)!important;color:#173d58!important}
+.message.ai{background:linear-gradient(145deg,#fff,#f6fafc)!important;color:#24475b!important}
+.live-overlay{background:radial-gradient(circle at 50% 38%,#e8fbff,#f8fdff 48%,#eaf8f3)!important}
+.live-frame{background:linear-gradient(145deg,#fff,#f3fbff 58%,#f0fff8)!important;border:1px solid #c9e7ef!important;box-shadow:0 30px 90px #1a607522!important}
+.live-stage{background:radial-gradient(ellipse at center,#fff,#f2fbff 58%,#effcf6)!important}
+.live-robot{display:none!important}
+.live-workstation{position:relative;width:min(76%,510px);aspect-ratio:1.28;z-index:4;display:grid;place-items:center}
+.live-halo{position:absolute;width:46%;aspect-ratio:1;border:1px solid #4cc8d477;border-radius:50%;box-shadow:0 0 42px #4cc8d433,inset 0 0 30px #4cc8d422;animation:ipbPulse .85s ease-in-out infinite alternate}
+.live-stage.is-speaking .live-halo{animation:ipbVoice .24s ease-in-out infinite alternate}
+@keyframes ipbVoice{to{transform:scale(1.17);box-shadow:0 0 60px #20b8d977,inset 0 0 35px #20c5bd55}}
+.live-orbit-core{position:absolute;width:34%;aspect-ratio:1;border:1px dashed #3bb9ca;border-radius:50%;animation:ipbSpin 12s linear infinite}
+.live-screen{position:absolute;bottom:19%;width:58%;height:47%;border:7px solid #b5d2dc;border-radius:15px;background:linear-gradient(145deg,#0b334b,#071c2d);box-shadow:0 0 0 2px #fff,inset 0 0 35px #14c3d4aa,0 15px 25px #14465b24;overflow:hidden}
+.live-screen-core{position:absolute;inset:28%;border-radius:50%;background:radial-gradient(circle,#8ef4ed,#1cb8c7 48%,#1274a5 75%);box-shadow:0 0 24px #35d9dd;animation:ipbPulse .7s ease-in-out infinite alternate}
+.live-screen-bars{position:absolute;left:14%;right:14%;bottom:15%;height:2px;background:#49d6dc;box-shadow:0 -11px #49d6dc66,0 -22px #49d6dc33}
+.live-desk{position:absolute;bottom:10%;width:85%;height:7%;border-radius:12px;background:linear-gradient(180deg,#e9f5f8,#abcbd5);box-shadow:0 12px 22px #295f7224}
+.live-keyboard{position:absolute;bottom:5%;width:33%;height:4%;border-radius:7px;background:linear-gradient(#d5edf2,#92b9c7)}
+.live-brandline{position:absolute;bottom:0;font-size:10px;font-weight:850;letter-spacing:.26em;color:#1788a8}
+.live-status strong{color:#087fa8!important}.live-status span{color:#688697!important}
+.live-end{background:linear-gradient(120deg,#0c91c6,#20b995)!important}
+#jarvisUserBar{top:12px;bottom:auto;right:12px;z-index:70}
+@media(max-width:960px){.app{padding:8px max(9px,env(safe-area-inset-right)) 8px max(9px,env(safe-area-inset-bottom))!important}.workspace{grid-template-columns:1fr;grid-template-rows:minmax(145px,21vh) minmax(0,1fr);gap:8px}.robot-panel{min-height:0}.robot-stage{min-height:95px}.command-workstation{width:min(52%,300px)}.robot-caption-sub{display:none}.robot-panel-top{padding:6px 10px 0}.robot-caption{padding:1px 8px 4px}.live-frame{border-radius:18px!important}}
+@media(max-width:600px){.app{padding:calc(5px + env(safe-area-inset-top)) 6px calc(6px + env(safe-area-inset-bottom))!important}.topbar{height:54px;flex-basis:54px;grid-template-columns:1fr auto 1fr;gap:7px}.brand-holder{width:43px;height:43px}.brand-square{width:40px;height:40px}.menu-trigger{width:38px;height:38px}.system-status{font-size:8px;padding:6px}.workspace{grid-template-rows:minmax(112px,16vh) minmax(0,1fr);gap:6px}.panel{border-radius:14px!important}.command-workstation{width:min(49%,205px);aspect-ratio:1.4}.work-label{font-size:7px}.robot-caption-title{font-size:11px}.robot-caption-sub{display:none}.live-frame{width:100%;height:calc(var(--app-h) - 10px);grid-template-rows:54px minmax(0,1fr) 76px 58px;border-radius:18px!important}.live-workstation{width:min(88%,390px)}.live-brandline{font-size:9px}.live-status strong{font-size:11px}.live-status span{font-size:10px}.chat-header{min-height:42px}.composer-shell{padding:6px!important}.composer textarea,#input{font-size:14px!important}}
+@media(max-width:380px){.workspace{grid-template-rows:minmax(105px,15vh) minmax(0,1fr)}.command-workstation{width:min(45%,170px)}}
+@media(prefers-reduced-motion:reduce){.command-workstation *,.live-workstation *,.side-drawer,.menu-scrim{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 
@@ -3184,29 +3251,15 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
   <header class="topbar">
 
     <div class="top-left">
-      <div class="system-status">
-        <span class="system-dot"></span>
-        <span id="systemStatus">SYSTEM ONLINE</span>
-      </div>
+      <button class="menu-trigger" id="menuTrigger" type="button" aria-label="Open navigation" aria-controls="sideDrawer" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="system-status"><span class="system-dot"></span><span id="systemStatus">SYSTEM ONLINE</span></div>
     </div>
 
-    <!-- CENTERED LOGO -->
-    <div class="brand-holder">
-      <div class="brand-square">
-        <img
-          id="brandLogo"
-          src="/assets/ipbaba-logo.png"
-          alt="IP BABA"
-        >
-
-        <span
-          id="brandFallback"
-          class="brand-fallback"
-        >
-          IP BABA
-        </span>
-      </div>
-    </div>
+    <a class="brand-holder" href="https://www.ipbaba.online/" aria-label="IP BABA Home">
+      <div class="brand-square"><img id="brandLogo" src="/assets/ipbaba-logo.png" alt="IP BABA"><span id="brandFallback" class="brand-fallback">IP BABA</span></div>
+    </a>
 
     <div class="top-right">
 
@@ -3227,18 +3280,24 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
 
   </header>
 
-  <nav class="ipbaba-nav" aria-label="IP BABA navigation">
-    <a href="https://www.ipbaba.online/" target="_blank" rel="noopener">Home</a>
-    <a href="https://www.ipbaba.online/p/ip-baba-digital-services.html" target="_blank" rel="noopener">Digital Services</a>
-    <a href="https://www.ipbaba.online/p/ai-prompt-generator.html" target="_blank" rel="noopener">AI Prompt Generator</a>
-    <a href="https://www.ipbaba.online/p/prompt-library.html" target="_blank" rel="noopener">Prompt Library</a>
-    <a href="https://www.ipbaba.online/p/promote-your-post-ip-baba.html" target="_blank" rel="noopener">Promote Business</a>
-    <a href="https://www.ipbaba.online/p/digital-growth-challenge.html" target="_blank" rel="noopener">Growth Challenge</a>
-    <a href="https://www.ipbaba.online/p/portfolio.html" target="_blank" rel="noopener">Portfolio</a>
-    <a href="https://www.ipbaba.online/p/about-ip-baba.html" target="_blank" rel="noopener">About</a>
-    <a href="https://www.ipbaba.online/p/contact.html" target="_blank" rel="noopener">Contact</a>
-    <a href="/admin">Admin</a>
-  </nav>
+  <div class="menu-scrim" id="menuScrim"></div>
+  <aside class="side-drawer" id="sideDrawer" aria-label="IP BABA navigation" aria-hidden="true">
+    <div class="drawer-head"><a class="drawer-brand" href="https://www.ipbaba.online/"><img src="/assets/ipbaba-logo.png" alt="IP BABA"><span>IP BABA</span></a><button class="drawer-close" id="drawerClose" type="button" aria-label="Close menu">×</button></div>
+    <div class="drawer-section">Explore</div>
+    <nav class="drawer-links" aria-label="Main pages">
+      <a href="https://www.ipbaba.online/">Home</a>
+      <a href="https://www.ipbaba.online/p/ip-baba-digital-services.html">Digital Services</a>
+      <a href="https://www.ipbaba.online/p/ai-prompt-generator.html">AI Prompt Generator</a>
+      <a href="https://www.ipbaba.online/p/prompt-library.html">Prompt Library</a>
+      <a href="https://www.ipbaba.online/p/promote-your-post-ip-baba.html">Promote Business</a>
+      <a href="https://www.ipbaba.online/p/digital-growth-challenge.html">Growth Challenge</a>
+      <a href="https://www.ipbaba.online/p/portfolio.html">Portfolio</a>
+      <a href="https://www.ipbaba.online/p/about-ip-baba.html">About IP BABA</a>
+      <a href="https://www.ipbaba.online/p/contact.html">Contact</a>
+      <a class="premium-link" href="/admin"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Protected Admin</span></a>
+    </nav>
+    <div class="drawer-footer">JARVIS · Your Digital Growth Partner</div>
+  </aside>
 
 
   <!-- =====================================================
@@ -3270,490 +3329,14 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
 
 
       <div class="robot-stage" id="robotStage">
-        <div class="jarvis-energy-core" aria-label="Animated JARVIS energy core">
-          <div class="energy-ring ring-a"></div><div class="energy-ring ring-b"></div>
-          <div class="energy-ring ring-c"></div>
-          <div class="energy-sphere">
-            <svg class="energy-face" viewBox="0 0 220 250" role="img" aria-label="Holographic human-like AI face">
-              <defs><linearGradient id="faceGlow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0ffff"/><stop offset=".45" stop-color="#8ceeff"/><stop offset="1" stop-color="#29e4c1"/></linearGradient></defs>
-              <path class="face-outline" d="M110 18 C58 18 35 62 39 119 C42 167 65 211 110 230 C155 211 178 167 181 119 C185 62 162 18 110 18Z"/>
-              <path class="face-detail" d="M63 103 Q83 89 99 103 M121 103 Q139 89 158 103 M109 111 L103 148 Q110 157 119 148 M82 177 Q110 195 138 177"/>
-              <path class="face-current" d="M42 67 L63 80 L53 101 L76 115 L66 141 L91 153 M178 63 L157 81 L169 102 L146 118 L158 144 L130 158"/>
-              <path class="face-current secondary" d="M83 30 L74 52 L91 67 M137 29 L148 50 L130 68 M75 198 L92 214 M146 198 L129 216"/>
-            </svg>
-            <i class="energy-electric"></i>
-          </div>
-          <div class="energy-sparks"></div>
-          <div class="energy-core-label">JARVIS <small>NEURAL CORE ONLINE</small></div>
-        </div>
-
-        <div class="desktop-hud">
-          <span class="hud-label">NEURAL NODE / 01</span>
-          <span class="hud-label">SECURE LINK</span>
-        </div>
-
-
         <div class="robot-floor"></div>
-
-
-        <div class="robot-orbit">
-
-          <span class="orbit-node node-1"></span>
-          <span class="orbit-node node-2"></span>
-          <span class="orbit-node node-3"></span>
-          <span class="orbit-node node-4"></span>
-
+        <div class="robot-orbit"><span class="orbit-node node-1"></span><span class="orbit-node node-2"></span><span class="orbit-node node-3"></span><span class="orbit-node node-4"></span></div>
+        <div id="codeStream" class="code-stream" aria-hidden="true"></div>
+        <div class="command-workstation" role="img" aria-label="Animated IP BABA artificial intelligence workstation">
+          <div class="work-orbit"></div><div class="work-monitor"><div class="work-screen-glow"></div><div class="work-core"></div><div class="work-data-line"></div></div><div class="work-stand"></div><div class="work-base"></div>
+          <div class="work-label">IP BABA · JARVIS AI CORE</div>
         </div>
-
-
-        <div
-          id="codeStream"
-          class="code-stream"
-          aria-hidden="true"
-        ></div>
-
-
-        <!-- =================================================
-             PREMIUM CIRCUIT BOARD ROBOT
-             ================================================= -->
-
-        <svg
-          class="robot-svg"
-          viewBox="0 0 260 215"
-          aria-label="JARVIS AI robot"
-          role="img"
-        >
-
-          <defs>
-
-            <linearGradient
-              id="robotMetal"
-              x1="0"
-              y1="0"
-              x2="1"
-              y2="1"
-            >
-              <stop
-                offset="0"
-                stop-color="#203142"
-              />
-
-              <stop
-                offset=".48"
-                stop-color="#0c1722"
-              />
-
-              <stop
-                offset="1"
-                stop-color="#03080e"
-              />
-            </linearGradient>
-
-
-            <linearGradient
-              id="lineGradient"
-              x1="0"
-              y1="0"
-              x2="1"
-              y2="1"
-            >
-
-              <stop
-                offset="0"
-                stop-color="#42d9ff"
-                stop-opacity=".20"
-              />
-
-              <stop
-                offset=".55"
-                stop-color="#42d9ff"
-                stop-opacity=".82"
-              />
-
-              <stop
-                offset="1"
-                stop-color="#f02b42"
-                stop-opacity=".35"
-              />
-
-            </linearGradient>
-
-
-            <radialGradient
-              id="robotGlow"
-              cx="50%"
-              cy="50%"
-              r="70%"
-            >
-
-              <stop
-                offset="0"
-                stop-color="#ffffff"
-                stop-opacity=".9"
-              />
-
-              <stop
-                offset=".15"
-                stop-color="#42d9ff"
-                stop-opacity=".8"
-              />
-
-              <stop
-                offset=".50"
-                stop-color="#287cff"
-                stop-opacity=".13"
-              />
-
-              <stop
-                offset="1"
-                stop-color="#42d9ff"
-                stop-opacity="0"
-              />
-
-            </radialGradient>
-
-
-            <filter
-              id="glow"
-              x="-100%"
-              y="-100%"
-              width="300%"
-              height="300%"
-            >
-
-              <feGaussianBlur
-                stdDeviation="3.2"
-                result="blur"
-              />
-
-              <feMerge>
-                <feMergeNode in="blur"></feMergeNode>
-                <feMergeNode in="SourceGraphic"></feMergeNode>
-              </feMerge>
-
-            </filter>
-
-
-            <filter
-              id="softBlur"
-              x="-100%"
-              y="-100%"
-              width="300%"
-              height="300%"
-            >
-
-              <feGaussianBlur
-                stdDeviation="6"
-              ></feGaussianBlur>
-
-            </filter>
-
-          </defs>
-
-
-          <g class="robot-float">
-
-            <!-- shoulders / frame -->
-
-            <path
-              d="M56 191V161c0-25 18-42 43-42h62c25 0 43 17 43 42v30"
-              fill="none"
-              stroke="rgba(66,217,255,.32)"
-              stroke-width="1.4"
-            />
-
-            <path
-              d="M69 184h122"
-              stroke="rgba(66,217,255,.16)"
-              stroke-width="1"
-            />
-
-
-            <!-- head -->
-
-            <rect
-              x="65"
-              y="35"
-              width="130"
-              height="91"
-              rx="28"
-              class="robot-shell"
-            />
-
-
-            <!-- head inner -->
-
-            <rect
-              x="77"
-              y="56"
-              width="106"
-              height="48"
-              rx="17"
-              class="robot-dark"
-            />
-
-
-            <!-- forehead board -->
-
-            <rect
-              x="102"
-              y="43"
-              width="56"
-              height="9"
-              rx="4.5"
-              class="robot-board"
-            />
-
-            <circle
-              cx="130"
-              cy="47.5"
-              r="2.2"
-              class="robot-eye-blue"
-            />
-
-
-            <!-- eyes -->
-
-            <ellipse
-              cx="105"
-              cy="80"
-              rx="14"
-              ry="8"
-              fill="#02070d"
-              stroke="rgba(66,217,255,.17)"
-            />
-
-            <ellipse
-              cx="155"
-              cy="80"
-              rx="14"
-              ry="8"
-              fill="#02070d"
-              stroke="rgba(240,43,66,.16)"
-            />
-
-            <circle
-              cx="105"
-              cy="80"
-              r="4.3"
-              class="robot-eye-blue robot-blink"
-            />
-
-            <circle
-              cx="155"
-              cy="80"
-              r="4.3"
-              class="robot-eye-red robot-blink"
-            />
-
-
-            <!-- eye circuits -->
-
-            <path
-              d="M91 80H84V70h-8"
-              class="robot-line"
-            />
-
-            <path
-              d="M169 80h7V70h8"
-              class="robot-line"
-            />
-
-
-            <!-- mouth -->
-
-            <path
-              d="M108 101h44"
-              stroke="rgba(66,217,255,.50)"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-
-            <path
-              d="M117 104h26"
-              stroke="rgba(240,43,66,.34)"
-              stroke-width="1"
-              stroke-linecap="round"
-            />
-
-
-            <!-- antenna -->
-
-            <rect
-              x="112"
-              y="17"
-              width="36"
-              height="19"
-              rx="9"
-              class="robot-shell"
-            />
-
-            <circle
-              cx="130"
-              cy="20"
-              r="3.6"
-              class="robot-eye-blue"
-            />
-
-            <path
-              d="M130 24v10"
-              class="robot-line"
-            />
-
-
-            <!-- chest -->
-
-            <path
-              d="M91 129
-                 Q91 120
-                 101 120
-                 H159
-                 Q169 120
-                 169 129
-                 V175
-                 Q169 183
-                 160 183
-                 H100
-                 Q91 183
-                 91 175Z"
-              class="robot-shell"
-            />
-
-
-            <!-- chest circuit board -->
-
-            <rect
-              x="103"
-              y="136"
-              width="54"
-              height="31"
-              rx="7"
-              class="robot-board"
-            />
-
-            <path
-              d="M108 143h17
-                 M108 150h27
-                 M108 157h19
-                 M133 143h18
-                 M139 150h12
-                 M139 157h12"
-              stroke="rgba(66,217,255,.48)"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
-
-            <circle
-              cx="149"
-              cy="143"
-              r="2.4"
-              class="robot-eye-red"
-            />
-
-            <circle
-              cx="149"
-              cy="158"
-              r="2.4"
-              class="robot-eye-blue"
-            />
-
-
-            <!-- left side circuits -->
-
-            <path
-              d="M65 65H48V83H32"
-              class="robot-circuit"
-            />
-
-            <path
-              d="M65 94H42V108H26"
-              class="robot-circuit red"
-            />
-
-            <circle
-              cx="32"
-              cy="83"
-              r="3"
-              fill="url(#robotGlow)"
-            />
-
-            <circle
-              cx="26"
-              cy="108"
-              r="3"
-              fill="rgba(240,43,66,.8)"
-              filter="url(#glow)"
-            />
-
-
-            <!-- right side circuits -->
-
-            <path
-              d="M195 64H212V81H231"
-              class="robot-circuit red"
-            />
-
-            <path
-              d="M195 95H218V111H238"
-              class="robot-circuit"
-            />
-
-            <circle
-              cx="231"
-              cy="81"
-              r="3"
-              fill="rgba(240,43,66,.8)"
-              filter="url(#glow)"
-            />
-
-            <circle
-              cx="238"
-              cy="111"
-              r="3"
-              fill="url(#robotGlow)"
-            />
-
-
-            <!-- shoulder lights -->
-
-            <circle
-              cx="70"
-              cy="130"
-              r="7"
-              fill="url(#robotGlow)"
-            />
-
-            <circle
-              cx="190"
-              cy="130"
-              r="7"
-              fill="rgba(240,43,66,.7)"
-              filter="url(#glow)"
-            />
-
-
-            <!-- moving scan -->
-
-            <g class="robot-scan">
-
-              <rect
-                x="70"
-                y="48"
-                width="120"
-                height="3"
-                rx="1.5"
-                fill="url(#lineGradient)"
-                filter="url(#glow)"
-              />
-
-            </g>
-
-          </g>
-
-        </svg>
-
       </div>
-
 
       <div class="robot-caption">
 
@@ -4013,319 +3596,12 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
 
       <!-- SAME ROBOT, LARGE LIVE VERSION -->
 
-      <svg
-        class="live-robot"
-        viewBox="0 0 260 215"
-        aria-hidden="true"
-      >
-
-        <defs>
-
-          <linearGradient
-            id="liveRobotMetal"
-            x1="0"
-            y1="0"
-            x2="1"
-            y2="1"
-          >
-
-            <stop
-              offset="0"
-              stop-color="#233749"
-            />
-
-            <stop
-              offset=".50"
-              stop-color="#0b1723"
-            />
-
-            <stop
-              offset="1"
-              stop-color="#02070c"
-            />
-
-          </linearGradient>
-
-
-          <linearGradient
-            id="liveLineGradient"
-            x1="0"
-            y1="0"
-            x2="1"
-            y2="1"
-          >
-
-            <stop
-              offset="0"
-              stop-color="#42d9ff"
-              stop-opacity=".20"
-            />
-
-            <stop
-              offset=".55"
-              stop-color="#42d9ff"
-              stop-opacity=".88"
-            />
-
-            <stop
-              offset="1"
-              stop-color="#f02b42"
-              stop-opacity=".36"
-            />
-
-          </linearGradient>
-
-
-          <filter
-            id="liveGlow"
-            x="-100%"
-            y="-100%"
-            width="300%"
-            height="300%"
-          >
-
-            <feGaussianBlur
-              stdDeviation="4"
-              result="blur"
-            />
-
-            <feMerge>
-              <feMergeNode in="blur"></feMergeNode>
-              <feMergeNode in="SourceGraphic"></feMergeNode>
-            </feMerge>
-
-          </filter>
-
-        </defs>
-
-
-        <g class="robot-float">
-
-          <path
-            d="M54 191V161c0-25 19-42 44-42h64c25 0 44 17 44 42v30"
-            fill="none"
-            stroke="rgba(66,217,255,.38)"
-            stroke-width="1.5"
-          />
-
-          <rect
-            x="64"
-            y="34"
-            width="132"
-            height="92"
-            rx="29"
-            fill="url(#liveRobotMetal)"
-            stroke="rgba(110,226,255,.52)"
-            stroke-width="1.5"
-          />
-
-          <rect
-            x="77"
-            y="56"
-            width="106"
-            height="48"
-            rx="17"
-            fill="#02080f"
-            stroke="rgba(66,217,255,.23)"
-          />
-
-
-          <!-- top board -->
-
-          <rect
-            x="102"
-            y="43"
-            width="56"
-            height="9"
-            rx="4.5"
-            fill="#081823"
-            stroke="rgba(66,217,255,.32)"
-          />
-
-          <circle
-            cx="130"
-            cy="47.5"
-            r="2.7"
-            fill="#42d9ff"
-            filter="url(#liveGlow)"
-          />
-
-
-          <!-- eyes -->
-
-          <ellipse
-            cx="105"
-            cy="80"
-            rx="14"
-            ry="8"
-            fill="#01060b"
-            stroke="rgba(66,217,255,.18)"
-          />
-
-          <ellipse
-            cx="155"
-            cy="80"
-            rx="14"
-            ry="8"
-            fill="#01060b"
-            stroke="rgba(240,43,66,.18)"
-          />
-
-          <circle
-            cx="105"
-            cy="80"
-            r="4.5"
-            fill="#42d9ff"
-            filter="url(#liveGlow)"
-          />
-
-          <circle
-            cx="155"
-            cy="80"
-            r="4.5"
-            fill="#f02b42"
-            filter="url(#liveGlow)"
-          />
-
-
-          <!-- mouth -->
-
-          <path class="live-mouth"
-            d="M108 102 Q130 102 152 102"
-            fill="none" stroke="#087fa8" stroke-width="3"
-            stroke-linecap="round"
-          />
-          <path class="live-mouth-glow"
-            d="M118 106 Q130 106 142 106"
-            fill="none" stroke="#25c6aa" stroke-width="1.5"
-            stroke-linecap="round"
-          />
-
-
-          <!-- antenna -->
-
-          <rect
-            x="112"
-            y="16"
-            width="36"
-            height="19"
-            rx="9"
-            fill="url(#liveRobotMetal)"
-            stroke="rgba(66,217,255,.38)"
-          />
-
-          <circle
-            cx="130"
-            cy="20"
-            r="3.6"
-            fill="#42d9ff"
-            filter="url(#liveGlow)"
-          />
-
-          <path
-            d="M130 24v10"
-            stroke="rgba(66,217,255,.55)"
-            stroke-width="1.3"
-          />
-
-
-          <!-- chest -->
-
-          <path
-            d="M91 129
-               Q91 120
-               101 120
-               H159
-               Q169 120
-               169 129
-               V175
-               Q169 183
-               160 183
-               H100
-               Q91 183
-               91 175Z"
-            fill="url(#liveRobotMetal)"
-            stroke="rgba(110,226,255,.30)"
-          />
-
-          <rect
-            x="103"
-            y="136"
-            width="54"
-            height="31"
-            rx="7"
-            fill="#07131d"
-            stroke="rgba(66,217,255,.30)"
-          />
-
-          <rect x="109" y="140" width="42" height="22" rx="5" fill="#f7fdff" stroke="#a8dce9"/>
-          <text x="130" y="154" text-anchor="middle" font-size="8" font-weight="900" letter-spacing=".7" fill="#087fa8">IP BABA</text>
-          <circle cx="105" cy="151" r="2.3" fill="#25c6aa" filter="url(#liveGlow)"/>
-          <circle cx="155" cy="151" r="2.3" fill="#168ed1" filter="url(#liveGlow)"/>
-
-
-          <!-- side circuits -->
-
-          <path
-            d="M64 65H47V83H31"
-            fill="none"
-            stroke="#42d9ff"
-            stroke-opacity=".58"
-            stroke-width="1"
-            stroke-dasharray="8 12"
-          />
-
-          <path
-            d="M196 65H213V82H232"
-            fill="none"
-            stroke="#f02b42"
-            stroke-opacity=".55"
-            stroke-width="1"
-            stroke-dasharray="8 12"
-          />
-
-          <path
-            d="M64 95H42V109H26"
-            fill="none"
-            stroke="#f02b42"
-            stroke-opacity=".47"
-            stroke-width="1"
-            stroke-dasharray="8 12"
-          />
-
-          <path
-            d="M196 95H218V111H239"
-            fill="none"
-            stroke="#42d9ff"
-            stroke-opacity=".58"
-            stroke-width="1"
-            stroke-dasharray="8 12"
-          />
-
-          <!-- shoulders -->
-
-          <circle
-            cx="70"
-            cy="130"
-            r="7"
-            fill="#42d9ff"
-            opacity=".62"
-            filter="url(#liveGlow)"
-          />
-
-          <circle
-            cx="190"
-            cy="130"
-            r="7"
-            fill="#f02b42"
-            opacity=".66"
-            filter="url(#liveGlow)"
-          />
-
-        </g>
-
-      </svg>
-
+      <div class="live-workstation" role="img" aria-label="JARVIS AI workstation with voice reactive holographic core">
+        <div class="live-halo"></div><div class="live-orbit-core"></div>
+        <div class="live-screen"><span class="live-screen-core"></span><span class="live-screen-bars"></span></div>
+        <div class="live-desk"></div><div class="live-keyboard"></div>
+        <div class="live-brandline">JARVIS · BY IP BABA</div>
+      </div>
 
       <!-- waveform -->
 
@@ -7748,6 +7024,9 @@ liveVoiceSelect.addEventListener("change",()=>localStorage.setItem("jarvisLiveVo
 message("Sign-in is ready. Choose an option above.");
 loadSdk().catch(()=>{});
 })();
+</script>
+<script>
+(()=>{"use strict";const body=document.body,open=document.getElementById("menuTrigger"),close=document.getElementById("drawerClose"),scrim=document.getElementById("menuScrim"),drawer=document.getElementById("sideDrawer");if(!open||!close||!scrim||!drawer)return;const set=v=>{body.classList.toggle("drawer-open",v);open.setAttribute("aria-expanded",String(v));drawer.setAttribute("aria-hidden",String(!v));};open.addEventListener("click",()=>set(true));close.addEventListener("click",()=>set(false));scrim.addEventListener("click",()=>set(false));document.addEventListener("keydown",e=>{if(e.key==="Escape")set(false)});drawer.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>set(false)));})();
 </script>
 </body>
 </html>

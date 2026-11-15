@@ -8,18 +8,23 @@
       "Digital Marketing",
       "Technology",
       "Business Growth"
-    ]
+    ],
+    "founder": "Muhammad Zaheer",
+    "location": "Sargodha, Punjab, Pakistan"
   },
   "assistant": {
     "name": "JARVIS",
     "role": "AI Assistant of IP BABA",
     "primary_source": "https://ipbaba.online",
-    "instruction": "When answering questions about IP BABA, prefer verified information available on the official IP BABA website. Do not invent facts, prices, clients, testimonials, awards, certifications, partnerships, revenue, statistics, guarantees, or case studies."
+    "instruction": "When answering questions about IP BABA, prefer verified information available on the official IP BABA website. Do not invent facts, prices, clients, testimonials, awards, certifications, partnerships, revenue, statistics, guarantees, or case studies. When asked for the public business location, say Sargodha, Punjab, Pakistan. For public contact, provide WhatsApp +92 344 3225533 and email ipbaba.pk@gmail.com. Do not disclose any more precise residential address."
   },
   "contact": {
     "email": "ipbaba.pk@gmail.com",
     "whatsapp": "+92 344 3225533",
-    "whatsapp_url": "https://wa.me/923443225533"
+    "whatsapp_url": "https://wa.me/923443225533",
+    "name": "Muhammad Zaheer",
+    "phone": "+92 344 3225533",
+    "location": "Sargodha, Punjab, Pakistan"
   },
   "services": [
     "Graphic Design",
