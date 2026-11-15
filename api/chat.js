@@ -1,4 +1,5 @@
 const { guard, BRAND, RULES, verifyFirebaseUser } = require("./_shared");
+const KNOWLEDGE = require("../data/jarvis-knowledge.json");
 
 const PRIMARY_MODEL =
   process.env.GEMINI_MODEL || "gemini-3.7-flash";
