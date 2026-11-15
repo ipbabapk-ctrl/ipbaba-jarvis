@@ -7546,6 +7546,8 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
   );
 
 })();
+</script>
+
 
 
 
@@ -7640,6 +7642,7 @@ $("jarvisSignOut").addEventListener("click",async()=>{try{const sdk=await loadSd
 window.jarvisSaveLocalConversation=async conversation=>{if(!activeUser)return;try{const s=await loadSdk();await storage.saveConversation(activeUser.uid,conversation);}catch(e){console.warn("Local save failed",e);}};
 window.jarvisGetLocalConversations=async()=>activeUser&&storage?storage.getConversations(activeUser.uid):[];
 message("Sign-in is ready. Choose an option above.");
+loadSdk().catch(()=>{});
 })();
 </script>
 </body>
