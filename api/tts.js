@@ -1,4 +1,4 @@
-const { guard } = require("./_shared");
+const { guard, verifyFirebaseUser } = require("./_shared");
 
 const ELEVENLABS_MODEL =
   process.env.ELEVENLABS_MODEL || "eleven_multilingual_v2";
@@ -13,6 +13,9 @@ module.exports = async (req, res) => {
   ) {
     return;
   }
+
+  const identity = await verifyFirebaseUser(req);
+  if (identity.error) return res.status(identity.error === "firebase_admin_not_configured" ? 503 : 401).json({ error: identity.error });
 
   try {
     const apiKey = process.env.ELEVENLABS_API_KEY;
