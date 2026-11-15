@@ -7548,23 +7548,74 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
 })();
 
 <script type="module">
-import { auth, googleProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "./js/firebase.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+import { auth, googleProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "./js/firebase.js";
 import { saveConversation, getConversations } from "./js/chat-storage.js";
-const gate=document.getElementById("jarvisAuthGate"), form=document.getElementById("jarvisAuthForm"), email=document.getElementById("jarvisAuthEmail"), password=document.getElementById("jarvisAuthPassword"), errorBox=document.getElementById("jarvisAuthError"), modeBtn=document.getElementById("jarvisAuthMode"), googleBtn=document.getElementById("jarvisGoogleSubmit"), userBar=document.getElementById("jarvisUserBar");
-let createMode=false, activeUser=null, lastSaved="";
-const showError=e=>{errorBox.textContent=e?.code?.replace("auth/","").replaceAll("-"," ")||e?.message||"Authentication failed. Please try again.";};
-window.jarvisAuthReady=new Promise(resolve=>onAuthStateChanged(auth,async user=>{
- activeUser=user||null; window.jarvisUser=user||null;
- if(user){gate.hidden=true;userBar.hidden=false;document.getElementById("jarvisUserEmail").textContent=user.email||"Signed in";window.jarvisGetIdToken=()=>user.getIdToken();try{const chats=await getConversations(user.uid);window.jarvisLocalConversations=chats;}catch(e){console.warn("Local history unavailable",e);} }
- else{gate.hidden=false;userBar.hidden=true;window.jarvisGetIdToken=null;}
- resolve(user||null);
-}));
-form.addEventListener("submit",async e=>{e.preventDefault();errorBox.textContent="";try{if(createMode)await createUserWithEmailAndPassword(auth,email.value.trim(),password.value);else await signInWithEmailAndPassword(auth,email.value.trim(),password.value);}catch(e){showError(e);}});
-googleBtn.addEventListener("click",async()=>{errorBox.textContent="";try{await signInWithPopup(auth,googleProvider);}catch(e){showError(e);}});
-modeBtn.addEventListener("click",()=>{createMode=!createMode;document.getElementById("jarvisEmailSubmit").textContent=createMode?"Create account":"Sign in with email";modeBtn.textContent=createMode?"I already have an account":"Create a new account";password.autocomplete=createMode?"new-password":"current-password";});
+const gate=document.getElementById("jarvisAuthGate");
+const form=document.getElementById("jarvisAuthForm");
+const email=document.getElementById("jarvisAuthEmail");
+const password=document.getElementById("jarvisAuthPassword");
+const errorBox=document.getElementById("jarvisAuthError");
+const modeBtn=document.getElementById("jarvisAuthMode");
+const googleBtn=document.getElementById("jarvisGoogleSubmit");
+const emailBtn=document.getElementById("jarvisEmailSubmit");
+const userBar=document.getElementById("jarvisUserBar");
+let createMode=false, activeUser=null;
+function showError(e){
+ const code=e?.code||"";
+ const messages={
+  "auth/unauthorized-domain":"This preview domain is not authorized in Firebase. Add this domain under Authentication → Settings → Authorized domains.",
+  "auth/operation-not-allowed":"This sign-in provider is disabled in Firebase Authentication settings.",
+  "auth/popup-blocked":"The Google sign-in popup was blocked. Allow popups and try again.",
+  "auth/popup-closed-by-user":"The Google sign-in window was closed before completing sign-in.",
+  "auth/invalid-api-key":"Firebase API key is invalid. Check the Firebase web app configuration.",
+  "auth/email-already-in-use":"This email already has an account. Please sign in instead.",
+  "auth/weak-password":"Use a password with at least 6 characters.",
+  "auth/invalid-credential":"Email or password is incorrect."
+ };
+ errorBox.textContent=messages[code]||((code?code.replace("auth/","").replaceAll("-"," ")+": ":"")+(e?.message||"Authentication failed. Please try again."));
+ console.error("JARVIS authentication error",code,e);
+}
+window.jarvisAuthReady=new Promise(resolve=>{
+ onAuthStateChanged(auth,async user=>{
+  activeUser=user||null; window.jarvisUser=user||null;
+  if(user){
+   gate.hidden=true;userBar.hidden=false;
+   document.getElementById("jarvisUserEmail").textContent=user.email||"Signed in";
+   window.jarvisGetIdToken=()=>user.getIdToken();
+   try{window.jarvisLocalConversations=await getConversations(user.uid);}catch(e){console.warn("Local history unavailable",e);}
+  }else{
+   gate.hidden=false;userBar.hidden=true;window.jarvisGetIdToken=null;
+  }
+  resolve(user||null);
+ });
+});
+form.addEventListener("submit",async e=>{
+ e.preventDefault();errorBox.textContent="";
+ emailBtn.disabled=true;emailBtn.textContent=createMode?"Creating account…":"Signing in…";
+ try{
+  if(createMode) await createUserWithEmailAndPassword(auth,email.value.trim(),password.value);
+  else await signInWithEmailAndPassword(auth,email.value.trim(),password.value);
+ }catch(e){showError(e);}
+ finally{emailBtn.disabled=false;emailBtn.textContent=createMode?"Create account":"Sign in with email";}
+});
+googleBtn.addEventListener("click",async()=>{
+ errorBox.textContent="";googleBtn.disabled=true;googleBtn.textContent="Opening Google sign-in…";
+ try{await signInWithPopup(auth,googleProvider);}
+ catch(e){showError(e);}
+ finally{googleBtn.disabled=false;googleBtn.textContent="Continue with Google";}
+});
+modeBtn.addEventListener("click",()=>{
+ createMode=!createMode;
+ emailBtn.textContent=createMode?"Create account":"Sign in with email";
+ modeBtn.textContent=createMode?"I already have an account":"Create a new account";
+ password.autocomplete=createMode?"new-password":"current-password";
+ errorBox.textContent="";
+});
 document.getElementById("jarvisSignOut").addEventListener("click",()=>signOut(auth));
-window.jarvisSaveLocalConversation=async conversation=>{if(!activeUser)return;try{await saveConversation(activeUser.uid,conversation);}catch(e){console.warn("Could not save local chat",e);}};
+window.jarvisSaveLocalConversation=async conversation=>{
+ if(!activeUser)return;
+ try{await saveConversation(activeUser.uid,conversation);}catch(e){console.warn("Could not save local chat",e);}
+};
 window.jarvisGetLocalConversations=async()=>activeUser?getConversations(activeUser.uid):[];
 </script>
 
