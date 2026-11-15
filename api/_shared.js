@@ -157,6 +157,31 @@ function guard(req, res, options = {}) {
   const json = options.json !== false;
   const maxBytes = options.maxBytes || 100000;
 
+  // Browser requests carrying Authorization trigger a CORS preflight.
+  // Answer OPTIONS before enforcing the actual POST method.
+  const requestOrigin = req.headers.origin;
+  const requestAllowed = !requestOrigin ||
+    (() => {
+      try {
+        const u = new URL(requestOrigin);
+        const host = u.hostname.toLowerCase();
+        const preview = /^ipbaba-jarvis-[a-z0-9-]+-jarvis-429f\\.vercel\\.app$/.test(host);
+        return u.protocol === "https:" &&
+          (host === "ipbaba-jarvis.vercel.app" || preview ||
+           String(process.env.ALLOWED_ORIGINS || "").split(",").map(v => v.trim().replace(/\\/$/, "")).includes(requestOrigin.replace(/\\/$/, "")));
+      } catch (_) { return false; }
+    })();
+
+  if (req.method === "OPTIONS") {
+    if (!requestAllowed) return res.status(403).end();
+    res.setHeader("Access-Control-Allow-Origin", requestOrigin || "https://ipbaba-jarvis.vercel.app");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Max-Age", "86400");
+    res.setHeader("Vary", "Origin");
+    return res.status(204).end();
+  }
+
   if (req.method !== method) {
     res.setHeader("Allow", method);
     res.status(405).json({
