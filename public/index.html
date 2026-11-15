@@ -3272,6 +3272,10 @@ body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{an
 body.chat-text-small .message{font-size:.64rem}body.chat-text-large .message{font-size:.86rem}
 body.light-theme{--bg:#f4fafc;--bg2:#edf7f7;--panel:#fff;--panel2:#f7fbfd;--text:#17394c;--muted:#668395;--line:rgba(65,125,153,.18);--shadow:0 20px 60px rgba(30,90,118,.12)}
 body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{background:linear-gradient(145deg,#fff,#f2fafb);border-color:#d6e8ef}body.light-theme .chat-header{border-color:#dcebf0}body.light-theme .message.ai{background:#fff;color:#24475c;border:1px solid #dcebf0}
+
+/* Hide the former account action bar; its actions now live in the profile panel. */
+#jarvisUserBar[hidden]{display:none!important}
+.profile-identity .profile-avatar{border:1px solid #cde5ed}
 </style>
 </head>
 
@@ -7057,9 +7061,6 @@ googleBtn.addEventListener("click",async()=>{
 $("jarvisSignOut").addEventListener("click",async()=>{try{const sdk=await loadSdk();await sdk.signOut(sdk.auth);}catch(e){explain(e);}});
 window.jarvisSaveLocalConversation=async conversation=>{if(!activeUser)return;try{const s=await loadSdk();await storage.saveConversation(activeUser.uid,conversation);}catch(e){console.warn("Local save failed",e);}};
 window.jarvisGetLocalConversations=async()=>activeUser&&storage?storage.getConversations(activeUser.uid):[];
-$("jarvisSettingsToggle").addEventListener("click",()=>{const panel=$("jarvisSettingsPanel");panel.hidden=!panel.hidden;$("jarvisSettingsToggle").setAttribute("aria-expanded",String(!panel.hidden));});
-$("jarvisSettingsClose").addEventListener("click",()=>{$("jarvisSettingsPanel").hidden=true;$("jarvisSettingsToggle").setAttribute("aria-expanded","false");});
-
 function setAvatar(name){
  const buttons=Array.from($("jarvisAvatarChoices").querySelectorAll("button"));
  const chosen=buttons.find(b=>b.dataset.avatar===name)||buttons[0];
