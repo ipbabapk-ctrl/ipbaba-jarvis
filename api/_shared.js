@@ -255,7 +255,7 @@ async function verifyFirebaseUser(req) {
     const app = await firebaseAdminAppPromise;
     const decoded = await authMod.getAuth(app).verifyIdToken(match[1], true);
     if (!decoded.email) return { error: 'verified_email_required' };
-    return { user: { uid: decoded.uid, email: decoded.email, admin: decoded.email.toLowerCase() === String(process.env.ADMIN_EMAIL || 'ipbaba.pk@gmail.com').toLowerCase() } };
+    return { user: { uid: decoded.uid, email: decoded.email, admin: decoded.email_verified === true && decoded.email.toLowerCase() === String(process.env.ADMIN_EMAIL || 'ipbaba.pk@gmail.com').toLowerCase() } };
   } catch (error) { console.error('Firebase token verification failed', error && error.message); return { error: 'invalid_authentication' }; }
 }
 module.exports.verifyFirebaseUser = verifyFirebaseUser;
