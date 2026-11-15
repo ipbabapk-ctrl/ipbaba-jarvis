@@ -3237,6 +3237,41 @@ body.drawer-open .menu-scrim{opacity:1;visibility:visible}body.drawer-open .side
 @media(max-width:380px){.workspace{grid-template-rows:minmax(105px,15vh) minmax(0,1fr)}.command-workstation{width:min(45%,170px)}}
 @media(prefers-reduced-motion:reduce){.command-workstation *,.live-workstation *,.side-drawer,.menu-scrim{animation:none!important;transition:none!important}}
 
+
+/* Account profile, avatar picker and compact settings */
+.profile-trigger{width:42px;height:42px;border:1px solid #cfe4ed;border-radius:50%;padding:3px;background:rgba(255,255,255,.92);cursor:pointer;box-shadow:0 5px 20px rgba(34,103,134,.12)}
+.profile-avatar{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#dff8ff,#e6f9ee);color:#176b8b;font-size:16px;font-weight:900;overflow:hidden}
+.profile-avatar svg{width:100%;height:100%;padding:5px}
+.profile-panel-head,.profile-panel-head button{display:flex;align-items:center;justify-content:space-between}
+.jarvis-profile-panel{position:fixed;right:16px;top:66px;z-index:100002;width:min(350px,calc(100vw - 28px));padding:17px;border:1px solid #cfe4ed;border-radius:18px;background:rgba(250,254,255,.98);box-shadow:0 22px 70px rgba(25,76,100,.22);color:#24475c}
+.jarvis-profile-panel[hidden],.jarvis-settings[hidden]{display:none!important}
+.profile-panel-head{font-size:10px;letter-spacing:.16em;font-weight:900;color:#548095}
+.profile-panel-head button{width:30px;height:30px;border:0;border-radius:9px;background:#eaf5f8;color:#315b70;font-size:20px;cursor:pointer}
+.profile-identity{display:flex;align-items:center;gap:12px;margin:15px 0;padding-bottom:14px;border-bottom:1px solid #e2edf2}
+.profile-avatar-large{width:52px;height:52px;flex:0 0 52px}
+.profile-identity strong,.profile-identity small{display:block}.profile-identity small{margin-top:4px;color:#718b9a;font-size:11px;overflow-wrap:anywhere}
+.profile-meta{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#75909f}
+.profile-meta strong{color:#335d70}
+.profile-avatar-label{margin:17px 0 9px;font-size:11px;font-weight:850;color:#355f73}
+.avatar-choices{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
+.avatar-choices button{width:100%;aspect-ratio:1;padding:3px;border:1px solid #dceaf0;border-radius:12px;background:#f5fbfd;cursor:pointer}
+.avatar-choices button.selected{border:2px solid #169bc2;background:#e4f8fb;box-shadow:0 0 0 3px #169bc21c}
+.avatar-choices svg{width:100%;height:100%}
+.profile-actions{display:flex;gap:8px;margin-top:16px}
+.profile-actions button{flex:1;border:1px solid #d5e7ee;border-radius:10px;padding:10px;background:#eef8fa;color:#176b87;font-size:12px;font-weight:800;cursor:pointer}
+.profile-actions button:last-child{background:#fff1f2;color:#b83c4d;border-color:#f4d8dc}
+.jarvis-settings{position:fixed;right:16px;top:76px;z-index:100003;width:min(330px,calc(100vw - 28px));max-height:calc(100dvh - 100px);overflow:auto;padding:17px;border:1px solid #cfe4ed;border-radius:18px;background:rgba(250,254,255,.98);box-shadow:0 22px 70px rgba(25,76,100,.22);color:#24475c}
+.jarvis-settings label{display:block;margin:12px 0 6px;font-size:11px;font-weight:850}
+.jarvis-settings select{width:100%;padding:10px;border:1px solid #c9e1ea;border-radius:10px;background:#fff;color:#24475c}
+.jarvis-settings input[type=range]{width:100%;accent-color:#148db6}
+.jarvis-settings .settings-check{display:flex;align-items:center;gap:8px}
+.jarvis-settings p{font-size:11px;line-height:1.5;color:#668396}
+.jarvis-settings a{color:#0786ae;font-size:12px;font-weight:800;text-decoration:none}
+#jarvisUserBar{display:none!important}
+body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+body.chat-text-small .message{font-size:.64rem}body.chat-text-large .message{font-size:.86rem}
+body.light-theme{--bg:#f4fafc;--bg2:#edf7f7;--panel:#fff;--panel2:#f7fbfd;--text:#17394c;--muted:#668395;--line:rgba(65,125,153,.18);--shadow:0 20px 60px rgba(30,90,118,.12)}
+body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{background:linear-gradient(145deg,#fff,#f2fafb);border-color:#d6e8ef}body.light-theme .chat-header{border-color:#dcebf0}body.light-theme .message.ai{background:#fff;color:#24475c;border:1px solid #dcebf0}
 </style>
 </head>
 
@@ -3249,61 +3284,71 @@ body.drawer-open .menu-scrim{opacity:1;visibility:visible}body.drawer-open .side
        ===================================================== -->
 
   <header class="topbar">
-
     <div class="top-left">
       <button class="menu-trigger" id="menuTrigger" type="button" aria-label="Open navigation" aria-controls="sideDrawer" aria-expanded="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
       <div class="system-status"><span class="system-dot"></span><span id="systemStatus">SYSTEM ONLINE</span></div>
     </div>
-
     <a class="brand-holder" href="https://www.ipbaba.online/" aria-label="IP BABA Home">
       <div class="brand-square"><img id="brandLogo" src="/assets/ipbaba-logo.png" alt="IP BABA"><span id="brandFallback" class="brand-fallback">IP BABA</span></div>
     </a>
-
     <div class="top-right">
-
-      <button
-        id="newChatBtn"
-        class="top-btn"
-        type="button"
-        aria-label="New chat"
-        title="New chat"
-      >
-        <svg viewBox="0 0 24 24">
-          <path d="M12 5v14"></path>
-          <path d="M5 12h14"></path>
-        </svg>
+      <button id="newChatBtn" class="top-btn" type="button" aria-label="New chat" title="New chat">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
       </button>
-
+      <button id="jarvisProfileToggle" class="profile-trigger" type="button" aria-label="Open account profile" aria-controls="jarvisProfilePanel" aria-expanded="false">
+        <span id="jarvisProfileAvatar" class="profile-avatar" aria-hidden="true">J</span>
+      </button>
     </div>
-
   </header>
-
   <div class="menu-scrim" id="menuScrim"></div>
   <aside class="side-drawer" id="sideDrawer" aria-label="IP BABA navigation" aria-hidden="true">
     <div class="drawer-head"><a class="drawer-brand" href="https://www.ipbaba.online/"><img src="/assets/ipbaba-logo.png" alt="IP BABA"><span>IP BABA</span></a><button class="drawer-close" id="drawerClose" type="button" aria-label="Close menu">×</button></div>
     <div class="drawer-section">Explore</div>
     <nav class="drawer-links" aria-label="Main pages">
       <a href="https://www.ipbaba.online/">Home</a>
-      <a href="https://www.ipbaba.online/p/ip-baba-digital-services.html">Digital Services</a>
       <a href="https://www.ipbaba.online/p/ai-prompt-generator.html">AI Prompt Generator</a>
       <a href="https://www.ipbaba.online/p/prompt-library.html">Prompt Library</a>
+      <a href="https://www.ipbaba.online/p/ip-baba-digital-services.html">Digital Services</a>
+      <a href="https://www.ipbaba.online/p/creative-with-ai.html">Creative with AI</a>
       <a href="https://www.ipbaba.online/p/promote-your-post-ip-baba.html">Promote Business</a>
       <a href="https://www.ipbaba.online/p/digital-growth-challenge.html">Growth Challenge</a>
       <a href="https://www.ipbaba.online/p/portfolio.html">Portfolio</a>
       <a href="https://www.ipbaba.online/p/about-ip-baba.html">About IP BABA</a>
       <a href="https://www.ipbaba.online/p/contact.html">Contact</a>
-      <a class="premium-link" href="/admin"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Protected Admin</span></a>
     </nav>
+    <div class="drawer-section">Account</div>
+    <div class="drawer-links"><button type="button" id="drawerAccountSettings">Account settings</button><a class="premium-link" href="/admin"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Protected Admin</span></a></div>
     <div class="drawer-footer">JARVIS · Your Digital Growth Partner</div>
   </aside>
-
-
-  <!-- =====================================================
-       MAIN
-       ===================================================== -->
-
+  <section id="jarvisProfilePanel" class="jarvis-profile-panel" hidden aria-label="User account">
+    <div class="profile-panel-head"><span>YOUR ACCOUNT</span><button id="jarvisProfileClose" type="button" aria-label="Close account panel">×</button></div>
+    <div class="profile-identity"><span id="jarvisProfileLargeAvatar" class="profile-avatar profile-avatar-large">J</span><div><strong id="jarvisProfileName">JARVIS User</strong><small id="jarvisUserEmail">Sign in to your account</small></div></div>
+    <div class="profile-meta"><span>Account created</span><strong id="jarvisAccountCreated">—</strong></div>
+    <div class="profile-avatar-label">Choose your avatar</div>
+    <div id="jarvisAvatarChoices" class="avatar-choices" aria-label="Select a profile avatar">
+      <button type="button" data-avatar="robot" aria-label="Robot avatar"><svg viewBox="0 0 48 48"><rect x="8" y="12" width="32" height="26" rx="9" fill="#d7e8f2" stroke="#397b99" stroke-width="2"/><path d="M24 6v6M18 25h2m8 0h2M18 32h12" stroke="#167fa8" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="6" r="3" fill="#26b9c8"/></svg></button>
+      <button type="button" data-avatar="ai" aria-label="AI assistant avatar"><svg viewBox="0 0 48 48"><path d="M24 5 39 14v20L24 43 9 34V14z" fill="#d9e5ff" stroke="#526fbd" stroke-width="2"/><path d="m16 20 8-6 8 6v10l-8 5-8-5z" fill="#7598e9"/><circle cx="20" cy="25" r="2" fill="#fff"/><circle cx="28" cy="25" r="2" fill="#fff"/></svg></button>
+      <button type="button" data-avatar="laptop" aria-label="Laptop avatar"><svg viewBox="0 0 48 48"><rect x="9" y="8" width="30" height="24" rx="3" fill="#dcebf5" stroke="#367a98" stroke-width="2"/><path d="M5 36h38l-4 5H9z" fill="#79bdcd" stroke="#367a98" stroke-width="2"/><path d="M16 17h16M16 22h11" stroke="#2785ae" stroke-width="2"/></svg></button>
+      <button type="button" data-avatar="cyber" aria-label="Cyber avatar"><svg viewBox="0 0 48 48"><path d="M24 5 40 12v12c0 10-7 16-16 20C15 40 8 34 8 24V12z" fill="#d7f0e9" stroke="#27866d" stroke-width="2"/><path d="M17 23a7 7 0 0 1 14 0v7H17z" fill="#62bba1"/><path d="M20 22h8" stroke="#fff" stroke-width="2"/></svg></button>
+      <button type="button" data-avatar="marketing" aria-label="Marketing avatar"><svg viewBox="0 0 48 48"><path d="M8 25 37 12v24L8 26z" fill="#ffe7cb" stroke="#bb7b3a" stroke-width="2"/><path d="M13 27 18 40h7l-6-12" fill="#f0bd82"/><path d="M39 17 44 13M40 24h6M39 31l5 4" stroke="#d18a43" stroke-width="2" stroke-linecap="round"/></svg></button>
+      <button type="button" data-avatar="computer" aria-label="Computer avatar"><svg viewBox="0 0 48 48"><rect x="6" y="8" width="36" height="26" rx="3" fill="#e0e9f8" stroke="#5a79a9" stroke-width="2"/><path d="M18 41h12M24 34v7" stroke="#5a79a9" stroke-width="3"/><path d="m17 17 5 4-5 4m8 0h7" fill="none" stroke="#4784bf" stroke-width="2"/></svg></button>
+    </div>
+    <div class="profile-actions"><button type="button" id="jarvisSettingsToggle" aria-expanded="false">Settings</button><button type="button" id="jarvisSignOut">Sign out</button></div>
+  </section>
+  <section id="jarvisSettingsPanel" class="jarvis-settings" hidden aria-label="JARVIS settings">
+    <div class="settings-head"><strong>JARVIS Settings</strong><button id="jarvisSettingsClose" type="button" aria-label="Close settings">×</button></div>
+    <label for="jarvisLiveVoice">Live voice</label>
+    <select id="jarvisLiveVoice"><option value="Aoede">Aoede · Calm</option><option value="Kore">Kore · Clear</option><option value="Puck">Puck · Bright</option><option value="Charon">Charon · Deep</option><option value="Fenrir">Fenrir · Strong</option></select>
+    <label for="jarvisVoiceSpeed">Speech playback speed</label><input id="jarvisVoiceSpeed" type="range" min="0.75" max="1.25" step="0.05" value="1">
+    <label for="jarvisTextSize">Chat text size</label><select id="jarvisTextSize"><option value="small">Compact</option><option value="normal" selected>Standard</option><option value="large">Large</option></select>
+    <label class="settings-check"><input id="jarvisAnimations" type="checkbox" checked> Enable interface animations</label>
+    <label class="settings-check"><input id="jarvisSoundEffects" type="checkbox"> Sound effects</label>
+    <label for="jarvisTheme">Appearance</label><select id="jarvisTheme"><option value="dark">Dark</option><option value="light">Light</option><option value="system">System default</option></select>
+    <p>Preferences are stored in this browser on this device. Voice choices apply to new Live sessions.</p>
+    <a href="https://www.ipbaba.online/" target="_blank" rel="noopener">Open IP BABA website ↗</a>
+  </section>
   <main class="workspace">
 
     <!-- ===================================================
@@ -6937,20 +6982,11 @@ body.drawer-open .menu-scrim{opacity:1;visibility:visible}body.drawer-open .side
   </form>
  </section>
 </div>
-<div id="jarvisUserBar" hidden><span id="jarvisUserEmail"></span><button id="jarvisSettingsToggle" type="button" aria-expanded="false">Settings</button><button id="jarvisSignOut" type="button">Sign out</button></div>
-<section id="jarvisSettingsPanel" class="jarvis-settings" hidden aria-label="JARVIS settings">
-  <div class="settings-head"><strong>JARVIS Settings</strong><button id="jarvisSettingsClose" type="button" aria-label="Close settings">×</button></div>
-  <label for="jarvisLiveVoice">Live voice</label>
-  <select id="jarvisLiveVoice"><option value="Aoede">Aoede · Calm</option><option value="Kore">Kore · Clear</option><option value="Puck">Puck · Bright</option><option value="Charon">Charon · Deep</option><option value="Fenrir">Fenrir · Strong</option></select>
-  <p>Voice preference is saved in this browser and used for new Live sessions.</p>
-  <a href="https://www.ipbaba.online/" target="_blank" rel="noopener">Open IP BABA website ↗</a>
-</section>
-
 <script>
 (function(){
 "use strict";
 const $=id=>document.getElementById(id);
-const gate=$("jarvisAuthGate"),form=$("jarvisAuthForm"),email=$("jarvisAuthEmail"),password=$("jarvisAuthPassword"),errorBox=$("jarvisAuthError"),modeBtn=$("jarvisAuthMode"),googleBtn=$("jarvisGoogleSubmit"),emailBtn=$("jarvisEmailSubmit"),userBar=$("jarvisUserBar");
+const gate=$("jarvisAuthGate"),form=$("jarvisAuthForm"),email=$("jarvisAuthEmail"),password=$("jarvisAuthPassword"),errorBox=$("jarvisAuthError"),modeBtn=$("jarvisAuthMode"),googleBtn=$("jarvisGoogleSubmit"),emailBtn=$("jarvisEmailSubmit"),userBar=$("jarvisUserBar"),profileToggle=$("jarvisProfileToggle"),profilePanel=$("jarvisProfilePanel"),settingsPanel=$("jarvisSettingsPanel");
 let createMode=false,fb=null,storage=null,activeUser=null,authReady=false;
 function message(text){if(errorBox)errorBox.textContent=text;}
 function explain(e){
@@ -6986,10 +7022,14 @@ async function loadSdk(){
    if(user){
     gate.hidden=true;userBar.hidden=false;
     $("jarvisUserEmail").textContent=user.email||"Signed in";
+    const displayName=user.displayName||((user.email||"JARVIS User").split("@")[0]);
+    $("jarvisProfileName").textContent=displayName;
+    $("jarvisAccountCreated").textContent=user.metadata&&user.metadata.creationTime?new Date(user.metadata.creationTime).toLocaleDateString():"Google account";
+    const avatarKey="jarvisAvatar:"+user.uid;const avatar=localStorage.getItem(avatarKey)||"robot";setAvatar(avatar);
     window.jarvisGetIdToken=()=>user.getIdToken();
     try{window.jarvisLocalConversations=await storage.getConversations(user.uid);}catch(err){console.warn(err);}
    }else{
-    gate.hidden=false;userBar.hidden=true;window.jarvisGetIdToken=null;
+    gate.hidden=false;userBar.hidden=true;window.jarvisGetIdToken=null;profilePanel.hidden=true;settingsPanel.hidden=true;profileToggle.setAttribute("aria-expanded","false");
    }
   });
   authReady=true;
@@ -7019,8 +7059,31 @@ window.jarvisSaveLocalConversation=async conversation=>{if(!activeUser)return;tr
 window.jarvisGetLocalConversations=async()=>activeUser&&storage?storage.getConversations(activeUser.uid):[];
 $("jarvisSettingsToggle").addEventListener("click",()=>{const panel=$("jarvisSettingsPanel");panel.hidden=!panel.hidden;$("jarvisSettingsToggle").setAttribute("aria-expanded",String(!panel.hidden));});
 $("jarvisSettingsClose").addEventListener("click",()=>{$("jarvisSettingsPanel").hidden=true;$("jarvisSettingsToggle").setAttribute("aria-expanded","false");});
-const liveVoiceSelect=$("jarvisLiveVoice");liveVoiceSelect.value=localStorage.getItem("jarvisLiveVoice")||"Aoede";
-liveVoiceSelect.addEventListener("change",()=>localStorage.setItem("jarvisLiveVoice",liveVoiceSelect.value));
+
+function setAvatar(name){
+ const buttons=Array.from($("jarvisAvatarChoices").querySelectorAll("button"));
+ const chosen=buttons.find(b=>b.dataset.avatar===name)||buttons[0];
+ buttons.forEach(b=>b.classList.toggle("selected",b===chosen));
+ const markup=chosen.innerHTML;
+ $("jarvisProfileAvatar").innerHTML=markup;
+ $("jarvisProfileLargeAvatar").innerHTML=markup;
+}
+$("jarvisAvatarChoices").addEventListener("click",event=>{
+ const button=event.target.closest("button[data-avatar]");if(!button||!activeUser)return;
+ localStorage.setItem("jarvisAvatar:"+activeUser.uid,button.dataset.avatar);setAvatar(button.dataset.avatar);
+});
+profileToggle.addEventListener("click",()=>{profilePanel.hidden=!profilePanel.hidden;settingsPanel.hidden=true;profileToggle.setAttribute("aria-expanded",String(!profilePanel.hidden));});
+$("jarvisProfileClose").addEventListener("click",()=>{profilePanel.hidden=true;profileToggle.setAttribute("aria-expanded","false");});
+$("drawerAccountSettings").addEventListener("click",()=>{document.body.classList.remove("drawer-open");profilePanel.hidden=false;settingsPanel.hidden=false;profileToggle.setAttribute("aria-expanded","true");$("jarvisSettingsToggle").setAttribute("aria-expanded","true");});
+$("jarvisSettingsToggle").addEventListener("click",()=>{settingsPanel.hidden=!settingsPanel.hidden;$("jarvisSettingsToggle").setAttribute("aria-expanded",String(!settingsPanel.hidden));});
+$("jarvisSettingsClose").addEventListener("click",()=>{settingsPanel.hidden=true;$("jarvisSettingsToggle").setAttribute("aria-expanded","false");});
+const prefs={voice:$("jarvisLiveVoice"),speed:$("jarvisVoiceSpeed"),size:$("jarvisTextSize"),animations:$("jarvisAnimations"),sound:$("jarvisSoundEffects"),theme:$("jarvisTheme")};
+const readPref=(key,fallback)=>localStorage.getItem("jarvisPref:"+key)??fallback;
+prefs.voice.value=readPref("voice","Aoede");prefs.speed.value=readPref("speed","1");prefs.size.value=readPref("size","normal");prefs.animations.checked=readPref("animations","true")==="true";prefs.sound.checked=readPref("sound","false")==="true";prefs.theme.value=readPref("theme","dark");
+function applyPrefs(){document.body.classList.toggle("reduce-motion",!prefs.animations.checked);document.body.classList.toggle("chat-text-small",prefs.size.value==="small");document.body.classList.toggle("chat-text-large",prefs.size.value==="large");document.body.classList.toggle("light-theme",prefs.theme.value==="light");}
+Object.entries(prefs).forEach(([key,control])=>{control.addEventListener("change",()=>{localStorage.setItem("jarvisPref:"+key,control.type==="checkbox"?String(control.checked):control.value);applyPrefs();});if(control.type==="range")control.addEventListener("input",()=>localStorage.setItem("jarvisPref:"+key,control.value));});
+applyPrefs();
+const liveVoiceSelect=$("jarvisLiveVoice");liveVoiceSelect.addEventListener("change",()=>localStorage.setItem("jarvisLiveVoice",liveVoiceSelect.value));
 message("Sign-in is ready. Choose an option above.");
 loadSdk().catch(()=>{});
 })();
