@@ -3083,6 +3083,43 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
 #jarvisUserBar{position:fixed;right:18px;bottom:16px;z-index:60;display:flex;gap:8px;align-items:center;padding:7px 10px;border:1px solid #dceaf0;border-radius:999px;background:rgba(255,255,255,.9);box-shadow:0 5px 20px rgba(32,78,102,.1);font-size:11px;color:#45677a}
 #jarvisUserBar button{border:0;background:#eaf5f8;color:#176482;border-radius:999px;padding:6px 10px;cursor:pointer}
 
+
+/* IP BABA JARVIS premium neural interface */
+.ipbaba-nav{position:sticky;top:0;z-index:50;display:flex;justify-content:center;align-items:center;gap:7px;flex-wrap:wrap;padding:10px 14px;margin:0 auto 14px;max-width:1500px;background:rgba(248,252,255,.84);backdrop-filter:blur(18px);border:1px solid rgba(110,185,210,.22);border-radius:18px;box-shadow:0 8px 28px rgba(35,104,137,.07)}
+.ipbaba-nav a{font:700 11px/1.2 Inter,system-ui,sans-serif;color:#31536a;text-decoration:none;padding:9px 12px;border-radius:999px;transition:.25s}
+.ipbaba-nav a:hover{color:#006f9d;background:linear-gradient(110deg,#dff7ff,#e5fff2);box-shadow:0 0 18px #8de5f555}
+.jarvis-energy-core{position:absolute;inset:8% 5%;display:grid;place-items:center;z-index:3;pointer-events:none}
+.robot-svg{opacity:0!important;visibility:hidden!important}
+.robot-floor{opacity:.15}
+.energy-sphere{position:relative;width:min(48vw,250px);aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;gap:28px;background:radial-gradient(circle at 35% 27%,#f7ffff 0 4%,#b7f5ff 9%,#3bc9ee 21%,#0876ad 43%,#062b52 66%,#03101f 78%);box-shadow:inset -18px -22px 35px #020c1c,inset 10px 12px 24px #e9ffffaa,0 0 22px #20c9ffbb,0 0 65px #13baf477,0 0 120px #08a4df33;animation:corePulse 3.4s ease-in-out infinite}
+.energy-sphere:before,.energy-sphere:after{content:"";position:absolute;inset:9%;border-radius:50%;border:1px solid #a9f6ff88;box-shadow:0 0 22px #1ccfff66,inset 0 0 18px #36d9ff55}
+.energy-sphere:after{inset:19%;border-color:#ffffff88;filter:blur(.5px)}
+.energy-eye{position:relative;z-index:2;width:13px;height:22px;border-radius:100%;background:#eaffff;box-shadow:0 0 12px #fff,0 0 28px #00d9ff;animation:eyeFlow 2.4s ease-in-out infinite alternate}
+.energy-eye:nth-child(2){background:#b7ffeb;box-shadow:0 0 12px #fff,0 0 28px #30ffce}
+.energy-sphere i{position:absolute;width:120%;height:22%;border:2px solid #8df5ff99;border-left-color:#fff;border-right-color:#39f4c7;border-radius:50%;transform:rotate(-24deg);filter:drop-shadow(0 0 8px #1bd8ff);animation:energySpin 5s linear infinite}
+.energy-ring{position:absolute;width:75%;height:28%;border:2px solid #45dfff88;border-radius:50%;filter:drop-shadow(0 0 8px #1ccfff);transform:rotate(28deg);animation:energySpin 8s linear infinite}
+.ring-b{width:88%;height:38%;transform:rotate(-48deg);border-color:#5fffd388;animation-direction:reverse;animation-duration:11s}
+.ring-c{width:98%;height:50%;transform:rotate(78deg);border-style:dashed;border-color:#65cfff66;animation-duration:17s}
+.energy-core-label{position:absolute;bottom:5%;font:800 12px/1.4 Inter,system-ui,sans-serif;letter-spacing:.28em;color:#27617a;text-align:center;text-shadow:0 0 12px #a6edff}
+.energy-core-label small{display:block;font-size:8px;letter-spacing:.2em;color:#48a6bb;margin-top:4px}
+@keyframes energySpin{to{transform:rotate(388deg)}}
+@keyframes corePulse{50%{transform:scale(1.035);filter:hue-rotate(12deg)}}
+@keyframes eyeFlow{to{transform:scaleY(.55);opacity:.7}}
+/* Light, readable chat surface */
+.chat-panel{background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(239,250,255,.96))!important;border:1px solid #d8edf5!important;box-shadow:0 18px 55px rgba(27,91,126,.1)!important}
+.chat-header{background:linear-gradient(100deg,#f3fbff,#effff8)!important;border-bottom:1px solid #dceef3!important}
+.chat-scroll{background:radial-gradient(circle at 85% 10%,#e9faff 0,transparent 34%),#fbfdff!important}
+.composer-shell{background:rgba(248,252,255,.96)!important;border-top:1px solid #dcecf2!important}
+.composer{background:#fff!important;border:1px solid #cfe4ed!important;box-shadow:0 8px 25px #4f9fbd18!important}
+.composer textarea,#input{color:#17384c!important;background:transparent!important}
+.composer textarea::placeholder,#input::placeholder{color:#829baa!important}
+.composer-btn.send{background:linear-gradient(135deg,#19a8dc,#27c99a)!important;box-shadow:0 7px 18px #22b8c855!important}
+.live-main-btn{background:linear-gradient(120deg,#087fbd,#13c6cf 52%,#25b78c)!important;color:#fff!important;border:1px solid #a7f5ff!important;box-shadow:0 9px 25px #1ba9d966,0 0 0 4px #7be5f022,inset 0 1px 0 #ffffffaa!important;transform:translateZ(0);transition:.25s!important}
+.live-main-btn:hover{transform:translateY(-3px) scale(1.015);box-shadow:0 14px 32px #16b9d988,0 0 28px #4de9d966!important}
+#jarvisUserBar{top:14px;bottom:auto;right:16px;box-shadow:0 8px 28px #1d6a8518!important}
+#jarvisUserBar button{cursor:pointer}
+@media(max-width:760px){.ipbaba-nav{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;border-radius:12px;margin-bottom:8px}.ipbaba-nav a{flex:0 0 auto}.energy-sphere{width:min(55vw,190px)}.energy-core-label{bottom:0}}
+
 </style>
 </head>
 
@@ -3140,6 +3177,19 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
 
   </header>
 
+  <nav class="ipbaba-nav" aria-label="IP BABA navigation">
+    <a href="https://www.ipbaba.online/" target="_blank" rel="noopener">Home</a>
+    <a href="https://www.ipbaba.online/p/ip-baba-digital-services.html" target="_blank" rel="noopener">Digital Services</a>
+    <a href="https://www.ipbaba.online/p/ai-prompt-generator.html" target="_blank" rel="noopener">AI Prompt Generator</a>
+    <a href="https://www.ipbaba.online/p/prompt-library.html" target="_blank" rel="noopener">Prompt Library</a>
+    <a href="https://www.ipbaba.online/p/promote-your-post-ip-baba.html" target="_blank" rel="noopener">Promote Business</a>
+    <a href="https://www.ipbaba.online/p/digital-growth-challenge.html" target="_blank" rel="noopener">Growth Challenge</a>
+    <a href="https://www.ipbaba.online/p/portfolio.html" target="_blank" rel="noopener">Portfolio</a>
+    <a href="https://www.ipbaba.online/p/about-ip-baba.html" target="_blank" rel="noopener">About</a>
+    <a href="https://www.ipbaba.online/p/contact.html" target="_blank" rel="noopener">Contact</a>
+    <a href="/admin">Admin</a>
+  </nav>
+
 
   <!-- =====================================================
        MAIN
@@ -3170,6 +3220,13 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
 
 
       <div class="robot-stage" id="robotStage">
+        <div class="jarvis-energy-core" aria-label="Animated JARVIS energy core">
+          <div class="energy-ring ring-a"></div><div class="energy-ring ring-b"></div>
+          <div class="energy-ring ring-c"></div>
+          <div class="energy-sphere"><span class="energy-eye"></span><span class="energy-eye"></span><i></i></div>
+          <div class="energy-sparks"></div>
+          <div class="energy-core-label">JARVIS <small>NEURAL CORE ONLINE</small></div>
+        </div>
 
         <div class="desktop-hud">
           <span class="hud-label">NEURAL NODE / 01</span>
