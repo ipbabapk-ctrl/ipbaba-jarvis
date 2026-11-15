@@ -9,6 +9,20 @@ module.exports = async (req, res) => {
     const authMod = await import("firebase-admin/auth");
     const app = admin.getApps()[0];
     const result = await authMod.getAuth(app).listUsers(1000);
-    return res.status(200).json({ users: result.users.map(u => ({ uid:u.uid, email:u.email || "", displayName:u.displayName || "", disabled:!!u.disabled, emailVerified:!!u.emailVerified, createdAt:u.metadata.creationTime || "" })), nextPageToken: result.pageToken || null });
-  } catch (error) { console.error("Admin user list failed", error); return res.status(500).json({ error:"admin_request_failed" }); }
-}
+    return res.status(200).json({
+      users: result.users.map(u => ({ uid:u.uid, email:u.email || "", displayName:u.displayName || "", disabled:!!u.disabled, emailVerified:!!u.emailVerified, createdAt:u.metadata.creationTime || "" })),
+      nextPageToken: result.pageToken || null,
+      capabilities: {
+        userDirectory: true,
+        adminKnowledgeBase: false,
+        adminInstructionEditor: false,
+        analytics: false,
+        userModerationActions: false
+      },
+      notice: "Knowledge files, instructions and analytics are not yet managed by this first-stage admin API."
+    });
+  } catch (error) {
+    console.error("Admin user list failed", error);
+    return res.status(500).json({ error:"admin_request_failed" });
+  }
+};
