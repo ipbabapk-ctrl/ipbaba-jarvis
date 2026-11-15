@@ -1,4 +1,4 @@
-const { guard, BRAND, RULES } = require("./_shared");
+const { guard, BRAND, RULES, verifyFirebaseUser } = require("./_shared");
 
 const PRIMARY_MODEL =
   process.env.GEMINI_MODEL || "gemini-3.7-flash";
@@ -43,6 +43,9 @@ module.exports = async (req, res) => {
   ) {
     return;
   }
+
+  const identity = await verifyFirebaseUser(req);
+  if (identity.error) return res.status(identity.error === "firebase_admin_not_configured" ? 503 : 401).json({ error: identity.error });
 
   try {
     const key = process.env.GEMINI_API_KEY;
