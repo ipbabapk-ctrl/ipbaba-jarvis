@@ -5433,6 +5433,10 @@ body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transpare
         message =
           "Internet connection available نہیں ہے۔ Network check کریں۔";
       }
+      else if(error?.message){
+        message =
+          "Backend error: " + String(error.message).slice(0, 220);
+      }
 
       addMessage(
         "ai",
