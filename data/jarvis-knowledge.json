@@ -10,20 +10,17 @@
       "Business Growth"
     ]
   },
-
   "assistant": {
     "name": "JARVIS",
     "role": "AI Assistant of IP BABA",
     "primary_source": "https://ipbaba.online",
     "instruction": "When answering questions about IP BABA, prefer verified information available on the official IP BABA website. Do not invent facts, prices, clients, testimonials, awards, certifications, partnerships, revenue, statistics, guarantees, or case studies."
   },
-
   "contact": {
     "email": "ipbaba.pk@gmail.com",
     "whatsapp": "+92 344 3225533",
     "whatsapp_url": "https://wa.me/923443225533"
   },
-
   "services": [
     "Graphic Design",
     "Branding",
@@ -50,13 +47,93 @@
     "Digital Products and Resources",
     "Training and Courses"
   ],
-
   "website_knowledge": {
     "source": "Official IP BABA website",
     "url": "https://ipbaba.online",
-    "rule": "The website should be treated as the primary source for current IP BABA services, pages, offers, products, articles, and publicly available company information."
+    "rule": "The website should be treated as the primary source for current IP BABA services, pages, offers, products, articles, and publicly available company information.",
+    "verified_homepage_summary": {
+      "headline": "BUILD SMARTER. CREATE FASTER. GROW BIGGER.",
+      "positioning": "IP BABA helps businesses, creators and digital brands use AI, digital services and technology for practical growth.",
+      "sections": [
+        {
+          "name": "Digital Services",
+          "details": [
+            "Design and branding",
+            "Social media management and paid advertising",
+            "AI solutions, automation, chatbots and WhatsApp Business workflows",
+            "Website development, WordPress, Shopify and e-commerce",
+            "SEO, copywriting and content strategy"
+          ]
+        },
+        {
+          "name": "AI Prompt Generator",
+          "details": [
+            "Structured prompts for images, video and marketing"
+          ]
+        },
+        {
+          "name": "Prompt Library",
+          "details": [
+            "Ready-to-use image, video and AI prompts"
+          ]
+        },
+        {
+          "name": "Promote Your Business",
+          "details": [
+            "Promote a post or business to a wider audience"
+          ]
+        },
+        {
+          "name": "Digital Growth Challenge",
+          "details": [
+            "Interactive digital growth skills challenge"
+          ]
+        },
+        {
+          "name": "Selected Work / Portfolio",
+          "details": [
+            "Creative work and digital solutions across design, video, web and marketing"
+          ]
+        },
+        {
+          "name": "About IP BABA",
+          "details": [
+            "AI, digital marketing, technology and business growth; based in Sargodha, Punjab, Pakistan"
+          ]
+        }
+      ],
+      "footer_navigation": [
+        "About",
+        "Services",
+        "Portfolio",
+        "Prompt Library",
+        "JARVIS",
+        "AI Prompt Generator",
+        "Digital Growth Challenge",
+        "Promote Your Post",
+        "Privacy Policy",
+        "Terms & Conditions",
+        "Disclaimer",
+        "Contact"
+      ],
+      "latest_posts": [
+        {
+          "title": "Personal Color Analysis",
+          "date": "October 28, 2026"
+        },
+        {
+          "title": "JARVIS AI",
+          "description": "IP BABA's AI assistant"
+        }
+      ],
+      "contact": {
+        "whatsapp": "+92 344 3225533",
+        "email": "ipbaba.pk@gmail.com",
+        "website": "https://www.ipbaba.online"
+      }
+    },
+    "source_note": "This is based on the publicly indexed IP BABA homepage content currently reviewed. Do not claim that every internal page has been fully crawled; use the official website for current details."
   },
-
   "response_rules": [
     "Answer professionally and clearly.",
     "Match the user's language when possible.",

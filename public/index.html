@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#05070b">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#f5f9fc">
+<meta name="color-scheme" content="light">
 <meta name="description" content="JARVIS AI Assistant by IP BABA">
 <title>JARVIS — IP BABA AI Assistant</title>
 
@@ -3037,6 +3037,139 @@ textarea:focus-visible{
     scroll-behavior:auto !important;
   }
 }
+
+/* IP BABA premium light experience */
+:root{--bg:#f5f9fc;--bg2:#eef6fa;--panel:#ffffff;--panel2:#f7fbfd;--white:#102b40;--text:#17364b;--muted:#627b8d;--muted2:#8297a5;--sky:#00a9d6;--sky2:#1689bc;--blue:#287cff;--red:#e52c49;--red2:#f04b62;--green:#21a878;--line:rgba(31,91,122,.14);--line2:rgba(0,169,214,.28);--shadow:0 20px 55px rgba(36,76,102,.10)}
+html,body{background:#f5f9fc!important;color:#17364b!important;color-scheme:light!important}
+body::before{background:radial-gradient(circle at 12% 12%,rgba(63,196,151,.13),transparent 30%),radial-gradient(circle at 88% 8%,rgba(49,177,226,.16),transparent 34%),linear-gradient(145deg,#fbfdff,#f0f8fb 55%,#f7fcfa)!important}
+body::after{background-image:linear-gradient(rgba(28,120,155,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(28,120,155,.035) 1px,transparent 1px)!important}
+.panel{background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(247,251,253,.98))!important;border-color:rgba(38,104,137,.14)!important;box-shadow:0 18px 48px rgba(30,76,102,.09),inset 0 1px 0 #fff!important}
+.system-status,.top-btn,.welcome-card,.quick-card{background:rgba(255,255,255,.82)!important;border-color:rgba(35,112,148,.16)!important;color:#426276!important}
+.top-btn{color:#2c647f!important}.top-btn:hover{color:#087da8!important}
+.micro-label,.chat-header-sub,.robot-caption-sub,.quick-sub{color:#71899a!important}
+.micro-state,.welcome-kicker{color:#078db7!important}
+.robot-caption-title,.chat-header-title,.welcome-card h2{color:#163b53!important}
+.chat-agent-orb{box-shadow:0 0 20px rgba(0,169,214,.22)!important}
+.chat-header{border-bottom-color:rgba(38,104,137,.12)!important}
+.chat-scroll{scrollbar-color:rgba(0,169,214,.28) transparent!important}
+.welcome-card p{color:#627d90!important}
+.quick-card{color:#23495f!important}
+.quick-card:hover{background:#f1f9fc!important;border-color:rgba(0,169,214,.35)!important}
+.message.user{background:linear-gradient(135deg,#e2f3ff,#dceeff)!important;border-color:#c7e2f4!important;color:#173d58!important}
+.message.ai{background:linear-gradient(145deg,#fff,#f6fafc)!important;border-color:#dce8ee!important;color:#24475b!important}
+.message.ai strong{color:#123b55!important}.message.ai h3{color:#078db7!important}
+.message.ai code{background:#edf5f8!important;border-color:#dce8ee!important;color:#23495f!important}
+.chat-state{color:#658396!important}
+.live-main-btn{background:linear-gradient(105deg,#168db8,#36b9d7 55%,#36a984)!important;box-shadow:0 12px 28px rgba(0,145,184,.16)!important}
+.live-main-btn.on{background:linear-gradient(105deg,#187c9c,#1d9e8a)!important}
+.robot-orbit{border-color:rgba(0,155,198,.18)!important;box-shadow:0 0 70px rgba(0,155,198,.06),inset 0 0 60px rgba(42,175,140,.035)!important}
+.robot-orbit::before{border-color:rgba(36,169,135,.18)!important}.robot-orbit::after{border-color:rgba(0,155,198,.14)!important}
+.robot-floor{background:radial-gradient(ellipse,rgba(0,169,214,.13),rgba(57,190,144,.08) 42%,transparent 70%)!important}
+.code-stream span{color:rgba(0,135,177,.14)!important}.code-stream span.red{color:rgba(218,55,83,.12)!important}
+.robot-shell{stroke:rgba(0,133,179,.48)!important}.robot-dark{fill:#e9f4f8!important;stroke:rgba(0,133,179,.22)!important}
+.robot-board{fill:rgba(247,252,255,.97)!important;stroke:rgba(0,153,196,.4)!important}
+.robot-circuit{stroke:rgba(0,153,196,.55)!important}.robot-circuit.red{stroke:rgba(225,54,82,.45)!important}
+.robot-eye-blue{fill:#00a9d6!important}.robot-eye-red{fill:#e52c49!important}
+@media(max-width:760px){.app{padding-left:10px!important;padding-right:10px!important}.panel{border-radius:15px!important}.topbar{gap:8px!important}}
+/* Authentication gate */
+#jarvisAuthGate{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 15% 15%,rgba(61,193,151,.16),transparent 34%),radial-gradient(circle at 85% 12%,rgba(54,177,226,.18),transparent 36%),#f5f9fc}
+#jarvisAuthGate[hidden]{display:none!important}
+.jarvis-auth-card{width:min(100%,430px);padding:30px;border:1px solid #dceaf0;border-radius:24px;background:rgba(255,255,255,.94);box-shadow:0 24px 80px rgba(34,78,101,.14);text-align:center}
+.jarvis-auth-logo{width:76px;height:76px;object-fit:contain;background:#fff;border-radius:18px;padding:5px;margin:0 auto 14px;box-shadow:0 8px 25px rgba(35,86,112,.1)}
+.jarvis-auth-card h1{margin:5px 0;color:#153b54;font-size:1.45rem}.jarvis-auth-card p{color:#688294;font-size:.88rem;line-height:1.55}
+.jarvis-auth-form{display:grid;gap:10px;margin-top:20px}.jarvis-auth-form input{width:100%;padding:13px 14px;border:1px solid #d6e5ec;border-radius:11px;background:#fbfdfe;color:#17364b;outline:none}.jarvis-auth-form input:focus{border-color:#27a9cf;box-shadow:0 0 0 3px rgba(39,169,207,.12)}
+.jarvis-auth-btn{width:100%;padding:13px;border:0;border-radius:11px;background:linear-gradient(110deg,#138db8,#35b9d4 60%,#32a77d);color:#fff;font-weight:800;cursor:pointer}
+.jarvis-auth-secondary{background:#fff;color:#24516a;border:1px solid #d7e6ed}.jarvis-auth-error{min-height:20px;color:#c52d4c;font-size:.8rem}.jarvis-auth-switch{color:#087da8;background:none;border:0;padding:7px;cursor:pointer}
+#jarvisUserBar{position:fixed;right:18px;bottom:16px;z-index:60;display:flex;gap:8px;align-items:center;padding:7px 10px;border:1px solid #dceaf0;border-radius:999px;background:rgba(255,255,255,.9);box-shadow:0 5px 20px rgba(32,78,102,.1);font-size:11px;color:#45677a}
+#jarvisUserBar button{border:0;background:#eaf5f8;color:#176482;border-radius:999px;padding:6px 10px;cursor:pointer}
+
+
+/* IP BABA JARVIS premium neural interface */
+.ipbaba-nav{position:sticky;top:0;z-index:50;display:flex;justify-content:center;align-items:center;gap:7px;flex-wrap:wrap;padding:10px 14px;margin:0 auto 14px;max-width:1500px;background:rgba(248,252,255,.84);backdrop-filter:blur(18px);border:1px solid rgba(110,185,210,.22);border-radius:18px;box-shadow:0 8px 28px rgba(35,104,137,.07)}
+.ipbaba-nav a{font:700 11px/1.2 Inter,system-ui,sans-serif;color:#31536a;text-decoration:none;padding:9px 12px;border-radius:999px;transition:.25s}
+.ipbaba-nav a:hover{color:#006f9d;background:linear-gradient(110deg,#dff7ff,#e5fff2);box-shadow:0 0 18px #8de5f555}
+.jarvis-energy-core{position:absolute;inset:8% 5%;display:grid;place-items:center;z-index:3;pointer-events:none}
+.robot-svg{opacity:0!important;visibility:hidden!important}
+.robot-floor{opacity:.15}
+.energy-sphere{position:relative;width:min(48vw,250px);aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;gap:28px;background:radial-gradient(circle at 35% 27%,#f7ffff 0 4%,#b7f5ff 9%,#3bc9ee 21%,#0876ad 43%,#062b52 66%,#03101f 78%);box-shadow:inset -18px -22px 35px #020c1c,inset 10px 12px 24px #e9ffffaa,0 0 22px #20c9ffbb,0 0 65px #13baf477,0 0 120px #08a4df33;animation:corePulse 3.4s ease-in-out infinite}
+.energy-sphere:before,.energy-sphere:after{content:"";position:absolute;inset:9%;border-radius:50%;border:1px solid #a9f6ff88;box-shadow:0 0 22px #1ccfff66,inset 0 0 18px #36d9ff55}
+.energy-sphere:after{inset:19%;border-color:#ffffff88;filter:blur(.5px)}
+.energy-eye{position:relative;z-index:2;width:13px;height:22px;border-radius:100%;background:#eaffff;box-shadow:0 0 12px #fff,0 0 28px #00d9ff;animation:eyeFlow 2.4s ease-in-out infinite alternate}
+.energy-eye:nth-child(2){background:#b7ffeb;box-shadow:0 0 12px #fff,0 0 28px #30ffce}
+.energy-sphere i{position:absolute;width:120%;height:22%;border:2px solid #8df5ff99;border-left-color:#fff;border-right-color:#39f4c7;border-radius:50%;transform:rotate(-24deg);filter:drop-shadow(0 0 8px #1bd8ff);animation:energySpin 5s linear infinite}
+.energy-ring{position:absolute;width:75%;height:28%;border:2px solid #45dfff88;border-radius:50%;filter:drop-shadow(0 0 8px #1ccfff);transform:rotate(28deg);animation:energySpin 8s linear infinite}
+.ring-b{width:88%;height:38%;transform:rotate(-48deg);border-color:#5fffd388;animation-direction:reverse;animation-duration:11s}
+.ring-c{width:98%;height:50%;transform:rotate(78deg);border-style:dashed;border-color:#65cfff66;animation-duration:17s}
+.energy-core-label{position:absolute;bottom:5%;font:800 12px/1.4 Inter,system-ui,sans-serif;letter-spacing:.28em;color:#27617a;text-align:center;text-shadow:0 0 12px #a6edff}
+.energy-core-label small{display:block;font-size:8px;letter-spacing:.2em;color:#48a6bb;margin-top:4px}
+@keyframes energySpin{to{transform:rotate(388deg)}}
+@keyframes corePulse{50%{transform:scale(1.035);filter:hue-rotate(12deg)}}
+@keyframes eyeFlow{to{transform:scaleY(.55);opacity:.7}}
+
+.energy-face{position:relative;z-index:2;width:68%;height:78%;overflow:visible;filter:drop-shadow(0 0 10px #7df7ff)}
+.face-outline{fill:#06294a99;stroke:url(#faceGlow);stroke-width:3;filter:drop-shadow(0 0 8px #39dfff);animation:faceGlowPulse 2.6s ease-in-out infinite}
+.face-detail{fill:none;stroke:#eaffff;stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 0 6px #fff)}
+.face-current{fill:none;stroke:#43f1ff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:12 8;animation:currentFlow 1.1s linear infinite;filter:drop-shadow(0 0 6px #12dfff)}
+.face-current.secondary{stroke:#4dffd0;stroke-width:1.5;animation-duration:1.7s}
+.energy-sphere .energy-electric{position:absolute;inset:-8%;border:1px solid #9cfaffaa;border-radius:50%;box-shadow:0 0 22px #24dfff,inset 0 0 25px #29dfff55;animation:energySpin 4s linear infinite}
+@keyframes currentFlow{to{stroke-dashoffset:-40}}
+@keyframes faceGlowPulse{50%{opacity:.72;filter:drop-shadow(0 0 18px #32f1ff)}}
+.jarvis-settings{position:fixed;right:16px;top:62px;z-index:100001;width:min(310px,calc(100vw - 32px));padding:18px;border:1px solid #cde7f0;border-radius:18px;background:rgba(250,254,255,.97);box-shadow:0 20px 65px #174c6828;color:#24475c}
+.jarvis-settings[hidden]{display:none!important}
+.settings-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.settings-head button{border:0;background:#e7f5f8;border-radius:9px;width:30px;height:30px;font-size:20px;color:#24566e}
+.jarvis-settings label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}
+.jarvis-settings select{width:100%;padding:11px;border:1px solid #c9e1ea;border-radius:10px;background:#fff;color:#24475c}
+.jarvis-settings p{font-size:11px;line-height:1.5;color:#668396}
+.jarvis-settings a{color:#0786ae;font-size:12px;font-weight:800;text-decoration:none}
+#jarvisUserBar{flex-wrap:wrap;max-width:calc(100vw - 24px)}
+#jarvisUserBar button{padding:8px 12px}
+.live-main-btn{position:relative;overflow:hidden}
+.live-main-btn:before{content:"";display:inline-block;width:10px;height:10px;margin-right:9px;border-radius:50%;background:#e9ffff;box-shadow:0 0 8px #fff,0 0 18px #a6faff;vertical-align:middle;animation:corePulse 1.6s infinite}
+
+/* Light, readable chat surface */
+.chat-panel{background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(239,250,255,.96))!important;border:1px solid #d8edf5!important;box-shadow:0 18px 55px rgba(27,91,126,.1)!important}
+.chat-header{background:linear-gradient(100deg,#f3fbff,#effff8)!important;border-bottom:1px solid #dceef3!important}
+.chat-scroll{background:radial-gradient(circle at 85% 10%,#e9faff 0,transparent 34%),#fbfdff!important}
+.composer-shell{background:rgba(248,252,255,.96)!important;border-top:1px solid #dcecf2!important}
+.composer{background:#fff!important;border:1px solid #cfe4ed!important;box-shadow:0 8px 25px #4f9fbd18!important}
+.composer textarea,#input{color:#17384c!important;background:transparent!important}
+.composer textarea::placeholder,#input::placeholder{color:#829baa!important}
+.composer-btn.send{background:linear-gradient(135deg,#19a8dc,#27c99a)!important;box-shadow:0 7px 18px #22b8c855!important}
+.live-main-btn{background:linear-gradient(120deg,#087fbd,#13c6cf 52%,#25b78c)!important;color:#fff!important;border:1px solid #a7f5ff!important;box-shadow:0 9px 25px #1ba9d966,0 0 0 4px #7be5f022,inset 0 1px 0 #ffffffaa!important;transform:translateZ(0);transition:.25s!important}
+.live-main-btn:hover{transform:translateY(-3px) scale(1.015);box-shadow:0 14px 32px #16b9d988,0 0 28px #4de9d966!important}
+#jarvisUserBar{top:14px;bottom:auto;right:16px;box-shadow:0 8px 28px #1d6a8518!important}
+#jarvisUserBar button{cursor:pointer}
+@media(max-width:760px){.ipbaba-nav{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;border-radius:12px;margin-bottom:8px}.ipbaba-nav a{flex:0 0 auto}.energy-sphere{width:min(55vw,190px)}.energy-core-label{bottom:0}}
+
+
+/* White holographic IP BABA Live Voice stage */
+.live-overlay{background:radial-gradient(circle at 50% 38%,#e8fbff 0,#f8fdff 44%,#eaf8f3 100%)!important;backdrop-filter:blur(16px)!important}
+.live-frame{background:linear-gradient(145deg,#ffffff,#f3fbff 58%,#f0fff8)!important;border:1px solid #bfe4ed!important;box-shadow:0 35px 100px #1a607522,0 0 55px #8be8e355!important}
+.live-topbar{border-bottom:1px solid #dceef3!important}
+.live-title strong{color:#173f55!important}
+.live-title span:not(.live-logo-dot){color:#6a8999!important}
+.live-logo-dot{background:radial-gradient(circle at 34% 30%,#fff,#26c9ef 25%,#1686c3 60%,#25c69a 80%)!important;box-shadow:0 0 20px #4bcde888!important}
+.live-stage{background:radial-gradient(ellipse at center,#fff 0,#f2fbff 55%,#effcf6 100%)!important}
+.live-stage:before{background-image:linear-gradient(#8fcbd51b 1px,transparent 1px),linear-gradient(90deg,#8fcbd51b 1px,transparent 1px)!important}
+.live-energy{background:radial-gradient(circle,#8deeff66,#a8f4df55 43%,transparent 72%)!important;filter:blur(12px)!important}
+.live-orbit{border-color:#58bcd566!important;box-shadow:0 0 60px #5ccddd22!important}
+.live-orbit:before{border-color:#43cbb866!important}.live-orbit:after{border-color:#68bce755!important}
+.live-node{background:#1ba5d1!important;box-shadow:0 0 18px #36c9eb!important}.live-node.n2,.live-node.n3{background:#28b991!important;box-shadow:0 0 18px #48dfb4!important}
+.live-code{opacity:.18!important}.live-code span{color:#258eb4!important}
+.live-robot{filter:drop-shadow(0 20px 28px #247a982b)!important}
+.live-robot .live-mouth{transform-box:fill-box;transform-origin:center;transition:transform .07s ease}
+.live-robot .live-mouth-glow{opacity:.7;transition:opacity .08s ease}
+.live-stage.is-speaking .live-mouth{animation:jarvisLipSync .16s ease-in-out infinite alternate}
+.live-stage.is-speaking .live-mouth-glow{animation:jarvisLipGlow .16s ease-in-out infinite alternate}
+@keyframes jarvisLipSync{from{transform:scaleY(.6) scaleX(.82)}to{transform:scaleY(3.1) scaleX(1.08)}}
+@keyframes jarvisLipGlow{from{opacity:.25}to{opacity:1}}
+.live-status strong{color:#087fa8!important}.live-status span{color:#688697!important}
+.live-end-wrap{border-top:1px solid #dceef3!important}
+.live-end{background:linear-gradient(120deg,#0c91c6,#20b995)!important;box-shadow:0 8px 22px #1aa8b844!important}
+.live-close{color:#2e6176!important;border-color:#c9e4ec!important;background:#fff!important}
+@media(max-width:700px){.live-frame{border-radius:18px!important}.live-robot{width:min(72%,360px)!important;min-width:220px!important}}
+
 </style>
 </head>
 
@@ -3094,6 +3227,19 @@ textarea:focus-visible{
 
   </header>
 
+  <nav class="ipbaba-nav" aria-label="IP BABA navigation">
+    <a href="https://www.ipbaba.online/" target="_blank" rel="noopener">Home</a>
+    <a href="https://www.ipbaba.online/p/ip-baba-digital-services.html" target="_blank" rel="noopener">Digital Services</a>
+    <a href="https://www.ipbaba.online/p/ai-prompt-generator.html" target="_blank" rel="noopener">AI Prompt Generator</a>
+    <a href="https://www.ipbaba.online/p/prompt-library.html" target="_blank" rel="noopener">Prompt Library</a>
+    <a href="https://www.ipbaba.online/p/promote-your-post-ip-baba.html" target="_blank" rel="noopener">Promote Business</a>
+    <a href="https://www.ipbaba.online/p/digital-growth-challenge.html" target="_blank" rel="noopener">Growth Challenge</a>
+    <a href="https://www.ipbaba.online/p/portfolio.html" target="_blank" rel="noopener">Portfolio</a>
+    <a href="https://www.ipbaba.online/p/about-ip-baba.html" target="_blank" rel="noopener">About</a>
+    <a href="https://www.ipbaba.online/p/contact.html" target="_blank" rel="noopener">Contact</a>
+    <a href="/admin">Admin</a>
+  </nav>
+
 
   <!-- =====================================================
        MAIN
@@ -3124,6 +3270,22 @@ textarea:focus-visible{
 
 
       <div class="robot-stage" id="robotStage">
+        <div class="jarvis-energy-core" aria-label="Animated JARVIS energy core">
+          <div class="energy-ring ring-a"></div><div class="energy-ring ring-b"></div>
+          <div class="energy-ring ring-c"></div>
+          <div class="energy-sphere">
+            <svg class="energy-face" viewBox="0 0 220 250" role="img" aria-label="Holographic human-like AI face">
+              <defs><linearGradient id="faceGlow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0ffff"/><stop offset=".45" stop-color="#8ceeff"/><stop offset="1" stop-color="#29e4c1"/></linearGradient></defs>
+              <path class="face-outline" d="M110 18 C58 18 35 62 39 119 C42 167 65 211 110 230 C155 211 178 167 181 119 C185 62 162 18 110 18Z"/>
+              <path class="face-detail" d="M63 103 Q83 89 99 103 M121 103 Q139 89 158 103 M109 111 L103 148 Q110 157 119 148 M82 177 Q110 195 138 177"/>
+              <path class="face-current" d="M42 67 L63 80 L53 101 L76 115 L66 141 L91 153 M178 63 L157 81 L169 102 L146 118 L158 144 L130 158"/>
+              <path class="face-current secondary" d="M83 30 L74 52 L91 67 M137 29 L148 50 L130 68 M75 198 L92 214 M146 198 L129 216"/>
+            </svg>
+            <i class="energy-electric"></i>
+          </div>
+          <div class="energy-sparks"></div>
+          <div class="energy-core-label">JARVIS <small>NEURAL CORE ONLINE</small></div>
+        </div>
 
         <div class="desktop-hud">
           <span class="hud-label">NEURAL NODE / 01</span>
@@ -4028,17 +4190,14 @@ textarea:focus-visible{
 
           <!-- mouth -->
 
-          <path
-            d="M108 101h44"
-            stroke="rgba(66,217,255,.56)"
-            stroke-width="2"
+          <path class="live-mouth"
+            d="M108 102 Q130 102 152 102"
+            fill="none" stroke="#087fa8" stroke-width="3"
             stroke-linecap="round"
           />
-
-          <path
-            d="M118 104h24"
-            stroke="rgba(240,43,66,.34)"
-            stroke-width="1"
+          <path class="live-mouth-glow"
+            d="M118 106 Q130 106 142 106"
+            fill="none" stroke="#25c6aa" stroke-width="1.5"
             stroke-linecap="round"
           />
 
@@ -4099,33 +4258,10 @@ textarea:focus-visible{
             stroke="rgba(66,217,255,.30)"
           />
 
-          <path
-            d="M108 143h18
-               M108 150h27
-               M108 157h18
-               M134 143h16
-               M140 150h11
-               M139 157h12"
-            stroke="rgba(66,217,255,.45)"
-            stroke-width="1.6"
-            stroke-linecap="round"
-          />
-
-          <circle
-            cx="149"
-            cy="143"
-            r="2.5"
-            fill="#f02b42"
-            filter="url(#liveGlow)"
-          />
-
-          <circle
-            cx="149"
-            cy="158"
-            r="2.5"
-            fill="#42d9ff"
-            filter="url(#liveGlow)"
-          />
+          <rect x="109" y="140" width="42" height="22" rx="5" fill="#f7fdff" stroke="#a8dce9"/>
+          <text x="130" y="154" text-anchor="middle" font-size="8" font-weight="900" letter-spacing=".7" fill="#087fa8">IP BABA</text>
+          <circle cx="105" cy="151" r="2.3" fill="#25c6aa" filter="url(#liveGlow)"/>
+          <circle cx="155" cy="151" r="2.3" fill="#168ed1" filter="url(#liveGlow)"/>
 
 
           <!-- side circuits -->
@@ -4445,6 +4581,8 @@ textarea:focus-visible{
         : mode === "live"
         ? "LIVE AUDIO ACTIVE"
         : "SYSTEM ONLINE";
+
+    els.liveStage.classList.toggle("is-speaking", mode === "speaking");
   }
 
   /* =======================================================
@@ -5285,8 +5423,8 @@ textarea:focus-visible{
             method:"POST",
 
             headers:{
-              "Content-Type":
-                "application/json"
+              "Content-Type":"application/json",
+              "Authorization":"Bearer " + await window.jarvisGetIdToken()
             },
 
             body:
@@ -5342,6 +5480,7 @@ textarea:focus-visible{
         state.messages.slice(
           -24
         );
+      if (window.jarvisSaveLocalConversation) await window.jarvisSaveLocalConversation({ id:"current", title:String(state.messages.find(m=>m.role==="user")?.text || "New chat").slice(0,72), messages:state.messages });
 
       addMessage(
         "ai",
@@ -5385,6 +5524,10 @@ textarea:focus-visible{
 
         message =
           "Internet connection available نہیں ہے۔ Network check کریں۔";
+      }
+      else if(error?.message){
+        message =
+          "Backend error: " + String(error.message).slice(0, 220);
       }
 
       addMessage(
@@ -6184,8 +6327,8 @@ textarea:focus-visible{
             method:"POST",
 
             headers:{
-              "Content-Type":
-                "application/json"
+              "Content-Type":"application/json",
+              "Authorization":"Bearer " + await window.jarvisGetIdToken()
             },
 
             body:"{}",
@@ -6736,11 +6879,8 @@ textarea:focus-visible{
                 model,
 
               generationConfig:{
-
-                responseModalities:[
-                  "AUDIO"
-                ]
-
+                responseModalities:["AUDIO"],
+                speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:localStorage.getItem("jarvisLiveVoice") || "Aoede"}}}
               },
 
               systemInstruction:{
@@ -7499,14 +7639,115 @@ textarea:focus-visible{
   );
 
 })();
-<script type="module">
-import { auth } from "js/firebase.js";
-
-import {
-  saveConversation,
-  getConversations
-} from "js/chat-storage.js";
 </script>
 
+
+
+
+
+<div id="jarvisAuthGate">
+ <section class="jarvis-auth-card" aria-labelledby="jarvisAuthTitle">
+  <img class="jarvis-auth-logo" src="https://drive.google.com/uc?export=view&id=1Jmscd_rCXU-aAgZG9dvcfgosLrf3Auw6" alt="IP BABA logo" onerror="this.style.display='none'">
+  <div style="font-size:11px;letter-spacing:.2em;font-weight:800;color:#138db8">IP BABA • DIGITAL GROWTH PARTNER</div>
+  <h1 id="jarvisAuthTitle">Welcome to JARVIS</h1>
+  <p>Sign in to securely access your AI assistant. Your chat history stays in this browser on this device.</p>
+  <form class="jarvis-auth-form" id="jarvisAuthForm">
+   <input id="jarvisAuthEmail" type="email" autocomplete="email" placeholder="Email address" required>
+   <input id="jarvisAuthPassword" type="password" autocomplete="current-password" placeholder="Password" minlength="6" required>
+   <button class="jarvis-auth-btn" id="jarvisEmailSubmit" type="submit">Sign in with email</button>
+   <button class="jarvis-auth-btn jarvis-auth-secondary" id="jarvisGoogleSubmit" type="button">Continue with Google</button>
+   <button class="jarvis-auth-switch" id="jarvisAuthMode" type="button">Create a new account</button>
+   <div class="jarvis-auth-error" id="jarvisAuthError" role="status"></div>
+  </form>
+ </section>
+</div>
+<div id="jarvisUserBar" hidden><span id="jarvisUserEmail"></span><button id="jarvisSettingsToggle" type="button" aria-expanded="false">Settings</button><button id="jarvisSignOut" type="button">Sign out</button></div>
+<section id="jarvisSettingsPanel" class="jarvis-settings" hidden aria-label="JARVIS settings">
+  <div class="settings-head"><strong>JARVIS Settings</strong><button id="jarvisSettingsClose" type="button" aria-label="Close settings">×</button></div>
+  <label for="jarvisLiveVoice">Live voice</label>
+  <select id="jarvisLiveVoice"><option value="Aoede">Aoede · Calm</option><option value="Kore">Kore · Clear</option><option value="Puck">Puck · Bright</option><option value="Charon">Charon · Deep</option><option value="Fenrir">Fenrir · Strong</option></select>
+  <p>Voice preference is saved in this browser and used for new Live sessions.</p>
+  <a href="https://www.ipbaba.online/" target="_blank" rel="noopener">Open IP BABA website ↗</a>
+</section>
+
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const gate=$("jarvisAuthGate"),form=$("jarvisAuthForm"),email=$("jarvisAuthEmail"),password=$("jarvisAuthPassword"),errorBox=$("jarvisAuthError"),modeBtn=$("jarvisAuthMode"),googleBtn=$("jarvisGoogleSubmit"),emailBtn=$("jarvisEmailSubmit"),userBar=$("jarvisUserBar");
+let createMode=false,fb=null,storage=null,activeUser=null,authReady=false;
+function message(text){if(errorBox)errorBox.textContent=text;}
+function explain(e){
+ const code=e&&e.code||"";
+ const map={
+ "auth/unauthorized-domain":"یہ Preview domain Firebase میں Authorized Domains میں شامل نہیں۔ Firebase → Authentication → Settings → Authorized domains میں اس hostname کو شامل کریں۔",
+ "auth/operation-not-allowed":"Firebase میں Email/Password یا Google provider فعال نہیں ہے۔",
+ "auth/popup-blocked":"Browser نے Google popup روکا ہے۔ Pop-ups کی اجازت دیں۔",
+ "auth/popup-closed-by-user":"Google sign-in ونڈو بند ہوگئی۔",
+ "auth/email-already-in-use":"یہ ای میل پہلے سے رجسٹرڈ ہے۔ Sign in کریں۔",
+ "auth/weak-password":"Password کم از کم 6 حروف کا ہونا چاہیے۔",
+ "auth/invalid-credential":"ای میل یا پاس ورڈ درست نہیں۔",
+ "auth/network-request-failed":"نیٹ ورک مسئلہ ہے۔ انٹرنیٹ اور براؤزر کی اجازتیں چیک کریں۔"
+ };
+ message(map[code]||((code?code+": ":"")+(e&&e.message||"Authentication failed")));
+ console.error("IP BABA auth failure",e);
+}
+function setMode(){
+ createMode=!createMode;
+ emailBtn.textContent=createMode?"Create account":"Sign in with email";
+ modeBtn.textContent=createMode?"I already have an account":"Create a new account";
+ password.autocomplete=createMode?"new-password":"current-password";
+ message("");
+}
+async function loadSdk(){
+ if(fb)return fb;
+ try{
+  fb=await import("./js/firebase.js");
+  storage=await import("./js/chat-storage.js");
+  const auth=fb.auth;
+  fb.onAuthStateChanged(auth,async user=>{
+   activeUser=user||null;window.jarvisUser=activeUser;
+   if(user){
+    gate.hidden=true;userBar.hidden=false;
+    $("jarvisUserEmail").textContent=user.email||"Signed in";
+    window.jarvisGetIdToken=()=>user.getIdToken();
+    try{window.jarvisLocalConversations=await storage.getConversations(user.uid);}catch(err){console.warn(err);}
+   }else{
+    gate.hidden=false;userBar.hidden=true;window.jarvisGetIdToken=null;
+   }
+  });
+  authReady=true;
+  return fb;
+ }catch(e){explain(e);throw e;}
+}
+modeBtn.addEventListener("click",setMode);
+form.addEventListener("submit",async e=>{
+ e.preventDefault();message("");
+ if(!email.value.trim()||!password.value){message("ای میل اور پاس ورڈ درج کریں۔");return;}
+ emailBtn.disabled=true;emailBtn.textContent=createMode?"Creating account…":"Signing in…";
+ try{
+  const sdk=await loadSdk();
+  if(createMode)await sdk.createUserWithEmailAndPassword(sdk.auth,email.value.trim(),password.value);
+  else await sdk.signInWithEmailAndPassword(sdk.auth,email.value.trim(),password.value);
+ }catch(err){explain(err);}
+ finally{emailBtn.disabled=false;emailBtn.textContent=createMode?"Create account":"Sign in with email";}
+});
+googleBtn.addEventListener("click",async()=>{
+ message("");googleBtn.disabled=true;googleBtn.textContent="Connecting to Google…";
+ try{const sdk=await loadSdk();await sdk.signInWithPopup(sdk.auth,sdk.googleProvider);}
+ catch(err){explain(err);}
+ finally{googleBtn.disabled=false;googleBtn.textContent="Continue with Google";}
+});
+$("jarvisSignOut").addEventListener("click",async()=>{try{const sdk=await loadSdk();await sdk.signOut(sdk.auth);}catch(e){explain(e);}});
+window.jarvisSaveLocalConversation=async conversation=>{if(!activeUser)return;try{const s=await loadSdk();await storage.saveConversation(activeUser.uid,conversation);}catch(e){console.warn("Local save failed",e);}};
+window.jarvisGetLocalConversations=async()=>activeUser&&storage?storage.getConversations(activeUser.uid):[];
+$("jarvisSettingsToggle").addEventListener("click",()=>{const panel=$("jarvisSettingsPanel");panel.hidden=!panel.hidden;$("jarvisSettingsToggle").setAttribute("aria-expanded",String(!panel.hidden));});
+$("jarvisSettingsClose").addEventListener("click",()=>{$("jarvisSettingsPanel").hidden=true;$("jarvisSettingsToggle").setAttribute("aria-expanded","false");});
+const liveVoiceSelect=$("jarvisLiveVoice");liveVoiceSelect.value=localStorage.getItem("jarvisLiveVoice")||"Aoede";
+liveVoiceSelect.addEventListener("change",()=>localStorage.setItem("jarvisLiveVoice",liveVoiceSelect.value));
+message("Sign-in is ready. Choose an option above.");
+loadSdk().catch(()=>{});
+})();
+</script>
 </body>
 </html>

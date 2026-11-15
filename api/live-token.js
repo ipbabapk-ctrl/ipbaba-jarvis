@@ -1,7 +1,9 @@
-export default async function handler(req, res) {
+const { verifyFirebaseUser } = require("./_shared");
+
+module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   if (req.method === "OPTIONS") {
     return res.status(204).end();
@@ -13,6 +15,9 @@ export default async function handler(req, res) {
       error: "method_not_allowed"
     });
   }
+
+  const identity = await verifyFirebaseUser(req);
+  if (identity.error) return res.status(identity.error === "firebase_admin_not_configured" ? 503 : 401).json({ ok:false, error:identity.error });
 
   const apiKey = process.env.GEMINI_API_KEY;
   const model =
