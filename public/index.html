@@ -7434,5 +7434,9 @@ message("Sign-in is ready. Choose an option above.");
 loadSdk().catch(()=>{});
 })();
 </script>
+
+<script>
+(()=>{const body=document.body,open=document.getElementById("menuTrigger"),close=document.getElementById("drawerClose"),scrim=document.getElementById("menuScrim");if(!open||!close||!scrim)return;const set=(v)=>{body.classList.toggle("drawer-open",v);open.setAttribute("aria-expanded",String(v));};open.addEventListener("click",()=>set(true));close.addEventListener("click",()=>set(false));scrim.addEventListener("click",()=>set(false));document.addEventListener("keydown",e=>{if(e.key==="Escape")set(false);});document.querySelectorAll(".drawer-links a").forEach(a=>a.addEventListener("click",()=>set(false)));})();
+</script>
 </body>
 </html>
