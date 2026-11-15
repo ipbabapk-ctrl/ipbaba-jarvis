@@ -165,7 +165,7 @@ function guard(req, res, options = {}) {
       try {
         const u = new URL(requestOrigin);
         const host = u.hostname.toLowerCase();
-        const preview = /^ipbaba-jarvis-[a-z0-9-]+-jarvis-429f\\.vercel\\.app$/.test(host);
+        const preview = /^ipbaba-jarvis-[a-z0-9-]+-jarvis-429f\.vercel\.app$/.test(host);
         return u.protocol === "https:" &&
           (host === "ipbaba-jarvis.vercel.app" || preview ||
            String(process.env.ALLOWED_ORIGINS || "").split(",").map(v => v.trim().replace(/\\/$/, "")).includes(requestOrigin.replace(/\\/$/, "")));
