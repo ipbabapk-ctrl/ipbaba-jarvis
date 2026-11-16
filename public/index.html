@@ -3787,6 +3787,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
   };
 
   let typingRow = null;
+  let chatRequestId = 0;
 
   /* =======================================================
      VIEWPORT
@@ -4657,7 +4658,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
      ======================================================= */
 
   async function sendText(){
-
+    let requestTimeout = 0;
     const text =
       els.input.value.trim();
 
@@ -4669,6 +4670,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
       return;
     }
 
+    const requestId = ++chatRequestId;
     removeWelcome();
 
     els.input.value =
@@ -4719,13 +4721,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
       const controller =
         new AbortController();
 
-      const timeout =
-        setTimeout(
-          () => {
-            controller.abort();
-          },
-          55000
-        );
+      requestTimeout = setTimeout(() => controller.abort(), 55000);
 
       const response =
         await fetch(
@@ -4750,9 +4746,8 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
           }
         );
 
-      clearTimeout(
-        timeout
-      );
+      clearTimeout(requestTimeout);
+      requestTimeout = 0;
 
       const data =
         await response
@@ -4772,6 +4767,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
         );
       }
 
+      if (requestId !== chatRequestId) return;
       typingRow?.remove();
 
       typingRow =
@@ -4808,6 +4804,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
     }catch(
       error
     ){
+      if (requestId !== chatRequestId) return;
 
       console.error(
         "JARVIS chat error:",
@@ -4854,8 +4851,8 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
       );
 
     }finally{
-
-      setBusy(false);
+      clearTimeout(requestTimeout);
+      if (requestId === chatRequestId) setBusy(false);
     }
   }
 
@@ -4894,12 +4891,11 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
      ======================================================= */
 
   function newChat(){
-
-    if(
-      state.liveSocket
-    ){
-      closeLive();
-    }
+    chatRequestId++;
+    if (typingRow) typingRow.remove();
+    typingRow = null;
+    if (state.liveSocket || liveOpening) closeLive();
+    setBusy(false);
 
     state.messages =
       [];
@@ -4964,7 +4960,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
     recognition.onstart =
       () => {
-
+        els.micBtn.disabled = true;
         setMode(
           "listening",
           "LISTENING"
@@ -4978,10 +4974,8 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
           "";
 
         for(
-          let i =
-            event.resultIndex;
-          i <
-            event.results.length;
+          let i = 0;
+          i < event.results.length;
           i++
         ){
 
@@ -5008,11 +5002,8 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
     recognition.onend =
       () => {
-
-        if(
-          state.mode ===
-          "listening"
-        ){
+        els.micBtn.disabled = false;
+        if(state.mode === "listening" || state.mode === "error"){
 
           setMode(
             "idle",
