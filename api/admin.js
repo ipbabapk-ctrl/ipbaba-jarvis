@@ -1,7 +1,6 @@
 const { guard, verifyFirebaseUser, getFirestore, readKnowledge, getRuntimeConfig } = require("./_shared");
 module.exports = async (req, res) => {
   if (req.method === "OPTIONS") { guard(req, res, { method: "GET", json: false }); return; }
-  if (req.method === "OPTIONS") { if (guard(req, res, { method: "GET", json: false })) return; return; }
   if (req.method !== "GET" && req.method !== "POST") { res.setHeader("Allow", "GET, POST, OPTIONS"); return res.status(405).json({error:"method_not_allowed"}); }
   const identity = await verifyFirebaseUser(req);
   if (identity.error) return res.status(identity.error === "firebase_admin_not_configured" ? 503 : 401).json({ error: identity.error });
@@ -14,7 +13,15 @@ module.exports = async (req, res) => {
       if (action === "save-config") {
         const instructions = String(body.instructions || "").slice(0, 12000);
         const animation = body.animation && typeof body.animation === "object" ? { enabled: body.animation.enabled !== false, style: "3d-robot" } : {enabled:true,style:"3d-robot"};
-        await db.collection("jarvisConfig").doc("runtime").set({instructions,animation,updatedAt:new Date().toISOString(),updatedBy:identity.user.email},{merge:true});
+        let knowledge;
+        if (body.knowledgeJson !== undefined) {
+          if (typeof body.knowledgeJson !== "string" || body.knowledgeJson.length > 30000) return res.status(400).json({error:"knowledge_json_too_large"});
+          try { knowledge = JSON.parse(body.knowledgeJson); } catch (_) { return res.status(400).json({error:"invalid_knowledge_json"}); }
+          if (!knowledge || Array.isArray(knowledge) || typeof knowledge !== "object") return res.status(400).json({error:"knowledge_must_be_object"});
+        }
+        const update = {instructions,animation,updatedAt:new Date().toISOString(),updatedBy:identity.user.email};
+        if (knowledge) update.knowledge = knowledge;
+        await db.collection("jarvisConfig").doc("runtime").set(update,{merge:true});
         return res.status(200).json({ok:true});
       }
       if (action === "save-profile") {
@@ -41,7 +48,8 @@ module.exports = async (req, res) => {
     const authMod = await import("firebase-admin/auth");
     const app = admin.getApps()[0];
     const db = await getFirestore();
-    const result = await authMod.getAuth(app).listUsers(1000);
+    const pageToken = String((req.query && req.query.pageToken) || "");
+    const result = await authMod.getAuth(app).listUsers(1000, pageToken || undefined);
     const [usageSnap, config, profilesSnap] = await Promise.all([
       db.collection("jarvisUsage").get(), getRuntimeConfig(), db.collection("jarvisProfiles").get()
     ]);
@@ -55,7 +63,7 @@ module.exports = async (req, res) => {
     }));
     return res.status(200).json({
       users, nextPageToken: result.pageToken || null,
-      knowledge: readKnowledge(), instructions: String(config.instructions || ""),
+      knowledge: config.knowledge || readKnowledge(), instructions: String(config.instructions || ""),
       animation: config.animation || { enabled:true, style:"3d-robot" },
       capabilities: { userDirectory:true, adminKnowledgeBase:true, adminInstructionEditor:true, analytics:true, userModerationActions:true, firestore:true },
       usageTotals: { requests:users.reduce((n,u)=>n+u.requests,0), activeUsers:users.filter(u=>u.requests>0).length }
