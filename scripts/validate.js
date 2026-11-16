@@ -65,6 +65,8 @@ requireText(mainHtml, "source.playbackRate.value = playbackRate", "Live voice sp
 requireText(mainHtml, "activeChatController?.abort()", "cancel stale chat requests on New Chat");
 requireText(mainHtml, "state.liveSocket || liveOpening || reconnectTimer", "cancel pending Live reconnect on New Chat");
 requireText(mainHtml, "i < event.results.length", "preserve final speech recognition transcript segments");
+requireText(mainHtml, "state.recognition?.stop()", "stop browser speech capture on New Chat");
+requireText(mainHtml, "localStorage.setItem(\"jarvisLiveVoice\",prefs.voice.value)", "persist the selected Live voice consistently");
 requireText(mainHtml, "new AudioWorkletNode", "Live microphone PCM processing");
 requireText(mainHtml, "realtimeInput", "Live microphone streaming");
 requireText(mainHtml, "liveAttemptId", "Live startup cancellation guard");
