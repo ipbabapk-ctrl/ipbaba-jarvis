@@ -74,6 +74,7 @@ requireText(mainHtml, "liveAttemptId", "Live startup cancellation guard");
 requireText(mainHtml, "setupTimeout", "Live setup timeout");
 requireText(mainHtml, "sessionResumptionUpdate", "top-level Live session resumption updates");
 requireText(mainHtml, "openLive(true)", "automatic Live session resumption");
+requireText(mainHtml, "resumeHandle = null;\n      reconnectAttempts = 0;", "reset stale session state before a fresh Live connection");
 requireText(mainHtml, "contextWindowCompression", "long-session context compression");
 requireText(mainHtml, "Connection dropped. Restoring the current voice conversation", "resumable Live disconnect recovery");
 requireText(mainHtml, "reconnectAttempts < 3", "bounded Live reconnect attempts");
