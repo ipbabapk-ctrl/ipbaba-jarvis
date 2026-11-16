@@ -176,7 +176,7 @@ function guard(req, res, options = {}) {
     if (!requestAllowed) return res.status(403).end();
     res.setHeader("Access-Control-Allow-Origin", requestOrigin || "https://ipbaba-jarvis.vercel.app");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     res.setHeader("Access-Control-Max-Age", "86400");
     res.setHeader("Vary", "Origin");
     return res.status(204).end();
