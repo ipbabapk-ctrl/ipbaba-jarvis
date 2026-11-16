@@ -13,7 +13,7 @@
 <div class="tablewrap"><table><thead><tr><th>User</th><th>Email</th><th>Requests</th><th>Last active</th><th>Account</th><th>Action</th></tr></thead><tbody id="users"></tbody></table></div>
 </section>
 <section id="tab-knowledge" class="panel" hidden><h2>Knowledge Base</h2><p class="note">Edit verified IP BABA facts, services, founder information, contact details and social URLs here as JSON. Save to publish the knowledge to JARVIS for new requests. Keep social URLs blank until you enter the official profile links.</p><textarea id="knowledgeInfo" class="editor" spellcheck="false" aria-label="Editable JARVIS knowledge JSON"></textarea><div class="actions" style="margin-top:10px"><button class="btn" id="saveKnowledge">Save Knowledge Base</button><span id="knowledgeStatus" class="note" role="status"></span></div></section>
-<section id="tab-instructions" class="panel" hidden><h2>AI Instructions & Runtime Controls</h2><p class="note">These instructions are added to the JARVIS system context after saving. Never paste private credentials or sensitive personal data.</p><textarea id="instructions" class="editor" placeholder="Write instructions for JARVIS…"></textarea><div class="actions" style="margin-top:10px"><label class="switch"><input id="animationEnabled" type="checkbox" checked> Enable interface animation</label><button class="btn" id="saveConfig">Publish instructions & settings</button></div><div id="saveStatus" class="note" role="status"></div></section>
+<section id="tab-instructions" class="panel" hidden><h2>AI Instructions & Runtime Controls</h2><p class="note">These instructions are added to the JARVIS system context after saving. Never paste private credentials or sensitive personal data.</p><textarea id="instructions" class="editor" placeholder="Write instructions for JARVIS…"></textarea><div class="actions" style="margin-top:10px"><button class="btn" id="saveConfig">Publish instructions</button></div><div id="saveStatus" class="note" role="status"></div></section>
 <section id="tab-status" class="panel" hidden><h2>Usage & System Overview</h2><div class="grid"><div class="metric"><strong id="totalRequests">—</strong><span>Tracked requests</span></div><div class="metric"><strong id="activeUsers">—</strong><span>Users with activity</span></div><div class="metric"><strong id="firebaseStatus">—</strong><span>Authentication</span></div><div class="metric"><strong id="storeStatus">—</strong><span>Admin data store</span></div></div><p class="note">This is request-count analytics, not token billing or audio-minute metering. Live Voice usage is not included in this counter yet.</p></section>
 </div></section></main>
 <script type="module">
@@ -42,8 +42,7 @@ async function load(pageToken=null){
  $("users").innerHTML="";renderUsers();
  $("knowledgeInfo").value=JSON.stringify(data.knowledge||{},null,2);
  $("instructions").value=data.instructions||"";
- $("animationEnabled").checked=!data.animation||data.animation.enabled!==false;
- $("totalRequests").textContent=Number(data.usageTotals?.requests||0).toLocaleString();
+  $("totalRequests").textContent=Number(data.usageTotals?.requests||0).toLocaleString();
  $("activeUsers").textContent=Number(data.usageTotals?.activeUsers||0).toLocaleString();
  $("firebaseStatus").textContent="Connected";
  $("storeStatus").textContent="Firestore";
@@ -68,13 +67,13 @@ $("users").addEventListener("click",async e=>{
 });
 $("saveKnowledge").addEventListener("click",async()=>{
  const btn=$("saveKnowledge"),msg=$("knowledgeStatus");btn.disabled=true;msg.textContent="Saving…";
- try{JSON.parse($("knowledgeInfo").value);await api("save-config",{instructions:$("instructions").value,knowledgeJson:$("knowledgeInfo").value,animation:{enabled:$("animationEnabled").checked,style:"3d-robot"}});msg.textContent="Knowledge published. New requests will use it.";}
+ try{JSON.parse($("knowledgeInfo").value);await api("save-config",{instructions:$("instructions").value,knowledgeJson:$("knowledgeInfo").value});msg.textContent="Knowledge published. New requests will use it.";}
  catch(e){msg.textContent="Save failed: "+(e.message||"Invalid JSON");}
  finally{btn.disabled=false;}
 });
 $("saveConfig").addEventListener("click",async()=>{
  const btn=$("saveConfig"),msg=$("saveStatus");btn.disabled=true;msg.textContent="Saving…";
- try{await api("save-config",{instructions:$("instructions").value,knowledgeJson:$("knowledgeInfo").value,animation:{enabled:$("animationEnabled").checked,style:"3d-robot"}});msg.textContent="Published. New chat requests will use the saved instructions and knowledge.";}
+ try{await api("save-config",{instructions:$("instructions").value,knowledgeJson:$("knowledgeInfo").value});msg.textContent="Published. New chat requests will use the saved instructions and knowledge.";}
  catch(e){msg.textContent="Save failed: "+e.message;}
  finally{btn.disabled=false;}
 });
