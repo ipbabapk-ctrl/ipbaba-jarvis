@@ -88,6 +88,7 @@ requireText(liveTokenApi, "guard(req, res", "Live token CORS/request guard");
 forbidText(liveTokenApi, "Access-Control-Allow-Origin", "wildcard token CORS headers");
 requireText(liveTokenApi, "controller.abort()", "Live token upstream timeout");
 requireText(liveTokenApi, "bidiGenerateContentSetup", "REST-compatible constrained Gemini Live token");
+requireText(liveTokenApi, "fieldMask: \"model,generationConfig.responseModalities,sessionResumption\"", "Live token locks only required fields while allowing client speech/system configuration");
 forbidText(liveTokenApi, "liveConnectConstraints:", "invalid SDK-only REST token field");
 requireText(mainHtml, "v1alpha.GenerativeService.BidiGenerateContentConstrained", "ephemeral-token Live WebSocket API version");
 requireText(mainHtml, "window.jarvisGetIdToken = async function", "stable Firebase ID-token provider before auth initialization");
