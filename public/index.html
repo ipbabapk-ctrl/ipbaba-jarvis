@@ -5852,7 +5852,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
             }
 
             if(
-              this.buffer.length >= 2048
+              this.buffer.length >= 1764
             ){
 
               const chunk =
@@ -6435,6 +6435,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
             state.liveReady =
               true;
             clearTimeout(setupTimeout);
+            clearTimeout(reconnectTimer);
             clearLiveError();
 
             setMode(
@@ -6658,15 +6659,25 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
       socket.onclose =
         event => {
-          if (attemptId === liveAttemptId) clearTimeout(setupTimeout);
           const intentional = state.intentionalLiveClose;
           const wasCurrentSocket = state.liveSocket === socket;
+          if (wasCurrentSocket) clearTimeout(setupTimeout);
+          const canResume = wasCurrentSocket && !intentional && attemptId === liveAttemptId && !!resumeHandle && !!liveToken;
 
           if (wasCurrentSocket) {
             state.liveSocket = null;
             state.liveReady = false;
             stopLiveAudio();
-            closeMicrophone();
+            if (!canResume) closeMicrophone();
+          }
+
+          if (canResume) {
+            setLiveStatus("RECONNECTING", "Connection dropped. Restoring the current voice conversation…");
+            clearTimeout(reconnectTimer);
+            reconnectTimer = setTimeout(() => {
+              if (attemptId === liveAttemptId && !state.intentionalLiveClose && !state.liveSocket) openLive(true);
+            }, 500);
+            return;
           }
 
           if(
