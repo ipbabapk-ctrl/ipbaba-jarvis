@@ -117,6 +117,8 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
     const models = [
       PRIMARY_MODEL,
       FALLBACK_MODEL,
+      "gemini-3.8-flash",
+      "gemini-3.7-flash",
     ].filter(
       (model, index, arr) =>
         model && arr.indexOf(model) === index
@@ -156,6 +158,11 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
               response.status === 502 ||
               response.status === 503 ||
               response.status === 504;
+
+            if (response.status === 400 || response.status === 404) {
+              console.warn("Gemini model unavailable; trying next configured fallback", model, response.status);
+              continue;
+            }
 
             if (!retryable) {
               console.error(
