@@ -5125,6 +5125,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
   let audioQueue =
     [];
+  let liveModelTurnActive = false;
 
   let nextPlayTime =
     0;
@@ -5510,6 +5511,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
           if(
             audioQueue.length === 0 &&
+            !liveModelTurnActive &&
             state.liveReady &&
             state.liveSocket?.readyState === WebSocket.OPEN &&
             !state.intentionalLiveClose
@@ -5615,6 +5617,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
     audioQueue =
       [];
+    liveModelTurnActive = false;
 
     nextPlayTime =
       0;
@@ -6435,6 +6438,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
             state.liveReady =
               true;
+            liveModelTurnActive = false;
             clearTimeout(setupTimeout);
             clearTimeout(reconnectTimer);
             reconnectAttempts = 0;
@@ -6549,7 +6553,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
           if(
             content.interrupted
           ){
-
+            liveModelTurnActive = false;
             stopLiveAudio();
 
             setVoiceLevel(
@@ -6593,6 +6597,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
               if(
                 audio
               ){
+                liveModelTurnActive = true;
 
                 console.log(
                   "Gemini Live audio received."
@@ -6611,13 +6616,13 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
             ==========================================
           */
 
-          if(
-            (content.turnComplete || content.turn_complete) &&
-            audioQueue.length === 0
-          ){
-            setVoiceLevel(0);
-            setMode("listening", "LISTENING");
-            setLiveStatus("LISTENING", "Speak when you are ready.");
+          if (content.turnComplete || content.turn_complete) {
+            liveModelTurnActive = false;
+            if (audioQueue.length === 0) {
+              setVoiceLevel(0);
+              setMode("listening", "LISTENING");
+              setLiveStatus("LISTENING", "Speak when you are ready.");
+            }
           }
 
           console.log(

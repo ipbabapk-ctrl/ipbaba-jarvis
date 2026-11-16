@@ -62,6 +62,7 @@ forbidText(adminHtml, "animationEnabled", "admin animation toggle");
 forbidText(adminApi, "body.animation", "runtime animation write");
 forbidText(profileApi, "animation:", "profile animation response");
 requireText(mainHtml, "source.playbackRate.value = playbackRate", "Live voice speed setting");
+requireText(mainHtml, "liveModelTurnActive", "accurate streamed audio speaking-state tracking");
 requireText(mainHtml, "activeChatController?.abort()", "cancel stale chat requests on New Chat");
 requireText(mainHtml, "state.liveSocket || liveOpening || reconnectTimer", "cancel pending Live reconnect on New Chat");
 requireText(mainHtml, "i < event.results.length", "preserve final speech recognition transcript segments");
