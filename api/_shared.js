@@ -307,6 +307,7 @@ module.exports.getRuntimeConfig = getRuntimeConfig;
 module.exports.logUsage = logUsage;
 module.exports.getFirestore = getFirestore;
 module.exports.getUserProfile = getUserProfile;
+
 const fs = require("fs");
 const path = require("path");
 const KNOWLEDGE_FILE = path.join(process.cwd(), "data", "jarvis-knowledge.json");
