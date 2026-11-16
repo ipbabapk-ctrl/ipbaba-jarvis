@@ -5,9 +5,9 @@ const PRIMARY_MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 // Gemini 3.7 Flash was deprecated on 2026-10-08. Keep a current
 // independently configurable fallback; do not silently retry the same model.
 const FALLBACK_MODEL = process.env.GEMINI_FALLBACK_MODEL || "gemini-3.6-flash";
-const MAX_RETRIES_PER_MODEL = 1; // two attempts total for transient failures
-const REQUEST_TIMEOUT_MS = Math.min(Math.max(Number(process.env.GEMINI_REQUEST_TIMEOUT_MS || 10000), 7000), 12000);
-const MAX_TOTAL_GEMINI_MS = 44000;
+const MAX_RETRIES_PER_MODEL = 0; // one attempt per model; fail over immediately
+const REQUEST_TIMEOUT_MS = Math.min(Math.max(Number(process.env.GEMINI_REQUEST_TIMEOUT_MS || 11000), 8000), 14000);
+const MAX_TOTAL_GEMINI_MS = 30000;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -215,10 +215,7 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
             });
           }
 
-          if (attempt < MAX_RETRIES_PER_MODEL) {
-            const delay = Math.min(Math.max(result.retryAfterMs || (1000 * (2 ** attempt)), 500), 6000);
-            if (geminiDeadline - Date.now() > delay + 7500) { await sleep(delay); continue; }
-          }
+          // Move to the fallback model immediately instead of retrying an overloaded primary.
           tryFallbackModel = true;
           break;
         } catch (error) {
@@ -236,10 +233,7 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
             message: lastDetail
           });
 
-          if (attempt < MAX_RETRIES_PER_MODEL && geminiDeadline - Date.now() > 8500) {
-            await sleep(Math.min(500 * (attempt + 1), 1000));
-            continue;
-          }
+          // A network timeout is not retried on the same model; try the fallback once.
           tryFallbackModel = true;
           break;
         }
@@ -256,11 +250,11 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
       .catch(error => console.error("Usage error logging failed", error.message));
 
     const hint = lastStatus === 429
-      ? "Gemini usage quota or rate limit reached. Check Google AI Studio quotas/billing."
+      ? "Gemini rate limit/quota was reached. Check Google AI Studio quota and billing; the backend already tried the configured fallback model."
       : lastStatus === 503
-        ? "Gemini servers are temporarily overloaded. Retry later or use another available model."
+        ? "Gemini returned 503 for the configured models. This is an upstream availability/capacity failure, not a browser UI error."
         : lastStatus === 504
-          ? "Gemini did not answer before the backend timeout. Try a smaller prompt or verify upstream latency."
+          ? "Gemini exceeded the per-model request time limit. The backend moved to the fallback model without retrying the same overloaded model."
           : lastDetail || "Inspect Vercel Function Logs for the upstream Gemini error.";
 
     return res.status(503).json({

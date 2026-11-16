@@ -3322,6 +3322,53 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
 .live-stage.is-speaking .live-robot-mouth,.robot-stage.is-speaking .live-robot-mouth{animation:jarvisMouth 125ms ease-in-out infinite alternate!important}@keyframes jarvisMouth{from{height:3px;transform:scaleX(.78)}to{height:13px;transform:scaleX(1.12)}}
 @media(prefers-reduced-motion:reduce){.live-robot-eye,.live-stage.is-speaking .live-robot-mouth,.robot-stage.is-speaking .live-robot-mouth{animation:none!important}}
 </style>
+<style id="jarvis-v9-professional-polish">
+/* Fixed robot placement: keep the character still while only its limbs animate. */
+.robot-orbit{animation:none!important;transform:none!important}.robot-float{animation:none!important}
+.robot-stage .live-robot-scene,.live-stage .live-robot-scene{animation:none!important}
+.live-robot-body{animation:none!important;transform:none!important}
+.live-robot-arm{transform-origin:50% 8%!important;will-change:transform}
+.live-robot-arm.left{animation:jarvisArmIdleLeft 6.2s ease-in-out infinite!important}
+.live-robot-arm.right{animation:jarvisArmIdleRight 6.8s ease-in-out infinite!important}
+.live-stage.is-speaking .live-robot-arm.left,.robot-stage.is-speaking .live-robot-arm.left{animation:jarvisArmSpeakLeft 1.15s ease-in-out infinite!important}
+.live-stage.is-speaking .live-robot-arm.right,.robot-stage.is-speaking .live-robot-arm.right{animation:jarvisArmSpeakRight 1.35s ease-in-out infinite!important}
+@keyframes jarvisArmIdleLeft{0%,100%{transform:rotate(13deg)}50%{transform:rotate(17deg)}}
+@keyframes jarvisArmIdleRight{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(-17deg)}}
+@keyframes jarvisArmSpeakLeft{0%,100%{transform:rotate(13deg)}50%{transform:rotate(22deg)}}
+@keyframes jarvisArmSpeakRight{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(-22deg)}}
+.robot-stage .live-robot-scene{left:50%;top:50%;transform:translate(-50%,-50%)!important}
+.live-stage .live-robot-scene{left:50%;top:50%;transform:translate(-50%,-50%)!important}
+/* Inline account-name editing */
+.profile-name-edit{display:flex;align-items:center;gap:8px;min-height:34px;flex-wrap:nowrap}
+.profile-name-display{font-size:15px;font-weight:800;letter-spacing:-.015em;color:#17384f;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.profile-icon-btn{width:30px;height:30px;flex:0 0 30px;display:inline-grid;place-items:center;border:1px solid #d7e6ed;border-radius:9px;background:#f6fbfd;color:#34758e;cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .18s ease,color .18s ease}
+.profile-icon-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.profile-icon-btn:hover{background:#e8f6fa;border-color:#9bcbd9;color:#087fa8;transform:translateY(-1px)}
+.profile-icon-btn:disabled{opacity:.55;cursor:wait;transform:none}
+.profile-icon-btn[hidden],.profile-name-edit [hidden]{display:none!important}
+.profile-save-icon{background:#eaf8f2;border-color:#c8e9d9;color:#168e73}.profile-cancel-icon{font-size:19px;line-height:1}
+.profile-name-edit input{width:min(42vw,220px);min-width:0;padding:8px 10px;border:1px solid #9ccbd9;border-radius:9px;background:#f8fcfe;color:#17384f;font:inherit;box-shadow:0 0 0 3px rgba(12,159,189,.08)}
+.profile-save-status{min-height:15px;opacity:.9;transition:opacity .2s ease}
+/* Cohesive navigation, profile and settings surfaces */
+.side-drawer{background:linear-gradient(155deg,#fff 0%,#f7fbfd 100%)!important;border-right:1px solid #dce8ef!important;box-shadow:18px 0 55px rgba(26,67,92,.13)!important}
+.drawer-head{padding:18px 18px 16px!important;border-bottom:1px solid #e6eef3!important}
+.drawer-section{padding:18px 18px 8px!important;color:#8295a3!important;font-size:10px!important;font-weight:850!important;letter-spacing:.14em!important}
+.drawer-links{padding:0 10px!important;gap:4px!important}
+.drawer-links a{display:flex;align-items:center;min-height:42px;padding:10px 12px!important;border:1px solid transparent;border-radius:11px!important;color:#294b61!important;font-size:13px;font-weight:650;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.drawer-links a:hover,.drawer-links a:focus-visible{background:#edf7fa!important;border-color:#d7ebf1!important;transform:translateX(2px)}
+.drawer-footer{border-top:1px solid #e6eef3!important;color:#8194a2!important;padding:16px 18px!important}
+.jarvis-profile-panel,.settings-panel{border:1px solid #dce8ef!important;border-radius:18px!important;background:linear-gradient(150deg,#fff,#f8fbfd)!important;box-shadow:0 24px 65px rgba(26,67,92,.16)!important;backdrop-filter:blur(18px)}
+.profile-panel-head,.settings-panel-head{padding:15px 17px!important;border-bottom:1px solid #e8eff3!important;font-size:11px!important;font-weight:850!important;letter-spacing:.13em!important}
+.profile-identity{padding:16px 17px!important;gap:12px!important}
+.profile-meta{margin:0 17px 14px!important;padding:12px 0!important;border-top:1px solid #edf2f5!important;border-bottom:1px solid #edf2f5!important}
+.avatar-choices{padding:0 17px 16px!important;gap:9px!important}
+.avatar-choices button{border:1px solid #e0ebf0!important;border-radius:12px!important;background:#f8fbfd!important;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.avatar-choices button:hover{transform:translateY(-2px);border-color:#9bcbd9!important;box-shadow:0 7px 16px rgba(20,100,130,.10)}
+.top-btn,.profile-trigger,.menu-trigger{transition:background .18s ease,border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.top-btn:hover,.profile-trigger:hover,.menu-trigger:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(24,92,120,.10)}
+@media(max-width:600px){.profile-name-display{max-width:150px}.profile-name-edit input{width:min(48vw,190px)}.jarvis-profile-panel,.settings-panel{border-radius:16px!important}}
+@media(prefers-reduced-motion:reduce){.live-robot-arm,.live-stage.is-speaking .live-robot-arm,.robot-stage.is-speaking .live-robot-arm{animation:none!important}}
+</style>
 </head>
 
 <body>
@@ -3366,7 +3413,7 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
   </aside>
   <section id="jarvisProfilePanel" class="jarvis-profile-panel" hidden aria-label="User account">
     <div class="profile-panel-head"><span>YOUR ACCOUNT</span><button id="jarvisProfileClose" type="button" aria-label="Close account panel">×</button></div>
-    <div class="profile-identity"><span id="jarvisProfileLargeAvatar" class="profile-avatar profile-avatar-large">J</span><div><div class="profile-name-edit"><input id="jarvisProfileNameInput" type="text" maxlength="40" placeholder="Your name" aria-label="Your display name"><button id="jarvisSaveProfileName" type="button">Save</button></div><small id="jarvisUserEmail">Sign in to your account</small><small id="jarvisProfileSaveStatus" class="profile-save-status" role="status" aria-live="polite"></small></div></div>
+    <div class="profile-identity"><span id="jarvisProfileLargeAvatar" class="profile-avatar profile-avatar-large">J</span><div><div class="profile-name-edit"><span id="jarvisProfileNameDisplay" class="profile-name-display">JARVIS User</span><button id="jarvisEditProfileName" class="profile-icon-btn" type="button" aria-label="Edit username" title="Edit username"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16.5-.8 4.3 4.3-.8L19.8 7.7a2.1 2.1 0 0 0-3-3L4 16.5Z"/><path d="m14.8 6.7 3 3"/></svg></button><input id="jarvisProfileNameInput" type="text" maxlength="40" placeholder="Your name" aria-label="Your display name" hidden><button id="jarvisSaveProfileName" class="profile-icon-btn profile-save-icon" type="button" aria-label="Save username" title="Save" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></button><button id="jarvisCancelProfileName" class="profile-icon-btn profile-cancel-icon" type="button" aria-label="Cancel username edit" title="Cancel" hidden>×</button></div><small id="jarvisUserEmail">Sign in to your account</small><small id="jarvisProfileSaveStatus" class="profile-save-status" role="status" aria-live="polite"></small></div></div>
     <div class="profile-meta"><span>Account created</span><strong id="jarvisAccountCreated">—</strong></div>
     <div class="profile-avatar-label">Choose your avatar</div>
     <div id="jarvisAvatarChoices" class="avatar-choices" aria-label="Select a profile avatar">
@@ -4782,7 +4829,7 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
         new AbortController();
       activeChatController = controller;
 
-      requestTimeout = setTimeout(() => controller.abort(), 55000);
+      requestTimeout = setTimeout(() => controller.abort(), 38000);
 
       const response =
         await fetch(
@@ -5913,7 +5960,7 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
             }
 
             if(
-              this.buffer.length >= 1764
+              this.buffer.length >= Math.ceil(sampleRate * 0.1)
             ){
 
               const chunk =
@@ -7035,6 +7082,8 @@ const $=id=>document.getElementById(id);
 const gate=$("jarvisAuthGate"),form=$("jarvisAuthForm"),email=$("jarvisAuthEmail"),password=$("jarvisAuthPassword"),errorBox=$("jarvisAuthError"),modeBtn=$("jarvisAuthMode"),googleBtn=$("jarvisGoogleSubmit"),emailBtn=$("jarvisEmailSubmit"),userBar=$("jarvisUserBar"),profileToggle=$("jarvisProfileToggle"),profilePanel=$("jarvisProfilePanel"),settingsPanel=$("jarvisSettingsPanel");
 let createMode=false,fb=null,storage=null,activeUser=null,authReady=false;
 function message(text){if(errorBox)errorBox.textContent=text;}
+function setProfileName(name){const clean=String(name||"").trim()||"JARVIS User";$("jarvisProfileNameDisplay").textContent=clean;$("jarvisProfileNameInput").value=clean;}
+function setProfileNameEditing(editing){$("jarvisProfileNameDisplay").hidden=editing;$("jarvisEditProfileName").hidden=editing;$("jarvisProfileNameInput").hidden=!editing;$("jarvisSaveProfileName").hidden=!editing;$("jarvisCancelProfileName").hidden=!editing;if(editing){$("jarvisProfileNameInput").focus();$("jarvisProfileNameInput").select();}}
 function explain(e){
  const code=e&&e.code||"";
  const map={
@@ -7069,7 +7118,7 @@ async function loadSdk(){
     gate.hidden=true;userBar.hidden=false;profileToggle.hidden=false;profileToggle.hidden=false;
     $("jarvisUserEmail").textContent=user.email||"Signed in";
     const displayName=localStorage.getItem("jarvisDisplayName:"+user.uid)||user.displayName||((user.email||"JARVIS User").split("@")[0]);
-    $("jarvisProfileNameInput").value=displayName;
+    $("jarvisProfileNameInput").value=displayName;$("jarvisProfileNameDisplay").textContent=displayName;
     $("jarvisAccountCreated").textContent=user.metadata&&user.metadata.creationTime?new Date(user.metadata.creationTime).toLocaleDateString():"Google account";
     const avatarKey="jarvisAvatar:"+user.uid;const avatar=localStorage.getItem(avatarKey)||"robot";setAvatar(avatar);
     try{
@@ -7077,7 +7126,7 @@ async function loadSdk(){
      const profileResponse=await fetch("/api/profile",{headers:{Authorization:"Bearer "+token}});
      if(profileResponse.ok){
       const profileData=await profileResponse.json();
-      if(profileData.profile&&profileData.profile.displayName){$("jarvisProfileNameInput").value=profileData.profile.displayName;}
+      if(profileData.profile&&profileData.profile.displayName){setProfileName(profileData.profile.displayName);}
      }
     }catch(err){console.warn("Profile settings unavailable",err);}
     try{window.jarvisLocalConversations=await storage.getConversations(user.uid);}catch(err){console.warn(err);}
@@ -7118,23 +7167,28 @@ function setAvatar(name){
  $("jarvisProfileAvatar").innerHTML=markup;
  $("jarvisProfileLargeAvatar").innerHTML=markup;
 }
-$("jarvisSaveProfileName").addEventListener("click",async()=>{
+$("jarvisEditProfileName").addEventListener("click",()=>setProfileNameEditing(true));
+$("jarvisCancelProfileName").addEventListener("click",()=>{$("jarvisProfileNameInput").value=$("jarvisProfileNameDisplay").textContent;$("jarvisProfileSaveStatus").textContent="";setProfileNameEditing(false);});
+async function saveProfileName(){
  const name=$("jarvisProfileNameInput").value.trim();
- if(!activeUser||!name){message("اپنا نام درج کریں۔");return;}
- const btn=$("jarvisSaveProfileName"),saveStatus=$("jarvisProfileSaveStatus");btn.disabled=true;saveStatus.textContent="Saving…";
+ const saveBtn=$("jarvisSaveProfileName"),status=$("jarvisProfileSaveStatus");
+ if(!activeUser||!name){status.textContent="Enter a valid name.";return;}
+ if(name.length>40){status.textContent="Name must be 40 characters or fewer.";return;}
+ saveBtn.disabled=true;status.textContent="Saving…";
  try{
   const token=await activeUser.getIdToken();
   const res=await fetch("/api/profile",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({displayName:name})});
   const data=await res.json().catch(()=>({}));
-  if(!res.ok)throw new Error(data.error||"profile_update_failed");
-  $("jarvisProfileNameInput").value=data.displayName||name;
-  localStorage.setItem("jarvisDisplayName:"+activeUser.uid,data.displayName||name);
+  if(!res.ok)throw new Error(data.hint||data.error||"profile_update_failed");
+  const savedName=data.displayName||name;setProfileName(savedName);localStorage.setItem("jarvisDisplayName:"+activeUser.uid,savedName);
   try{await activeUser.reload();}catch(_){}
-  saveStatus.textContent=data.storage==="firebase-auth"?"Saved to your account. Cloud profile database is not connected yet.":"Name saved successfully.";
-  btn.textContent="Saved";
- }catch(error){saveStatus.textContent="Save failed: "+String(error.message||error).slice(0,140);message("نام محفوظ نہیں ہوا۔ "+String(error.message||"").slice(0,100));}
- finally{btn.disabled=false;setTimeout(()=>btn.textContent="Save",1500);}
-});
+  setProfileNameEditing(false);status.textContent="Username updated ✓";
+  setTimeout(()=>{if(status.textContent==="Username updated ✓")status.textContent="";},2600);
+ }catch(error){status.textContent="Could not save. "+String(error.message||error).slice(0,100);}
+ finally{saveBtn.disabled=false;}
+}
+$("jarvisSaveProfileName").addEventListener("click",saveProfileName);
+$("jarvisProfileNameInput").addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();saveProfileName();}if(event.key==="Escape")$("jarvisCancelProfileName").click();});
 $("jarvisAvatarChoices").addEventListener("click",event=>{
  const button=event.target.closest("button[data-avatar]");if(!button||!activeUser)return;
  localStorage.setItem("jarvisAvatar:"+activeUser.uid,button.dataset.avatar);setAvatar(button.dataset.avatar);
