@@ -70,6 +70,7 @@ requireText(mainHtml, "sessionResumptionUpdate", "top-level Live session resumpt
 requireText(mainHtml, "openLive(true)", "automatic Live session resumption");
 requireText(mainHtml, "contextWindowCompression", "long-session context compression");
 requireText(mainHtml, "Connection dropped. Restoring the current voice conversation", "resumable Live disconnect recovery");
+requireText(mainHtml, "reconnectAttempts < 3", "bounded Live reconnect attempts");
 requireText(mainHtml, "this.buffer.length >= 1764", "low-latency audio frame batching");
 requireText(liveTokenApi, "guard(req, res", "Live token CORS/request guard");
 forbidText(liveTokenApi, "Access-Control-Allow-Origin", "wildcard token CORS headers");
