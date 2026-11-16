@@ -14,7 +14,7 @@ async function testLiveSocket(token, model, timeoutMs = 9000) {
   if (typeof WebSocket === "undefined") throw new Error("WebSocket is not available in this Node runtime.");
   return new Promise((resolve, reject) => {
     let socket;
-    try { socket = new WebSocket("wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContentConstrained?access_token=" + token); }
+    try { socket = new WebSocket("wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token=" + token); }
     catch (error) { reject(error); return; }
     let settled = false;
     const timer = setTimeout(() => finish(new Error("Live WebSocket setup timed out.")), timeoutMs);
@@ -88,7 +88,7 @@ module.exports = async function handler(req, res) {
 
     try {
       const now = Date.now();
-      const response = await timedFetch("https://generativelanguage.googleapis.com/v1alpha/auth_tokens", {
+      const response = await timedFetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens", {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
         body: JSON.stringify({
