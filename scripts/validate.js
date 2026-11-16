@@ -87,7 +87,8 @@ requireText(mainHtml, "Math.ceil(sampleRate * 0.1)", "approximately 100ms audio 
 requireText(liveTokenApi, "guard(req, res", "Live token CORS/request guard");
 forbidText(liveTokenApi, "Access-Control-Allow-Origin", "wildcard token CORS headers");
 requireText(liveTokenApi, "controller.abort()", "Live token upstream timeout");
-requireText(liveTokenApi, "liveConnectConstraints", "constrained Gemini Live token");
+requireText(liveTokenApi, "bidiGenerateContentSetup", "REST-compatible constrained Gemini Live token");
+forbidText(liveTokenApi, "liveConnectConstraints:", "invalid SDK-only REST token field");
 requireText(mainHtml, "v1alpha.GenerativeService.BidiGenerateContentConstrained", "ephemeral-token Live WebSocket API version");
 requireText(mainHtml, "window.jarvisGetIdToken = async function", "stable Firebase ID-token provider before auth initialization");
 requireText(profileApi, "Firebase Auth remains primary profile store", "profile persistence without Firestore");
@@ -109,7 +110,8 @@ requireText(chatApi, "MAX_RETRIES_PER_MODEL", "bounded retry and fallback loop")
 requireText(chatApi, "gemini-3.6-flash", "current fallback chat model");
 requireText(chatApi, "retryDelayFromHeader", "Retry-After and exponential backoff");
 requireText(chatApi, "MAX_RETRIES_PER_MODEL = 0", "fast fallback without repeated overloaded-model retries");
-requireText(chatApi, "MAX_TOTAL_GEMINI_MS = 30000", "bounded total chat request duration");
+requireText(chatApi, "GEMINI_REQUEST_TIMEOUT_MS || 22000", "longer per-model response window");
+requireText(chatApi, "MAX_TOTAL_GEMINI_MS = 52000", "bounded total chat request duration under the Vercel function timeout");
 requireText(liveTokenApi, "uses: 5", "short-lived Live token allows bounded reconnects");
 requireText(diagnosticsApi, "v1alpha/auth_tokens", "Live diagnostic uses the ephemeral-token API version");
 requireText(mainHtml, "Math.ceil(sampleRate * 0.1)", "Live microphone audio sent in approximately 100ms chunks");
