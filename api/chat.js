@@ -244,7 +244,6 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
           break;
         }
       }
-      if (!tryFallbackModel && lastStatus === 200) break;
     }
 
     console.error("All Gemini models exhausted", {
