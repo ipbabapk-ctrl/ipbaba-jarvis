@@ -1,9 +1,40 @@
 const { guard, verifyFirebaseUser, getFirestore, readKnowledge, getRuntimeConfig } = require("./_shared");
 module.exports = async (req, res) => {
-  if (guard(req, res, { method: "GET", json: false, maxBytes: 1000 })) return;
+  if (guard(req, res, { method: "OPTIONS", json: false })) return;
   const identity = await verifyFirebaseUser(req);
   if (identity.error) return res.status(identity.error === "firebase_admin_not_configured" ? 503 : 401).json({ error: identity.error });
   if (!identity.user.admin) return res.status(403).json({ error: "admin_only" });
+  if (req.method !== "GET") {
+    if (req.method !== "POST") { res.setHeader("Allow", "GET, POST, OPTIONS"); return res.status(405).json({error:"method_not_allowed"}); }
+    let body = req.body || {};
+    let action = String(body.action || "");
+    try {
+      const db = await getFirestore();
+      if (action === "save-config") {
+        const instructions = String(body.instructions || "").slice(0, 12000);
+        const animation = body.animation && typeof body.animation === "object" ? { enabled: body.animation.enabled !== false, style: "3d-robot" } : {enabled:true,style:"3d-robot"};
+        await db.collection("jarvisConfig").doc("runtime").set({instructions,animation,updatedAt:new Date().toISOString(),updatedBy:identity.user.email},{merge:true});
+        return res.status(200).json({ok:true});
+      }
+      if (action === "save-profile") {
+        const uid=String(body.uid||"");
+        const displayName=String(body.displayName||"").trim().slice(0,40);
+        if(!uid || !displayName) return res.status(400).json({error:"uid_and_name_required"});
+        await db.collection("jarvisProfiles").doc(uid).set({displayName,updatedAt:new Date().toISOString()},{merge:true});
+        return res.status(200).json({ok:true});
+      }
+      if (action === "moderate-user") {
+        const uid=String(body.uid||"");
+        if(!uid || uid===identity.user.uid) return res.status(400).json({error:"invalid_target_uid"});
+        const authMod=await import("firebase-admin/auth");
+        await authMod.getAuth((await import("firebase-admin/app")).getApps()[0]).updateUser(uid,{disabled:body.disabled===true});
+        await db.collection("jarvisProfiles").doc(uid).set({disabled:body.disabled===true,moderatedAt:new Date().toISOString(),moderatedBy:identity.user.email},{merge:true});
+        return res.status(200).json({ok:true});
+      }
+      if (action === "get-knowledge") return res.status(200).json({knowledge:readKnowledge()});
+      return res.status(400).json({error:"unknown_admin_action"});
+    } catch(error) { console.error("Admin action failed",error); return res.status(500).json({error:"admin_action_failed"}); }
+  }
   try {
     const admin = await import("firebase-admin/app");
     const authMod = await import("firebase-admin/auth");
