@@ -6,8 +6,8 @@ const PRIMARY_MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 // independently configurable fallback; do not silently retry the same model.
 const FALLBACK_MODEL = process.env.GEMINI_FALLBACK_MODEL || "gemini-3.6-flash";
 const MAX_RETRIES_PER_MODEL = 0; // one attempt per model; fail over immediately
-const REQUEST_TIMEOUT_MS = Math.min(Math.max(Number(process.env.GEMINI_REQUEST_TIMEOUT_MS || 11000), 8000), 14000);
-const MAX_TOTAL_GEMINI_MS = 30000;
+const REQUEST_TIMEOUT_MS = Math.min(Math.max(Number(process.env.GEMINI_REQUEST_TIMEOUT_MS || 22000), 12000), 24000);
+const MAX_TOTAL_GEMINI_MS = 52000;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -40,7 +40,7 @@ async function callGemini(model, key, system, contents, timeoutMs = REQUEST_TIME
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: system }] },
           contents,
-          generationConfig: { maxOutputTokens: 1600 }
+          generationConfig: { maxOutputTokens: 1200 }
         })
       }
     );

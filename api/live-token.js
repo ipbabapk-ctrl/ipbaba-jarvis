@@ -12,13 +12,18 @@ module.exports = async function handler(req, res) {
   if (!apiKey) return res.status(503).json({ ok:false, error:"gemini_api_key_missing" });
 
   const now = Date.now();
+  // REST expects the authToken wrapper and bidiGenerateContentSetup oneof.
+  // liveConnectConstraints is an SDK configuration name, not a REST field.
   const payload = {
-    uses: 5,
-    expireTime: new Date(now + 30 * 60 * 1000).toISOString(),
-    newSessionExpireTime: new Date(now + 60 * 1000).toISOString(),
-    liveConnectConstraints: {
-      model: "models/" + model,
-      config: { responseModalities: ["AUDIO"], sessionResumption: {} }
+    authToken: {
+      uses: 5,
+      expireTime: new Date(now + 30 * 60 * 1000).toISOString(),
+      newSessionExpireTime: new Date(now + 60 * 1000).toISOString(),
+      bidiGenerateContentSetup: {
+        model: "models/" + model,
+        generationConfig: { responseModalities: ["AUDIO"] },
+        sessionResumption: {}
+      }
     }
   };
   const controller = new AbortController();
@@ -46,7 +51,7 @@ module.exports = async function handler(req, res) {
       console.error("Gemini Live token missing:", data);
       return res.status(502).json({ ok:false, error:"live_token_missing", upstreamError:"Gemini returned no ephemeral token." });
     }
-    return res.status(200).json({ ok:true, token, model, expiresAt:payload.expireTime, newSessionExpiresAt:payload.newSessionExpireTime });
+    return res.status(200).json({ ok:true, token, model, expiresAt:payload.authToken.expireTime, newSessionExpiresAt:payload.authToken.newSessionExpireTime });
   } catch (error) {
     if (error?.name === "AbortError") return res.status(504).json({ ok:false, error:"live_token_timeout", message:"Gemini token service timed out. Please try again." });
     console.error("Gemini Live token server failure:", error);
