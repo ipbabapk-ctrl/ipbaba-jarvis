@@ -7,6 +7,7 @@ on:
       - ipbaba-jarvis-control-center-v4
       - ipbaba-jarvis-deep-audit-v5
       - ipbaba-jarvis-backend-light-ui-v6
+      - ipbaba-jarvis-live-diagnostic-handshake-v6a
 jobs:
   syntax:
     runs-on: ubuntu-latest
