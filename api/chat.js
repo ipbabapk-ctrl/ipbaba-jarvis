@@ -15,12 +15,11 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function parseRetryDelay(response, attempt) {
-  const header = response.headers.get("retry-after");
-  if (header) {
-    const seconds = Number(header);
+function retryDelayFromHeader(value, attempt) {
+  if (value) {
+    const seconds = Number(value);
     if (Number.isFinite(seconds)) return Math.min(Math.max(seconds * 1000, 500), 6000);
-    const date = Date.parse(header);
+    const date = Date.parse(value);
     if (Number.isFinite(date)) return Math.min(Math.max(date - Date.now(), 500), 6000);
   }
   return Math.min(1000 * (2 ** attempt), 4000);
@@ -56,7 +55,7 @@ async function callGemini(model, key, system, contents) {
       data,
       text,
       elapsedMs: Date.now() - startedAt,
-      retryAfterMs: (() => { const h = response.headers.get("retry-after"); if (!h) return 0; const n = Number(h); if (Number.isFinite(n)) return Math.min(Math.max(n * 1000, 500), 6000); const t = Date.parse(h); return Number.isFinite(t) ? Math.min(Math.max(t - Date.now(), 500), 6000) : 0; })()
+      retryAfterMs: retryDelayFromHeader(response.headers.get("retry-after"), 0)
     };
   } finally {
     clearTimeout(timeout);
