@@ -56,8 +56,8 @@ module.exports = async (req, res) => {
   if (identity.error) return res.status(identity.error === "firebase_admin_not_configured" ? 503 : 401).json({ error: identity.error });
 
   try {
-    const config = await getRuntimeConfig();
-    const profile = await getUserProfile(identity.user.uid);
+    const config = await getRuntimeConfig().catch(error => { console.error("JARVIS runtime config unavailable", error.message); return {}; });
+    const profile = await getUserProfile(identity.user.uid).catch(error => { console.error("JARVIS profile store unavailable", error.message); return {}; });
     if (profile.disabled === true) return res.status(403).json({ error: "account_disabled" });
     const knowledge = config.knowledge || readKnowledge();
     const key = process.env.GEMINI_API_KEY;
