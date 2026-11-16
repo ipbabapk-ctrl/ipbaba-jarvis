@@ -5116,6 +5116,8 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
   let liveAttemptId = 0;
   let liveOpening = false;
   let setupTimeout = 0;
+  let reconnectTimer = 0;
+  let liveModel = "gemini-3.8-live";
 
   let resumeHandle =
     null;
@@ -6104,7 +6106,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
      OPEN LIVE
      ======================================================= */
 
-  async function openLive(){
+  async function openLive(resumeSession = false){
 
     if(state.liveSocket || liveOpening) return;
     liveOpening = true;
@@ -6138,15 +6140,20 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
     try{
 
-      /* Start mic permission and AudioContext directly from the user tap. */
-      setLiveStatus("CONNECTING", "Requesting microphone permission…");
-      await setupMicrophone(attemptId);
-      if (attemptId !== liveAttemptId) return;
-      setLiveStatus("CONNECTING", "Securing realtime voice access…");
-      const tokenData = await getLiveToken();
-      if (attemptId !== liveAttemptId) return;
-      liveToken = tokenData.token;
-      const model = tokenData.model || "gemini-3.8-live";
+      if (!resumeSession) {
+        /* Start mic permission and AudioContext directly from the user tap. */
+        setLiveStatus("CONNECTING", "Requesting microphone permission…");
+        await setupMicrophone(attemptId);
+        if (attemptId !== liveAttemptId) return;
+        setLiveStatus("CONNECTING", "Securing realtime voice access…");
+        const tokenData = await getLiveToken();
+        if (attemptId !== liveAttemptId) return;
+        liveToken = tokenData.token;
+        liveModel = tokenData.model || "gemini-3.8-live";
+      } else if (!liveToken || !resumeHandle || !audioCtx || !mediaStream) {
+        throw new Error("live_resume_unavailable");
+      }
+      const model = liveModel;
 
       const endpoint =
         "wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token=" +
@@ -6172,7 +6179,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
       socket.onopen =
         () => {
-          if (attemptId !== liveAttemptId || state.intentionalLiveClose) { socket.close(); return; }
+          if (attemptId !== liveAttemptId || state.intentionalLiveClose || state.liveSocket !== socket) { socket.close(); return; }
           const setup = {
 
             setup:{
@@ -6199,16 +6206,11 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
           };
 
-          if(
-            resumeHandle
-          ){
-
-            setup.setup
-              .sessionResumption = {
-                handle:
-                  resumeHandle
-              };
-          }
+          setup.setup.sessionResumption = resumeHandle ? { handle: resumeHandle } : {};
+          setup.setup.contextWindowCompression = {
+            triggerTokens: 12000,
+            slidingWindow: { targetTokens: 6000 }
+          };
 
           try{
 
@@ -6454,6 +6456,13 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
             ==========================================
           */
 
+          const sessionUpdate = data.sessionResumptionUpdate || data.session_resumption_update;
+          if (sessionUpdate) {
+            const handle = sessionUpdate.newHandle || sessionUpdate.new_handle || sessionUpdate.handle || sessionUpdate.token;
+            if (handle) resumeHandle = handle;
+            else if (sessionUpdate.resumable === false) resumeHandle = null;
+          }
+
           const content =
             data.serverContent ||
             data.server_content;
@@ -6462,22 +6471,29 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
             GO AWAY / RECONNECT
           */
 
-          if(
-            data.goAway ||
-            data.go_away
-          ){
-
-            console.warn(
-              "Gemini Live requested reconnection:",
-              data.goAway ||
-              data.go_away
-            );
-
-            setLiveStatus(
-              "RECONNECTING",
-              "The realtime session requested reconnection…"
-            );
-
+          if (data.goAway || data.go_away) {
+            const notice = data.goAway || data.go_away;
+            console.warn("Gemini Live requested reconnection:", notice);
+            if (resumeHandle && liveToken && attemptId === liveAttemptId) {
+              setLiveStatus("RECONNECTING", "Restoring your voice session without losing its conversation…");
+              clearTimeout(setupTimeout);
+              clearTimeout(reconnectTimer);
+              if (state.liveSocket === socket) {
+                state.liveSocket = null;
+                state.liveReady = false;
+              }
+              stopLiveAudio();
+              try { socket.close(); } catch (_) {}
+              reconnectTimer = setTimeout(() => {
+                if (attemptId === liveAttemptId && !state.intentionalLiveClose && !state.liveSocket) {
+                  openLive(true);
+                }
+              }, 250);
+            } else {
+              setLiveStatus("SESSION ENDING", "The provider is closing this session. Close Live Voice and start a new session to continue.");
+              showLiveError("Live session resumption is not available yet. Please close and restart Live Voice.");
+              try { socket.close(); } catch (_) {}
+            }
             return;
           }
 
@@ -6587,44 +6603,6 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
           /*
             ==========================================
-            SESSION RESUMPTION
-            ==========================================
-          */
-
-          const sessionUpdate =
-            content.sessionResumptionUpdate ||
-            content.session_resumption_update;
-
-          if(
-            sessionUpdate
-          ){
-
-            console.log(
-              "Gemini Live session update:",
-              sessionUpdate
-            );
-
-            const handle =
-              sessionUpdate.newHandle ||
-              sessionUpdate.new_handle ||
-              sessionUpdate.handle ||
-              sessionUpdate.token;
-
-            if(
-              handle
-            ){
-
-              resumeHandle =
-                handle;
-
-              console.log(
-                "Gemini Live resume handle received."
-              );
-            }
-          }
-
-          /*
-            ==========================================
             TURN COMPLETE
             ==========================================
           */
@@ -6649,7 +6627,8 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
       socket.onerror =
         event => {
-          if (attemptId === liveAttemptId) clearTimeout(setupTimeout);
+          if (attemptId !== liveAttemptId || state.liveSocket !== socket) return;
+          clearTimeout(setupTimeout);
 
           console.error(
             "Gemini Live WebSocket error:",
@@ -6680,10 +6659,10 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
       socket.onclose =
         event => {
           if (attemptId === liveAttemptId) clearTimeout(setupTimeout);
-          const intentional =
-            state.intentionalLiveClose;
+          const intentional = state.intentionalLiveClose;
+          const wasCurrentSocket = state.liveSocket === socket;
 
-          if (state.liveSocket === socket) {
+          if (wasCurrentSocket) {
             state.liveSocket = null;
             state.liveReady = false;
             stopLiveAudio();
@@ -6691,7 +6670,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
           }
 
           if(
-            !intentional && attemptId === liveAttemptId
+            !intentional && attemptId === liveAttemptId && wasCurrentSocket
           ){
             els.liveBtn.classList.remove("on");
             els.liveBtn.textContent = "TALK LIVE";
@@ -6769,11 +6748,12 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
       }
       else if(
         error?.message ===
-        "audio_context_not_supported"
+        "audio_context_not_supported" || error?.message === "audio_worklet_not_supported"
       ){
-
-        detail =
-          "This browser does not support realtime audio.";
+        detail = "This browser does not support the realtime audio processing required by Live Voice.";
+      }
+      else if (error?.message === "live_resume_unavailable") {
+        detail = "The previous Live session cannot be resumed. Close and start a new Live Voice session.";
       }
       else if(
         error?.upstream
@@ -6811,6 +6791,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
     liveAttemptId++;
     liveOpening = false;
     clearTimeout(setupTimeout);
+    clearTimeout(reconnectTimer);
     state.intentionalLiveClose =
       true;
 
@@ -6837,6 +6818,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
     resumeHandle =
       null;
+    liveModel = "gemini-3.8-live";
 
     els.liveBtn.classList.remove(
       "on"
