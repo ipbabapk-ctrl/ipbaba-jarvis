@@ -1,12 +1,85 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f9fc"><title>IP BABA JARVIS — Admin</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f9fc"><title>IP BABA JARVIS — Admin Control Center</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f7fbfd,#eef8f5);font-family:Inter,system-ui,sans-serif;color:#17364b}.wrap{max-width:1100px;margin:auto;padding:28px 18px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.brand{font-weight:900;letter-spacing:.12em;color:#087fa8}.card{margin-top:22px;padding:22px;border:1px solid #dceaf0;border-radius:18px;background:#fff;box-shadow:0 15px 45px #244c6610}.muted{color:#6d8797}.btn{border:0;border-radius:10px;padding:10px 15px;background:#148db6;color:#fff;font-weight:750;cursor:pointer}.btn.secondary{background:#eaf4f8;color:#24536c}.status{padding:12px;border-radius:10px;background:#f0f7fa;color:#45697c}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:12px;border-bottom:1px solid #e6eef2;white-space:nowrap}th{color:#567589;background:#f7fbfc}.pill{padding:4px 8px;border-radius:30px;background:#e8f7ef;color:#16835b}.hidden{display:none!important}
-</style></head><body><main class="wrap"><header class="top"><div><div class="brand">IP BABA • JARVIS CONTROL</div><h1 style="margin:8px 0">Admin Dashboard</h1><div class="muted">Secure user management overview</div></div><button class="btn secondary" id="signout">Sign out</button></header><section class="card"><div id="status" class="status">Checking administrator access…</div><div id="content" class="hidden"><h2>User Management</h2><p class="muted">Firebase Authentication accounts. Chat messages remain local on each user's device and are not visible here.</p><div class="tablewrap"><table><thead><tr><th>Email</th><th>Name</th><th>Verified</th><th>Status</th><th>Created</th></tr></thead><tbody id="users"></tbody></table></div></div></section></main>
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 90% 0,#e2f6f5,transparent 30%),linear-gradient(135deg,#f7fbfd,#eef8f5);font-family:Inter,system-ui,sans-serif;color:#17364b}.wrap{max-width:1180px;margin:auto;padding:28px 18px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.brand{font-weight:900;letter-spacing:.12em;color:#087fa8}.muted{color:#6d8797}.btn{border:0;border-radius:10px;padding:10px 15px;background:#148db6;color:#fff;font-weight:750;cursor:pointer}.btn.secondary{background:#eaf4f8;color:#24536c}.card{margin-top:18px;padding:20px;border:1px solid #dceaf0;border-radius:18px;background:#fff;box-shadow:0 15px 45px #244c6610}.status{padding:12px;border-radius:10px;background:#f0f7fa;color:#45697c}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}.metric{padding:14px;border:1px solid #e3eef2;border-radius:13px;background:#fbfdfe}.metric strong{display:block;font-size:23px;color:#087fa8}.metric span{font-size:11px;color:#708b9a}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.tabs button{border:1px solid #d7e7ed;background:#fff;color:#315b70;border-radius:10px;padding:9px 12px;font-weight:750;cursor:pointer}.tabs button[aria-selected=true]{background:#e5f6f9;border-color:#89ccda;color:#087fa8}.panel[hidden],.hidden{display:none!important}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:12px;border-bottom:1px solid #e6eef2;white-space:nowrap}th{color:#567589;background:#f7fbfc}.pill{padding:4px 8px;border-radius:30px;background:#e8f7ef;color:#16835b}.note{font-size:12px;line-height:1.55;color:#668396}.editor{width:100%;min-height:240px;border:1px solid #cfe0e8;border-radius:12px;padding:12px;font:13px/1.5 ui-monospace,monospace}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.file-row{padding:10px 0;border-bottom:1px solid #eaf1f4}.warning{border-left:3px solid #e6a441;padding:10px 13px;background:#fff9ed;border-radius:7px;color:#72531b;font-size:12px;line-height:1.5}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.wrap{padding:18px 12px}.card{padding:15px}}
+.top .brand{font-size:12px}.top h1{font-size:clamp(23px,4vw,34px);letter-spacing:-.04em}.metric strong{font-variant-numeric:tabular-nums}.tabs button{transition:.18s}.tabs button:hover{border-color:#8bcbd9;background:#f2fbfc}.panel h2{letter-spacing:-.025em}.editor{background:#fbfdff;color:#17364b}.actions{display:flex;gap:8px;flex-wrap:wrap}.danger{background:#c83c52}.small{font-size:11px}.search{padding:10px 12px;border:1px solid #d4e5eb;border-radius:9px;min-width:220px}.switch{display:flex;gap:9px;align-items:center}.switch input{width:18px;height:18px}@media(max-width:700px){.top{align-items:flex-start}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}th,td{padding:9px}.search{width:100%}}</style></head><body><main class="wrap">
+<header class="top"><div><div class="brand">IP BABA • JARVIS CONTROL</div><h1 style="margin:8px 0">Admin Control Center</h1><div class="muted">Protected administration and knowledge management</div></div><button class="btn secondary" id="signout">Sign out</button></header>
+<section class="card"><div id="status" class="status">Verifying administrator access…</div><div id="dashboard" class="hidden">
+<div class="grid"><div class="metric"><strong id="userCount">—</strong><span>Accounts on this page</span></div><div class="metric"><strong>Firebase</strong><span>Authentication source</span></div><div class="metric"><strong>Local</strong><span>Current chat history storage</span></div><div class="metric"><strong>Connected</strong><span>Admin authorization</span></div></div>
+<div class="tabs" role="tablist"><button data-tab="users" aria-selected="true">Users</button><button data-tab="knowledge" aria-selected="false">Knowledge Base</button><button data-tab="instructions" aria-selected="false">AI Instructions</button><button data-tab="status" aria-selected="false">System Status</button></div>
+<section id="tab-users" class="panel">
+<h2>User Management</h2><p class="note">Successful chat requests counted from this release onward. Earlier browser-local chats cannot be reconstructed. Live Voice minutes and token billing are not included.</p>
+<div class="toolbar"><input id="userSearch" class="search" placeholder="Search email or name"><button class="btn secondary" id="refreshUsers">Refresh</button><button class="btn secondary" id="nextUsers" hidden>Next 1,000 users →</button></div>
+<div class="tablewrap"><table><thead><tr><th>User</th><th>Email</th><th>Requests</th><th>Last active</th><th>Account</th><th>Action</th></tr></thead><tbody id="users"></tbody></table></div>
+</section>
+<section id="tab-knowledge" class="panel" hidden><h2>Knowledge Base</h2><p class="note">Edit verified IP BABA facts, services, founder information, contact details and social URLs here as JSON. Save to publish the knowledge to JARVIS for new requests. Keep social URLs blank until you enter the official profile links.</p><textarea id="knowledgeInfo" class="editor" spellcheck="false" aria-label="Editable JARVIS knowledge JSON"></textarea><div class="actions" style="margin-top:10px"><button class="btn" id="saveKnowledge">Save Knowledge Base</button><span id="knowledgeStatus" class="note" role="status"></span></div></section>
+<section id="tab-instructions" class="panel" hidden><h2>AI Instructions & Runtime Controls</h2><p class="note">These instructions are added to the JARVIS system context after saving. Never paste private credentials or sensitive personal data.</p><textarea id="instructions" class="editor" placeholder="Write instructions for JARVIS…"></textarea><div class="actions" style="margin-top:10px"><label class="switch"><input id="animationEnabled" type="checkbox" checked> Enable interface animation</label><button class="btn" id="saveConfig">Publish instructions & settings</button></div><div id="saveStatus" class="note" role="status"></div></section>
+<section id="tab-status" class="panel" hidden><h2>Usage & System Overview</h2><div class="grid"><div class="metric"><strong id="totalRequests">—</strong><span>Tracked requests</span></div><div class="metric"><strong id="activeUsers">—</strong><span>Users with activity</span></div><div class="metric"><strong id="firebaseStatus">—</strong><span>Authentication</span></div><div class="metric"><strong id="storeStatus">—</strong><span>Admin data store</span></div></div><p class="note">This is request-count analytics, not token billing or audio-minute metering. Live Voice usage is not included in this counter yet.</p></section>
+</div></section></main>
 <script type="module">
 import {auth,signOut,onAuthStateChanged} from "./js/firebase.js";
-const status=document.getElementById("status"),content=document.getElementById("content"),tbody=document.getElementById("users");
-onAuthStateChanged(auth,async user=>{if(!user){status.textContent="Please sign in with the administrator account on the JARVIS home page.";return;}try{const token=await user.getIdToken(true);const r=await fetch("/api/admin",{headers:{Authorization:"Bearer "+token}});const data=await r.json();if(!r.ok)throw new Error(data.error||"Access denied");status.innerHTML='<span class="pill">Administrator verified</span> · '+data.users.length+' accounts listed';content.classList.remove("hidden");tbody.innerHTML=data.users.map(u=>'<tr><td>'+esc(u.email)+'</td><td>'+esc(u.displayName)+'</td><td>'+(u.emailVerified?"Yes":"No")+'</td><td>'+(u.disabled?"Disabled":"Active")+'</td><td>'+esc(u.createdAt)+'</td></tr>').join("");}catch(e){status.textContent=e.message==="admin_only"?"This account is not authorized as an administrator.":e.message;content.classList.add("hidden");}});
-function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-document.getElementById("signout").onclick=()=>signOut(auth);
+const $=id=>document.getElementById(id);
+const status=$("status"),dashboard=$("dashboard");
+let currentUser=null,allUsers=[],nextPageToken=null;
+async function api(action,extra={},pageToken=null) {
+ const token=await currentUser.getIdToken(true);
+ const url="/api/admin"+(!action&&pageToken?"?pageToken="+encodeURIComponent(pageToken):"");
+ const res=await fetch(url,{method:action?"POST":"GET",headers:{Authorization:"Bearer "+token,...(action?{"Content-Type":"application/json"}:{})},body:action?JSON.stringify({action,...extra}):undefined});
+ const data=await res.json().catch(()=>({}));
+ if(!res.ok)throw new Error(data.error||"Admin API error");
+ return data;
+}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function renderUsers(){
+ const term=$("userSearch").value.toLowerCase();
+ $("users").innerHTML=allUsers.filter(u=>(u.email+" "+u.displayName).toLowerCase().includes(term)).map(u=>'<tr><td>'+esc(u.displayName||"—")+'</td><td>'+esc(u.email)+'</td><td>'+Number(u.requests||0)+'</td><td>'+esc(u.lastSeenAt||"—")+'</td><td>'+(u.disabled?"<span class=\"pill\" style=\"background:#fff0f1;color:#b72f48\">Blocked</span>":"<span class=\"pill\">Active</span>")+'</td><td><button class="btn '+(u.disabled?"":"danger")+'" data-user="'+esc(u.uid)+'" data-disable="'+(!u.disabled)+'">'+(u.disabled?"Unblock":"Block")+'</button></td></tr>').join("")||'<tr><td colspan="6">No matching users</td></tr>';
+}
+async function load(pageToken=null){
+ const data=await api(null,{},pageToken);
+ allUsers=data.users||[];nextPageToken=data.nextPageToken||null;
+ $("nextUsers").hidden=!nextPageToken;
+ $("userCount").textContent=allUsers.length+(data.nextPageToken?" +":"");
+ $("users").innerHTML="";renderUsers();
+ $("knowledgeInfo").value=JSON.stringify(data.knowledge||{},null,2);
+ $("instructions").value=data.instructions||"";
+ $("animationEnabled").checked=!data.animation||data.animation.enabled!==false;
+ $("totalRequests").textContent=Number(data.usageTotals?.requests||0).toLocaleString();
+ $("activeUsers").textContent=Number(data.usageTotals?.activeUsers||0).toLocaleString();
+ $("firebaseStatus").textContent="Connected";
+ $("storeStatus").textContent="Firestore";
+ status.innerHTML='<span class="pill">Administrator verified</span> · Controls connected';
+ dashboard.classList.remove("hidden");
+}
+onAuthStateChanged(auth,async user=>{
+ currentUser=user||null;
+ if(!user){status.textContent="Please sign in with the administrator account on the JARVIS home page.";dashboard.classList.add("hidden");return;}
+ try{await load();}catch(e){status.textContent=e.message==="admin_only"?"This account is not authorized as an administrator.":e.message;dashboard.classList.add("hidden");}
+});
+$("signout").addEventListener("click",()=>signOut(auth));
+$("userSearch").addEventListener("input",renderUsers);
+$("refreshUsers").addEventListener("click",()=>load().catch(e=>status.textContent=e.message));
+$("nextUsers").addEventListener("click",()=>load(nextPageToken).catch(e=>status.textContent=e.message));
+$("users").addEventListener("click",async e=>{
+ const b=e.target.closest("button[data-user]");if(!b)return;
+ if(!confirm((b.dataset.disable==="true"?"Block":"Unblock")+" this account?"))return;
+ b.disabled=true;
+ try{await api("moderate-user",{uid:b.dataset.user,disabled:b.dataset.disable==="true"});await load();}
+ catch(err){alert(err.message);b.disabled=false;}
+});
+$("saveKnowledge").addEventListener("click",async()=>{
+ const btn=$("saveKnowledge"),msg=$("knowledgeStatus");btn.disabled=true;msg.textContent="Saving…";
+ try{JSON.parse($("knowledgeInfo").value);await api("save-config",{instructions:$("instructions").value,knowledgeJson:$("knowledgeInfo").value,animation:{enabled:$("animationEnabled").checked,style:"3d-robot"}});msg.textContent="Knowledge published. New requests will use it.";}
+ catch(e){msg.textContent="Save failed: "+(e.message||"Invalid JSON");}
+ finally{btn.disabled=false;}
+});
+$("saveConfig").addEventListener("click",async()=>{
+ const btn=$("saveConfig"),msg=$("saveStatus");btn.disabled=true;msg.textContent="Saving…";
+ try{await api("save-config",{instructions:$("instructions").value,knowledgeJson:$("knowledgeInfo").value,animation:{enabled:$("animationEnabled").checked,style:"3d-robot"}});msg.textContent="Published. New chat requests will use the saved instructions and knowledge.";}
+ catch(e){msg.textContent="Save failed: "+e.message;}
+ finally{btn.disabled=false;}
+});
+document.querySelectorAll("[data-tab]").forEach(btn=>btn.addEventListener("click",()=>{
+ document.querySelectorAll("[data-tab]").forEach(b=>b.setAttribute("aria-selected",String(b===btn)));
+ document.querySelectorAll(".panel").forEach(p=>p.hidden=p.id!=="tab-"+btn.dataset.tab);
+}));
 </script></body></html>

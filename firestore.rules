@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // JARVIS accesses these collections only through the trusted Firebase Admin SDK.
+    // Never expose profiles, usage metrics, runtime instructions or admin knowledge to clients.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

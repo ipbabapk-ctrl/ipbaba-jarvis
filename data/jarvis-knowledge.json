@@ -24,7 +24,15 @@
     "whatsapp_url": "https://wa.me/923443225533",
     "name": "Muhammad Zaheer",
     "phone": "+92 344 3225533",
-    "location": "Sargodha, Punjab, Pakistan"
+    "location": "Sargodha, Punjab, Pakistan",
+    "social_links": {
+      "facebook": "",
+      "youtube": "",
+      "tiktok": "",
+      "telegram": "",
+      "whatsapp_channel": ""
+    },
+    "social_links_note": "Add only official verified IP BABA profile URLs. If a URL is blank, JARVIS must say the link is not currently available rather than guessing."
   },
   "services": [
     "Graphic Design",

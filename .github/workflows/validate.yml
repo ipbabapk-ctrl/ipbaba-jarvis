@@ -1,0 +1,17 @@
+name: JARVIS validation
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - ipbaba-jarvis-control-center-v4
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate API, browser scripts, HTML inline scripts and JSON
+        run: node scripts/validate.js
