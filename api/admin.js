@@ -10,8 +10,8 @@ module.exports = async (req, res) => {
     let body = req.body || {};
     let action = String(body.action || "");
     try {
-      const db = await getFirestore();
       if (action === "save-config") {
+        const db = await getFirestore();
         const instructions = String(body.instructions || "").slice(0, 12000);
         let knowledge;
         if (body.knowledgeJson !== undefined) {
@@ -36,12 +36,13 @@ module.exports = async (req, res) => {
         if(!uid || uid===identity.user.uid) return res.status(400).json({error:"invalid_target_uid"});
         const authMod=await import("firebase-admin/auth");
         await authMod.getAuth((await import("firebase-admin/app")).getApps()[0]).updateUser(uid,{disabled:body.disabled===true});
-        await db.collection("jarvisProfiles").doc(uid).set({disabled:body.disabled===true,moderatedAt:new Date().toISOString(),moderatedBy:identity.user.email},{merge:true});
+        try { const db = await getFirestore(); await db.collection("jarvisProfiles").doc(uid).set({disabled:body.disabled===true,moderatedAt:new Date().toISOString(),moderatedBy:identity.user.email},{merge:true}); }
+        catch (storeError) { console.warn("User moderation synced to Firebase Auth; Firestore unavailable",storeError.message); }
         return res.status(200).json({ok:true});
       }
       if (action === "get-knowledge") return res.status(200).json({knowledge:readKnowledge()});
       return res.status(400).json({error:"unknown_admin_action"});
-    } catch(error) { console.error("Admin action failed",error); return res.status(500).json({error:"admin_action_failed"}); }
+    } catch(error) { console.error("Admin action failed",error); const missingStore = /firestore|database|not.?found|NOT_FOUND/i.test(String(error.message||"")); return res.status(missingStore?503:500).json({error:missingStore?"firestore_unavailable":"admin_action_failed",hint:missingStore?"Create/enable Firestore Native mode in the same Firebase project and redeploy.": "Check Vercel Function Logs for the admin action failure."}); }
   }
   try {
     const admin = await import("firebase-admin/app");
@@ -50,11 +51,20 @@ module.exports = async (req, res) => {
     const db = await getFirestore();
     const pageToken = String((req.query && req.query.pageToken) || "");
     const result = await authMod.getAuth(app).listUsers(1000, pageToken || undefined);
-    const [usageSnap, config, profilesSnap] = await Promise.all([
-      db.collection("jarvisUsage").get(), getRuntimeConfig(), db.collection("jarvisProfiles").get()
-    ]);
-    const usage = new Map(usageSnap.docs.map(d => [d.id, d.data()]));
-    const profiles = new Map(profilesSnap.docs.map(d => [d.id, d.data()]));
+    let usageDocs = [], profileDocs = [], config = {}, firestoreAvailable = true, firestoreWarning = "";
+    try {
+      const db = await getFirestore();
+      const [usageSnap, configData, profilesSnap] = await Promise.all([
+        db.collection("jarvisUsage").get(), getRuntimeConfig(), db.collection("jarvisProfiles").get()
+      ]);
+      usageDocs = usageSnap.docs; profileDocs = profilesSnap.docs; config = configData || {};
+    } catch (storeError) {
+      firestoreAvailable = false;
+      firestoreWarning = "Firebase Authentication is connected, but Firestore is unavailable. User list and account moderation remain available; Knowledge Base, instructions and analytics require Firestore Native mode. " + String(storeError.message || "").slice(0,180);
+      console.warn("Admin dashboard running without Firestore", storeError.message);
+    }
+    const usage = new Map(usageDocs.map(d => [d.id, d.data()]));
+    const profiles = new Map(profileDocs.map(d => [d.id, d.data()]));
     const users = result.users.map(u => ({
       uid:u.uid, email:u.email || "", displayName:(profiles.get(u.uid)||{}).displayName || u.displayName || "",
       disabled:!!u.disabled || !!((profiles.get(u.uid)||{}).disabled),
@@ -64,8 +74,9 @@ module.exports = async (req, res) => {
     return res.status(200).json({
       users, nextPageToken: result.pageToken || null,
       knowledge: config.knowledge || readKnowledge(), instructions: String(config.instructions || ""),
-      capabilities: { userDirectory:true, adminKnowledgeBase:true, adminInstructionEditor:true, analytics:true, userModerationActions:true, firestore:true },
-      usageTotals: { requests:usageSnap.docs.reduce((n,d)=>n+Number((d.data()||{}).requests||0),0), activeUsers:usageSnap.docs.filter(d=>Number((d.data()||{}).requests||0)>0).length }
+      firestoreAvailable, firestoreWarning,
+      capabilities: { userDirectory:true, adminKnowledgeBase:firestoreAvailable, adminInstructionEditor:firestoreAvailable, analytics:firestoreAvailable, userModerationActions:true, firestore:firestoreAvailable },
+      usageTotals: { requests:usageDocs.reduce((n,d)=>n+Number((d.data()||{}).requests||0),0), activeUsers:usageDocs.filter(d=>Number((d.data()||{}).requests||0)>0).length }
     });
   } catch (error) {
     console.error("Admin user list failed", error);
