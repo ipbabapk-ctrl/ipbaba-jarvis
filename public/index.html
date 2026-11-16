@@ -6115,6 +6115,12 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
     if(state.liveSocket || liveOpening) return;
     liveOpening = true;
     const attemptId = ++liveAttemptId;
+    clearTimeout(reconnectTimer);
+    reconnectTimer = 0;
+    if (!resumeSession) {
+      resumeHandle = null;
+      reconnectAttempts = 0;
+    }
     clearLiveError();
 
     state.intentionalLiveClose =
