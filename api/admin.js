@@ -1,4 +1,4 @@
-const { guard, verifyFirebaseUser } = require("./_shared");
+const { guard, verifyFirebaseUser, getFirestore, readKnowledge, getRuntimeConfig } = require("./_shared");
 module.exports = async (req, res) => {
   if (guard(req, res, { method: "GET", json: false, maxBytes: 1000 })) return;
   const identity = await verifyFirebaseUser(req);
@@ -8,18 +8,25 @@ module.exports = async (req, res) => {
     const admin = await import("firebase-admin/app");
     const authMod = await import("firebase-admin/auth");
     const app = admin.getApps()[0];
+    const db = await getFirestore();
     const result = await authMod.getAuth(app).listUsers(1000);
+    const [usageSnap, config, profilesSnap] = await Promise.all([
+      db.collection("jarvisUsage").get(), getRuntimeConfig(), db.collection("jarvisProfiles").get()
+    ]);
+    const usage = new Map(usageSnap.docs.map(d => [d.id, d.data()]));
+    const profiles = new Map(profilesSnap.docs.map(d => [d.id, d.data()]));
+    const users = result.users.map(u => ({
+      uid:u.uid, email:u.email || "", displayName:(profiles.get(u.uid)||{}).displayName || u.displayName || "",
+      disabled:!!u.disabled || !!((profiles.get(u.uid)||{}).disabled),
+      emailVerified:!!u.emailVerified, createdAt:u.metadata.creationTime || "",
+      requests:Number((usage.get(u.uid)||{}).requests || 0), lastSeenAt:(usage.get(u.uid)||{}).lastSeenAt || ""
+    }));
     return res.status(200).json({
-      users: result.users.map(u => ({ uid:u.uid, email:u.email || "", displayName:u.displayName || "", disabled:!!u.disabled, emailVerified:!!u.emailVerified, createdAt:u.metadata.creationTime || "" })),
-      nextPageToken: result.pageToken || null,
-      capabilities: {
-        userDirectory: true,
-        adminKnowledgeBase: false,
-        adminInstructionEditor: false,
-        analytics: false,
-        userModerationActions: false
-      },
-      notice: "Knowledge files, instructions and analytics are not yet managed by this first-stage admin API."
+      users, nextPageToken: result.pageToken || null,
+      knowledge: readKnowledge(), instructions: String(config.instructions || ""),
+      animation: config.animation || { enabled:true, style:"3d-robot" },
+      capabilities: { userDirectory:true, adminKnowledgeBase:true, adminInstructionEditor:true, analytics:true, userModerationActions:true, firestore:true },
+      usageTotals: { requests:users.reduce((n,u)=>n+u.requests,0), activeUsers:users.filter(u=>u.requests>0).length }
     });
   } catch (error) {
     console.error("Admin user list failed", error);
