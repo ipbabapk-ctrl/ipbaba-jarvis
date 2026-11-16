@@ -11,9 +11,9 @@ Set these in Vercel for Production and Preview as appropriate:
 Optional:
 
 - `GEMINI_MODEL`: defaults to `gemini-3.8-flash`.
-- `GEMINI_FALLBACK_MODEL`: defaults to `gemini-3.7-flash`.
+- `GEMINI_FALLBACK_MODEL`: defaults to `gemini-3.6-flash`.
 - `GEMINI_LIVE_MODEL`: defaults to `gemini-3.8-live`.
-- `GEMINI_REQUEST_TIMEOUT_MS`: defaults to 22000.
+- `GEMINI_REQUEST_TIMEOUT_MS`: defaults to 10000 (bounded to 7–12 seconds per attempt).
 - Live token requests time out after 12 seconds; Vercel allows up to 20 seconds for this function.
 - Live Voice creates an ephemeral token locked to the configured Live model and AUDIO modality, then connects using the v1alpha `BidiGenerateContentConstrained` WebSocket endpoint (required for ephemeral tokens).
 - Admin → System Status → Run Backend Tests checks the signed-in administrator, a real Gemini text response, Live ephemeral-token issuance plus a real Live WebSocket setup handshake, and Firestore reachability. The test never displays API keys or returns a usable Live token to the browser; it closes the test socket immediately after setup succeeds.
@@ -27,7 +27,7 @@ Redeploy after changing environment variables.
 1. Open Firebase project `ip-baba-jarvis`.
 2. Authentication → Sign-in method: enable Google and Email/Password if both are offered to users.
 3. Authentication → Settings → Authorized domains: add the production JARVIS hostname and any Vercel preview hostname used for testing.
-4. Firestore Database: create a database in Native mode and choose the correct region. The Admin SDK collections used by this release are `jarvisConfig`, `jarvisProfiles`, and `jarvisUsage`.
+4. Google Cloud Console → APIs & Services → Library: enable **Cloud Firestore API** (`firestore.googleapis.com`) for project `ip-baba-jarvis`. Then Firebase Console → Firestore Database: create a database in Native mode and choose the correct region. The Admin SDK collections used by this release are `jarvisConfig`, `jarvisProfiles`, and `jarvisUsage`.
 5. Apply `firestore.rules`. These rules deny direct browser access; the server-side Firebase Admin SDK uses the service account and is not restricted by client rules.
 6. Create/download a service account for the same Firebase project and set its complete JSON in Vercel as `FIREBASE_SERVICE_ACCOUNT_JSON`. Ensure the service account can access Firestore and Firebase Authentication.
 7. Confirm the admin Gmail is exactly `ipbaba.pk@gmail.com` and its Google sign-in email is verified.
@@ -46,7 +46,7 @@ Admin → Knowledge Base accepts a JSON object. Validate JSON before publishing.
 
 ## Timeout behavior
 
-Gemini primary and fallback requests are each bounded to 22 seconds; the browser waits up to 55 seconds and Vercel's chat function is configured for up to 60 seconds. Actual maximum duration still depends on the Vercel plan and platform limits. If the plan caps functions below 60 seconds, upgrade the plan or lower `GEMINI_REQUEST_TIMEOUT_MS`.
+Each Gemini attempt is bounded to 7–12 seconds and the complete Gemini fallback sequence has a 44-second budget, leaving time for authentication and logging within Vercel's 60-second route limit. Actual maximum duration still depends on the Vercel plan and platform limits.
 
 ## Security
 
