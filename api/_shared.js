@@ -293,3 +293,49 @@ async function verifyFirebaseUser(req) {
   } catch (error) { console.error('Firebase token verification failed', error && error.message); return { error: 'invalid_authentication' }; }
 }
 module.exports.verifyFirebaseUser = verifyFirebaseUser;
+const fs = require("fs");
+const path = require("path");
+const KNOWLEDGE_FILE = path.join(process.cwd(), "data", "jarvis-knowledge.json");
+function readKnowledge() {
+  try { return JSON.parse(fs.readFileSync(KNOWLEDGE_FILE, "utf8")); }
+  catch (error) { console.error("Knowledge read failed", error.message); return {}; }
+}
+async function getFirestore() {
+  const admin = await import("firebase-admin/firestore");
+  const appMod = await import("firebase-admin/app");
+  const app = appMod.getApps()[0];
+  if (!app) throw new Error("firebase_admin_not_configured");
+  return admin.getFirestore(app);
+}
+async function getRuntimeConfig() {
+  const db = await getFirestore();
+  const snap = await db.collection("jarvisConfig").doc("runtime").get();
+  return snap.exists ? snap.data() : {};
+}
+async function logUsage(uid, email, status) {
+  const db = await getFirestore();
+  const ref = db.collection("jarvisUsage").doc(uid);
+  await db.runTransaction(async tx => {
+    const snap = await tx.get(ref);
+    const old = snap.exists ? snap.data() : {};
+    const now = new Date().toISOString();
+    tx.set(ref, {
+      uid, email: email || old.email || "",
+      requests: Number(old.requests || 0) + 1,
+      lastSeenAt: now,
+      lastStatus: status,
+      firstSeenAt: old.firstSeenAt || now
+    }, {merge:true});
+  });
+}
+async function getUserProfile(uid) {
+  const db = await getFirestore();
+  const snap = await db.collection("jarvisProfiles").doc(uid).get();
+  return snap.exists ? snap.data() : {};
+}
+module.exports.readKnowledge = readKnowledge;
+module.exports.getRuntimeConfig = getRuntimeConfig;
+module.exports.logUsage = logUsage;
+module.exports.getFirestore = getFirestore;
+module.exports.getUserProfile = getUserProfile;
+
