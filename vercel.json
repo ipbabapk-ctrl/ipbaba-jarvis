@@ -6,5 +6,16 @@
       "source": "/admin",
       "destination": "/admin.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/chat.js": {
+      "maxDuration": 60
+    },
+    "api/admin.js": {
+      "maxDuration": 30
+    },
+    "api/profile.js": {
+      "maxDuration": 20
+    }
+  }
 }
