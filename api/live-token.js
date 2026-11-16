@@ -24,7 +24,7 @@ module.exports = async function handler(req, res) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 12000);
   try {
-    const upstream = await fetch("https://generativelanguage.googleapis.com/v1alpha/auth_tokens", {
+    const upstream = await fetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens", {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
       body: JSON.stringify(payload),
