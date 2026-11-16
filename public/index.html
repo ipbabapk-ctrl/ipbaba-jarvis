@@ -3298,6 +3298,7 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
 .live-main-btn{background:linear-gradient(105deg,#138eaa,#2874ce)!important;box-shadow:0 10px 28px rgba(24,124,172,.16)!important}.live-main-btn.on{background:linear-gradient(105deg,#c53c57,#df4964)!important}.live-close,.live-end{background:#edf4f8!important;color:#294b61!important;border-color:#dbe7ee!important}.live-end{background:linear-gradient(100deg,#c64259,#df4964)!important;color:#fff!important}.live-status strong{color:#1c4358!important}.live-status span{color:#6f8496!important}.live-error-box{background:#fff4f5!important;border-color:#f1cbd2!important;color:#9c3448!important}.live-error-title{color:#b73f55!important}.live-error-detail{color:#6f7f8d!important}
 .force-dark-theme,.force-dark-theme *{color-scheme:light!important}.force-dark-theme .panel,.force-dark-theme .chat-panel,.force-dark-theme .chat-header,.force-dark-theme .composer-shell,.force-dark-theme .message.ai{background:#fff!important;color:#20384d!important;border-color:#dce7ef!important}.force-dark-theme .composer textarea{background:#f8fbfd!important;color:#20384d!important}
 .profile-save-status{display:block;min-height:16px;margin-top:4px;color:#168e73;font-size:11px;line-height:1.4}
+.settings-static-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 11px;border:1px solid #d8e5ed;border-radius:9px;background:#f8fbfd;color:#29465d;font-size:12px}.settings-static-row strong{color:#168ba7;font-size:12px}
 .live-robot-eye{transform-origin:center;animation:jarvisEyeBlink 5.4s infinite ease-in-out!important}.live-robot-eye:nth-child(2){animation-delay:.14s!important}@keyframes jarvisEyeBlink{0%,43%,47%,100%{transform:scaleY(1)}45%{transform:scaleY(.08)}}
 .live-stage.is-speaking .live-robot-mouth,.robot-stage.is-speaking .live-robot-mouth{animation:jarvisMouth 125ms ease-in-out infinite alternate!important}@keyframes jarvisMouth{from{height:3px;transform:scaleX(.78)}to{height:13px;transform:scaleX(1.12)}}
 @media(prefers-reduced-motion:reduce){.live-robot-eye,.live-stage.is-speaking .live-robot-mouth,.robot-stage.is-speaking .live-robot-mouth{animation:none!important}}
@@ -3365,7 +3366,7 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
     <select id="jarvisLiveVoice"><option value="Aoede">Aoede · Breezy</option><option value="Kore">Kore · Firm</option><option value="Puck">Puck · Upbeat</option><option value="Charon">Charon · Informative</option><option value="Fenrir">Fenrir · Excitable</option></select>
     <label for="jarvisVoiceSpeed">Speech playback speed</label><input id="jarvisVoiceSpeed" type="range" min="0.75" max="1.25" step="0.05" value="1">
     <label for="jarvisTextSize">Chat text size</label><select id="jarvisTextSize"><option value="small">Compact</option><option value="normal" selected>Standard</option><option value="large">Large</option></select>
-        <label for="jarvisTheme">Appearance</label><select id="jarvisTheme"><option value="dark">Dark</option><option value="light">Light</option><option value="system">System default</option></select>
+        <div class="settings-static-row"><span>Appearance</span><strong>Light theme</strong></div>
     <p>Preferences are stored in this browser on this device. Voice choices apply to new Live sessions.</p>
     <a href="https://www.ipbaba.online/" target="_blank" rel="noopener">Open IP BABA website ↗</a>
   </section>
@@ -7110,10 +7111,10 @@ $("jarvisProfileClose").addEventListener("click",()=>{profilePanel.hidden=true;p
 
 $("jarvisSettingsToggle").addEventListener("click",()=>{settingsPanel.hidden=!settingsPanel.hidden;$("jarvisSettingsToggle").setAttribute("aria-expanded",String(!settingsPanel.hidden));});
 $("jarvisSettingsClose").addEventListener("click",()=>{settingsPanel.hidden=true;$("jarvisSettingsToggle").setAttribute("aria-expanded","false");});
-const prefs={voice:$("jarvisLiveVoice"),speed:$("jarvisVoiceSpeed"),size:$("jarvisTextSize"),theme:$("jarvisTheme")};
+const prefs={voice:$("jarvisLiveVoice"),speed:$("jarvisVoiceSpeed"),size:$("jarvisTextSize")};
 const readPref=(key,fallback)=>localStorage.getItem("jarvisPref:"+key)??fallback;
-prefs.voice.value=readPref("voice","Aoede");localStorage.setItem("jarvisLiveVoice",prefs.voice.value);prefs.speed.value=readPref("speed","1");prefs.size.value=readPref("size","normal");prefs.theme.value=readPref("theme","light");
-function applyPrefs(){document.body.classList.toggle("chat-text-small",prefs.size.value==="small");document.body.classList.toggle("chat-text-large",prefs.size.value==="large");const sys=prefs.theme.value==="system";document.body.classList.toggle("light-theme",prefs.theme.value==="light"||(sys&&matchMedia("(prefers-color-scheme: light)").matches));document.body.classList.toggle("force-dark-theme",prefs.theme.value==="dark"||(sys&&matchMedia("(prefers-color-scheme: dark)").matches));}
+prefs.voice.value=readPref("voice","Aoede");localStorage.setItem("jarvisLiveVoice",prefs.voice.value);prefs.speed.value=readPref("speed","1");prefs.size.value=readPref("size","normal");
+function applyPrefs(){document.body.classList.toggle("chat-text-small",prefs.size.value==="small");document.body.classList.toggle("chat-text-large",prefs.size.value==="large");}
 Object.entries(prefs).forEach(([key,control])=>{control.addEventListener("change",()=>{localStorage.setItem("jarvisPref:"+key,control.type==="checkbox"?String(control.checked):control.value);applyPrefs();});if(control.type==="range")control.addEventListener("input",()=>localStorage.setItem("jarvisPref:"+key,control.value));});
 applyPrefs();
 const liveVoiceSelect=$("jarvisLiveVoice");liveVoiceSelect.addEventListener("change",()=>localStorage.setItem("jarvisLiveVoice",liveVoiceSelect.value));
