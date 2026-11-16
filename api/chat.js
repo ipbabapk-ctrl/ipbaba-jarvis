@@ -1,43 +1,70 @@
 const { guard, BRAND, RULES, verifyFirebaseUser, readKnowledge, getRuntimeConfig, logUsage, getUserProfile } = require("./_shared");
 
 
-const PRIMARY_MODEL =
-  process.env.GEMINI_MODEL || "gemini-3.8-flash";
+const PRIMARY_MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
+// Gemini 3.7 Flash was deprecated on 2026-10-08. Keep a current
+// independently configurable fallback; do not silently retry the same model.
+const FALLBACK_MODEL = process.env.GEMINI_FALLBACK_MODEL || "gemini-3.6-flash";
+const MAX_RETRIES_PER_MODEL = 1; // two attempts total for transient failures
+const REQUEST_TIMEOUT_MS = Math.min(
+  Math.max(Number(process.env.GEMINI_REQUEST_TIMEOUT_MS || 25000), 12000),
+  35000
+);
 
-const FALLBACK_MODEL =
-  process.env.GEMINI_FALLBACK_MODEL || "gemini-3.7-flash";
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function retryDelayFromHeader(value, attempt) {
+  if (value) {
+    const seconds = Number(value);
+    if (Number.isFinite(seconds)) return Math.min(Math.max(seconds * 1000, 500), 6000);
+    const date = Date.parse(value);
+    if (Number.isFinite(date)) return Math.min(Math.max(date - Date.now(), 500), 6000);
+  }
+  return Math.min(1000 * (2 ** attempt), 4000);
+}
 
 async function callGemini(model, key, system, contents) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), Number(process.env.GEMINI_REQUEST_TIMEOUT_MS || 22000));
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const startedAt = Date.now();
   try {
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
-      model
-    )}:generateContent`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-goog-api-key": key,
-      },
-      signal: controller.signal,
-      body: JSON.stringify({
-        systemInstruction: {
-          parts: [{ text: system }],
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": key
         },
-        contents,
-        generationConfig: {
-          maxOutputTokens: 2500,
-        },
-      }),
-    }
-  );
-  const responseText = await response.text();
-  return { ok: response.ok, status: response.status, text: responseText };
+        signal: controller.signal,
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: system }] },
+          contents,
+          generationConfig: { maxOutputTokens: 1600 }
+        })
+      }
+    );
+    const text = await response.text();
+    let data = {};
+    try { data = JSON.parse(text); } catch (_) {}
+    return {
+      ok: response.ok,
+      status: response.status,
+      data,
+      text,
+      elapsedMs: Date.now() - startedAt,
+      retryAfterMs: retryDelayFromHeader(response.headers.get("retry-after"), 0)
+    };
   } finally {
     clearTimeout(timeout);
   }
+}
+
+function summarizeUpstreamError(result) {
+  const message = String(result?.data?.error?.message || result?.data?.error?.status || result?.text || "No upstream error details");
+  return message.replace(/AIza[0-9A-Za-z_-]{20,}/g, "[REDACTED]").slice(0, 900);
 }
 
 module.exports = async (req, res) => {
@@ -118,91 +145,128 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
       PRIMARY_MODEL,
       FALLBACK_MODEL,
       "gemini-3.8-flash",
-      "gemini-3.7-flash",
-    ].filter(
-      (model, index, arr) =>
-        model && arr.indexOf(model) === index
-    );
+      "gemini-3.6-flash"
+    ].filter((model, index, all) => model && all.indexOf(model) === index);
 
     let lastStatus = 0;
     let lastDetail = "";
+    let lastModel = "";
+    let lastCode = "";
 
     for (const model of models) {
-      for (let attempt = 0; attempt < 1; attempt++) {
+      let tryFallbackModel = false;
+      for (let attempt = 0; attempt <= MAX_RETRIES_PER_MODEL; attempt++) {
         try {
-          const response = await callGemini(model, key, system, contents);
-          lastStatus = response.status;
-          if (response.ok) {
-            let data;
-            try { data = JSON.parse(response.text); } catch (_) { data = {}; }
+          const result = await callGemini(model, key, system, contents);
+          lastModel = model;
+          lastStatus = result.status;
+          lastDetail = summarizeUpstreamError(result);
+          lastCode = String(result.data?.error?.status || "");
 
-            const reply = (
-              data.candidates?.[0]?.content?.parts || []
-            )
-              .map((p) => p.text || "")
+          if (result.ok) {
+            const reply = (result.data?.candidates?.[0]?.content?.parts || [])
+              .map(part => part.text || "")
               .join("")
               .trim();
 
             if (reply) {
-              await logUsage(identity.user.uid, identity.user.email, "success").catch(error => console.error("Usage logging failed", error));
-              return res.status(200).json({ reply });
+              await logUsage(identity.user.uid, identity.user.email, "success")
+                .catch(error => console.error("Usage logging failed", error.message));
+              return res.status(200).json({ reply, model });
             }
 
-            lastDetail = "empty_response";
-          } else {
-            lastDetail = response.text || "";
-
-            const retryable =
-              response.status === 429 ||
-              response.status === 500 ||
-              response.status === 502 ||
-              response.status === 503 ||
-              response.status === 504;
-
-            if (response.status === 400 || response.status === 404) {
-              console.warn("Gemini model unavailable; trying next configured fallback", model, response.status);
-              continue;
-            }
-
-            if (!retryable) {
-              console.error(
-                "Gemini non-retryable error",
-                model,
-                response.status,
-                lastDetail.slice(0, 700)
-              );
-
-              return res.status(502).json({
-                error: "gemini_upstream_error",
-                upstreamStatus: response.status,
-                hint: response.status === 400 || response.status === 404 ? "Check the configured Gemini model name." : response.status === 401 || response.status === 403 ? "Check Gemini API key and API access." : response.status === 429 ? "Gemini quota or rate limit reached." : "Gemini rejected the request; inspect deployment logs for details."
-              });
-            }
+            lastDetail = "Gemini returned an empty candidate response.";
+            const finishReason = result.data?.candidates?.[0]?.finishReason || "";
+            console.warn("Gemini empty response", { model, finishReason });
+            tryFallbackModel = true;
+            break;
           }
-        } catch (error) {
-          console.error(
-            "Gemini request error",
+
+          const retryable = [408, 429, 500, 502, 503, 504].includes(result.status);
+          console.error("Gemini upstream response", {
             model,
-            error
-          );
+            status: result.status,
+            code: lastCode,
+            elapsedMs: result.elapsedMs,
+            message: lastDetail
+          });
 
-          lastStatus = 503;
-          lastDetail = error?.name === "AbortError" ? "Gemini request timed out." : String(error);
+          if (result.status === 400 || result.status === 404) {
+            // Usually model name / request incompatibility: do not retry the same model.
+            tryFallbackModel = true;
+            break;
+          }
+
+          if ([401, 403].includes(result.status)) {
+            return res.status(502).json({
+              error: "gemini_auth_or_access_error",
+              upstreamStatus: result.status,
+              hint: "Gemini API key or API access was rejected. Verify GEMINI_API_KEY and its project/API access in Vercel."
+            });
+          }
+
+          if (!retryable) {
+            return res.status(502).json({
+              error: "gemini_upstream_error",
+              upstreamStatus: result.status,
+              hint: lastDetail
+            });
+          }
+
+          if (attempt < MAX_RETRIES_PER_MODEL) {
+            const delay = Math.min(1000 * (2 ** attempt), 4000);
+            await sleep(Math.min(Math.max(result.retryAfterMs || delay, 500), 6000));
+            continue;
+          }
+          tryFallbackModel = true;
+          break;
+        } catch (error) {
+          const timedOut = error?.name === "AbortError";
+          lastStatus = timedOut ? 504 : 503;
+          lastModel = model;
+          lastCode = timedOut ? "CLIENT_TIMEOUT" : "NETWORK_ERROR";
+          lastDetail = timedOut
+            ? "Gemini request exceeded " + REQUEST_TIMEOUT_MS + "ms."
+            : String(error?.message || error).slice(0, 500);
+          console.error("Gemini request exception", {
+            model,
+            attempt: attempt + 1,
+            code: lastCode,
+            message: lastDetail
+          });
+
+          if (attempt < MAX_RETRIES_PER_MODEL) {
+            await sleep(1000 * (attempt + 1));
+            continue;
+          }
+          tryFallbackModel = true;
+          break;
         }
-
-}
+      }
     }
 
-    console.error(
-      "All Gemini attempts failed:",
+    console.error("All Gemini models exhausted", {
+      lastModel,
       lastStatus,
-      lastDetail.slice(0, 1000)
-    );
+      lastCode,
+      message: lastDetail
+    });
+    await logUsage(identity.user.uid, identity.user.email, "error")
+      .catch(error => console.error("Usage error logging failed", error.message));
+
+    const hint = lastStatus === 429
+      ? "Gemini usage quota or rate limit reached. Check Google AI Studio quotas/billing."
+      : lastStatus === 503
+        ? "Gemini servers are temporarily overloaded. Retry later or use another available model."
+        : lastStatus === 504
+          ? "Gemini did not answer before the backend timeout. Try a smaller prompt or verify upstream latency."
+          : lastDetail || "Inspect Vercel Function Logs for the upstream Gemini error.";
 
     return res.status(503).json({
       error: "gemini_temporarily_unavailable",
       upstreamStatus: lastStatus || null,
-      hint: lastStatus === 429 ? "Gemini quota or rate limit reached." : lastStatus === 400 || lastStatus === 404 ? "The configured Gemini model may not exist or may not support generateContent." : lastDetail.includes("timed out") ? "Gemini did not respond before the configured timeout." : "Inspect Vercel Function Logs for the Gemini request error."
+      model: lastModel || null,
+      hint
     });
   } catch (error) {
     console.error(
