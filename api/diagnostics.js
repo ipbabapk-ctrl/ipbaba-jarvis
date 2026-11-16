@@ -3,8 +3,11 @@ const { guard, verifyFirebaseUser, getFirestore } = require("./_shared");
 async function timedFetch(url, options, ms) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), ms);
-  try { return await fetch(url, { ...options, signal: controller.signal }); }
-  finally { clearTimeout(timer); }
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    const text = await response.text();
+    return { ok: response.ok, status: response.status, text };
+  } finally { clearTimeout(timer); }
 }
 
 module.exports = async function handler(req, res) {
@@ -34,7 +37,7 @@ module.exports = async function handler(req, res) {
         headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
         body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: "Reply with exactly: OK" }] }], generationConfig: { maxOutputTokens: 8 } })
       }, 12000);
-      const body = await response.json().catch(() => ({}));
+      let body = {}; try { body = JSON.parse(response.text); } catch (_) {}
       const answer = (body.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("").trim();
       checks.geminiText = response.ok && answer
         ? { ok: true, message: "Text model " + textModel + " returned a response." }
@@ -58,7 +61,7 @@ module.exports = async function handler(req, res) {
           }
         })
       }, 12000);
-      const body = await response.json().catch(() => ({}));
+      let body = {}; try { body = JSON.parse(response.text); } catch (_) {}
       checks.geminiLiveToken = response.ok && typeof body.name === "string" && body.name.startsWith("auth_tokens/")
         ? { ok: true, message: "Gemini issued a scoped Live token for " + liveModel + "." }
         : { ok: false, message: "Gemini Live token request failed (HTTP " + response.status + "): " + String(body.error?.message || body.error?.status || "Token missing.").slice(0, 180) };
