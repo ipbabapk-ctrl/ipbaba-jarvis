@@ -5152,6 +5152,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
         value.toFixed(3)
       );
     els.liveStage.classList.toggle("is-speaking", value > 0.035);
+    els.robotStage.classList.toggle("is-speaking", value > 0.035);
   }
 
   /* =======================================================
@@ -7087,7 +7088,7 @@ $("jarvisAvatarChoices").addEventListener("click",event=>{
 });
 profileToggle.addEventListener("click",()=>{profilePanel.hidden=!profilePanel.hidden;settingsPanel.hidden=true;profileToggle.setAttribute("aria-expanded",String(!profilePanel.hidden));});
 $("jarvisProfileClose").addEventListener("click",()=>{profilePanel.hidden=true;profileToggle.setAttribute("aria-expanded","false");});
-$("drawerAccountSettings").addEventListener("click",()=>{document.body.classList.remove("drawer-open");profilePanel.hidden=false;settingsPanel.hidden=false;profileToggle.setAttribute("aria-expanded","true");$("jarvisSettingsToggle").setAttribute("aria-expanded","true");});
+
 $("jarvisSettingsToggle").addEventListener("click",()=>{settingsPanel.hidden=!settingsPanel.hidden;$("jarvisSettingsToggle").setAttribute("aria-expanded",String(!settingsPanel.hidden));});
 $("jarvisSettingsClose").addEventListener("click",()=>{settingsPanel.hidden=true;$("jarvisSettingsToggle").setAttribute("aria-expanded","false");});
 const prefs={voice:$("jarvisLiveVoice"),speed:$("jarvisVoiceSpeed"),size:$("jarvisTextSize"),animations:$("jarvisAnimations"),sound:$("jarvisSoundEffects"),theme:$("jarvisTheme")};
