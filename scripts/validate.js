@@ -9,6 +9,7 @@ const files = [
   "api/chat.js",
   "api/admin.js",
   "api/profile.js",
+  "api/live-token.js",
   "public/js/firebase.js",
   "public/js/chat-storage.js"
 ];
@@ -46,5 +47,29 @@ for (const file of ["package.json", "vercel.json", "data/jarvis-knowledge.json"]
   try { JSON.parse(fs.readFileSync(path.join(root, file), "utf8")); }
   catch (error) { failed = true; console.error("Invalid JSON in " + file + ": " + error.message); }
 }
+const mainHtml = fs.readFileSync(path.join(root, "public/index.html"), "utf8");
+const adminHtml = fs.readFileSync(path.join(root, "public/admin.html"), "utf8");
+const adminApi = fs.readFileSync(path.join(root, "api/admin.js"), "utf8");
+const profileApi = fs.readFileSync(path.join(root, "api/profile.js"), "utf8");
+const liveTokenApi = fs.readFileSync(path.join(root, "api/live-token.js"), "utf8");
+const chatApi = fs.readFileSync(path.join(root, "api/chat.js"), "utf8");
+function requireText(source, value, label) { if (!source.includes(value)) { failed = true; console.error("Missing required behavior: " + label); } }
+function forbidText(source, value, label) { if (source.includes(value)) { failed = true; console.error("Removed feature still present: " + label); } }
+forbidText(mainHtml, "jarvisAnimations", "user animation toggle");
+forbidText(mainHtml, "admin-animations-off", "runtime animation override");
+forbidText(mainHtml, "jarvisSoundEffects", "inactive sound effects toggle");
+forbidText(adminHtml, "animationEnabled", "admin animation toggle");
+forbidText(adminApi, "body.animation", "runtime animation write");
+forbidText(profileApi, "animation:", "profile animation response");
+requireText(mainHtml, "source.playbackRate.value = playbackRate", "Live voice speed setting");
+requireText(mainHtml, "new AudioWorkletNode", "Live microphone PCM processing");
+requireText(mainHtml, "realtimeInput", "Live microphone streaming");
+requireText(mainHtml, "liveAttemptId", "Live startup cancellation guard");
+requireText(mainHtml, "setupTimeout", "Live setup timeout");
+requireText(liveTokenApi, "guard(req, res", "Live token CORS/request guard");
+forbidText(liveTokenApi, "Access-Control-Allow-Origin", "wildcard token CORS headers");
+requireText(liveTokenApi, "controller.abort()", "Live token upstream timeout");
+requireText(chatApi, "gemini-3.8-flash", "current primary chat model");
+requireText(chatApi, "gemini-3.7-flash", "current fallback chat model");
 if (failed) process.exit(1);
 console.log("JARVIS syntax and JSON validation passed.");
