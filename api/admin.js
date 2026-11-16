@@ -25,6 +25,7 @@ module.exports = async (req, res) => {
         return res.status(200).json({ok:true});
       }
       if (action === "save-profile") {
+        const db = await getFirestore();
         const uid=String(body.uid||"");
         const displayName=String(body.displayName||"").trim().slice(0,40);
         if(!uid || !displayName) return res.status(400).json({error:"uid_and_name_required"});
@@ -48,7 +49,6 @@ module.exports = async (req, res) => {
     const admin = await import("firebase-admin/app");
     const authMod = await import("firebase-admin/auth");
     const app = admin.getApps()[0];
-    const db = await getFirestore();
     const pageToken = String((req.query && req.query.pageToken) || "");
     const result = await authMod.getAuth(app).listUsers(1000, pageToken || undefined);
     let usageDocs = [], profileDocs = [], config = {}, firestoreAvailable = true, firestoreWarning = "";
