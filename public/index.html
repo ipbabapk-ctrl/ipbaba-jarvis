@@ -4898,7 +4898,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
   function newChat(){
     chatRequestId++;
-    state.recognition?.stop();
+    try { state.recognition?.stop(); } catch (_) {}
     activeChatController?.abort();
     activeChatController = null;
     if (typingRow) typingRow.remove();
