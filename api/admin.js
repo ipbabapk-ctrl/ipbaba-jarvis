@@ -1,11 +1,11 @@
 const { guard, verifyFirebaseUser, getFirestore, readKnowledge, getRuntimeConfig } = require("./_shared");
 module.exports = async (req, res) => {
-  if (guard(req, res, { method: "OPTIONS", json: false })) return;
+  if (req.method === "OPTIONS") { guard(req, res, { method: "GET", json: false }); return; }
+  if (req.method !== "GET" && req.method !== "POST") { res.setHeader("Allow", "GET, POST, OPTIONS"); return res.status(405).json({error:"method_not_allowed"}); }
   const identity = await verifyFirebaseUser(req);
   if (identity.error) return res.status(identity.error === "firebase_admin_not_configured" ? 503 : 401).json({ error: identity.error });
   if (!identity.user.admin) return res.status(403).json({ error: "admin_only" });
-  if (req.method !== "GET") {
-    if (req.method !== "POST") { res.setHeader("Allow", "GET, POST, OPTIONS"); return res.status(405).json({error:"method_not_allowed"}); }
+  if (req.method === "POST") {
     let body = req.body || {};
     let action = String(body.action || "");
     try {
