@@ -352,4 +352,3 @@ module.exports.getRuntimeConfig = getRuntimeConfig;
 module.exports.logUsage = logUsage;
 module.exports.getFirestore = getFirestore;
 module.exports.getUserProfile = getUserProfile;
-
