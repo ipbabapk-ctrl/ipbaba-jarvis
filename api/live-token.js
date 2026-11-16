@@ -19,6 +19,7 @@ module.exports = async function handler(req, res) {
       uses: 5,
       expireTime: new Date(now + 30 * 60 * 1000).toISOString(),
       newSessionExpireTime: new Date(now + 60 * 1000).toISOString(),
+      fieldMask: "model,generationConfig.responseModalities,sessionResumption",
       bidiGenerateContentSetup: {
         model: "models/" + model,
         generationConfig: { responseModalities: ["AUDIO"] },
