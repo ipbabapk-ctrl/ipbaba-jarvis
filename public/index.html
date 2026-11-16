@@ -3788,6 +3788,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
   let typingRow = null;
   let chatRequestId = 0;
+  let activeChatController = null;
 
   /* =======================================================
      VIEWPORT
@@ -4720,6 +4721,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
       const controller =
         new AbortController();
+      activeChatController = controller;
 
       requestTimeout = setTimeout(() => controller.abort(), 55000);
 
@@ -4852,7 +4854,10 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
     }finally{
       clearTimeout(requestTimeout);
-      if (requestId === chatRequestId) setBusy(false);
+      if (requestId === chatRequestId) {
+        activeChatController = null;
+        setBusy(false);
+      }
     }
   }
 
@@ -4892,6 +4897,8 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
   function newChat(){
     chatRequestId++;
+    activeChatController?.abort();
+    activeChatController = null;
     if (typingRow) typingRow.remove();
     typingRow = null;
     if (state.liveSocket || liveOpening) closeLive();
