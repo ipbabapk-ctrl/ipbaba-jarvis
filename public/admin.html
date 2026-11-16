@@ -9,10 +9,10 @@
 <div class="tabs" role="tablist"><button data-tab="users" aria-selected="true">Users</button><button data-tab="knowledge" aria-selected="false">Knowledge Base</button><button data-tab="instructions" aria-selected="false">AI Instructions</button><button data-tab="status" aria-selected="false">System Status</button></div>
 <section id="tab-users" class="panel">
 <h2>User Management</h2><p class="note">Requests counted from this release onward. Past chats were device-local and cannot be reconstructed.</p>
-<div class="toolbar"><input id="userSearch" class="search" placeholder="Search email or name"><button class="btn secondary" id="refreshUsers">Refresh</button></div>
+<div class="toolbar"><input id="userSearch" class="search" placeholder="Search email or name"><button class="btn secondary" id="refreshUsers">Refresh</button><button class="btn secondary" id="nextUsers" hidden>Next 1,000 users →</button></div>
 <div class="tablewrap"><table><thead><tr><th>User</th><th>Email</th><th>Requests</th><th>Last active</th><th>Account</th><th>Action</th></tr></thead><tbody id="users"></tbody></table></div>
 </section>
-<section id="tab-knowledge" class="panel" hidden><h2>Knowledge Base</h2><p class="note">Verified IP BABA profile, services and public contact information are loaded from the repository knowledge JSON. Edit facts in that JSON through a reviewed code deployment.</p><pre id="knowledgeInfo" class="editor" style="white-space:pre-wrap;overflow:auto;max-height:340px"></pre></section>
+<section id="tab-knowledge" class="panel" hidden><h2>Knowledge Base</h2><p class="note">Verified IP BABA profile, services and public contact information are loaded from the repository knowledge JSON. Edit facts in that JSON through a reviewed code deployment.</p><textarea id="knowledgeInfo" class="editor" spellcheck="false" aria-label="Editable JARVIS knowledge JSON"></textarea><div class="actions" style="margin-top:10px"><button class="btn" id="saveKnowledge">Save Knowledge Base</button><span id="knowledgeStatus" class="note" role="status"></span></div></section>
 <section id="tab-instructions" class="panel" hidden><h2>AI Instructions & Runtime Controls</h2><p class="note">These instructions are added to the JARVIS system context after saving. Never paste private credentials or sensitive personal data.</p><textarea id="instructions" class="editor" placeholder="Write instructions for JARVIS…"></textarea><div class="actions" style="margin-top:10px"><label class="switch"><input id="animationEnabled" type="checkbox" checked> Enable interface animation</label><button class="btn" id="saveConfig">Publish instructions & settings</button></div><div id="saveStatus" class="note" role="status"></div></section>
 <section id="tab-status" class="panel" hidden><h2>Usage & System Overview</h2><div class="grid"><div class="metric"><strong id="totalRequests">—</strong><span>Tracked requests</span></div><div class="metric"><strong id="activeUsers">—</strong><span>Users with activity</span></div><div class="metric"><strong id="firebaseStatus">—</strong><span>Authentication</span></div><div class="metric"><strong id="storeStatus">—</strong><span>Admin data store</span></div></div><p class="note">This is request-count analytics, not token billing or audio-minute metering. Live Voice usage is not included in this counter yet.</p></section>
 </div></section></main>
@@ -20,10 +20,11 @@
 import {auth,signOut,onAuthStateChanged} from "./js/firebase.js";
 const $=id=>document.getElementById(id);
 const status=$("status"),dashboard=$("dashboard");
-let currentUser=null,allUsers=[];
-async function api(action,extra={}) {
+let currentUser=null,allUsers=[],nextPageToken=null;
+async function api(action,extra={},pageToken=null) {
  const token=await currentUser.getIdToken(true);
- const res=await fetch("/api/admin",{method:action?"POST":"GET",headers:{Authorization:"Bearer "+token,...(action?{"Content-Type":"application/json"}:{})},body:action?JSON.stringify({action,...extra}):undefined});
+ const url="/api/admin"+(!action&&pageToken?"?pageToken="+encodeURIComponent(pageToken):"");
+ const res=await fetch(url,{method:action?"POST":"GET",headers:{Authorization:"Bearer "+token,...(action?{"Content-Type":"application/json"}:{})},body:action?JSON.stringify({action,...extra}):undefined});
  const data=await res.json().catch(()=>({}));
  if(!res.ok)throw new Error(data.error||"Admin API error");
  return data;
@@ -33,12 +34,13 @@ function renderUsers(){
  const term=$("userSearch").value.toLowerCase();
  $("users").innerHTML=allUsers.filter(u=>(u.email+" "+u.displayName).toLowerCase().includes(term)).map(u=>'<tr><td>'+esc(u.displayName||"—")+'</td><td>'+esc(u.email)+'</td><td>'+Number(u.requests||0)+'</td><td>'+esc(u.lastSeenAt||"—")+'</td><td>'+(u.disabled?"<span class=\"pill\" style=\"background:#fff0f1;color:#b72f48\">Blocked</span>":"<span class=\"pill\">Active</span>")+'</td><td><button class="btn '+(u.disabled?"":"danger")+'" data-user="'+esc(u.uid)+'" data-disable="'+(!u.disabled)+'">'+(u.disabled?"Unblock":"Block")+'</button></td></tr>').join("")||'<tr><td colspan="6">No matching users</td></tr>';
 }
-async function load(){
- const data=await api();
- allUsers=data.users||[];
+async function load(pageToken=null){
+ const data=await api(null,{},pageToken);
+ allUsers=data.users||[];nextPageToken=data.nextPageToken||null;
+ $("nextUsers").hidden=!nextPageToken;
  $("userCount").textContent=allUsers.length+(data.nextPageToken?" +":"");
  $("users").innerHTML="";renderUsers();
- $("knowledgeInfo").textContent=JSON.stringify(data.knowledge||{},null,2);
+ $("knowledgeInfo").value=JSON.stringify(data.knowledge||{},null,2);
  $("instructions").value=data.instructions||"";
  $("animationEnabled").checked=!data.animation||data.animation.enabled!==false;
  $("totalRequests").textContent=Number(data.usageTotals?.requests||0).toLocaleString();
@@ -56,6 +58,7 @@ onAuthStateChanged(auth,async user=>{
 $("signout").addEventListener("click",()=>signOut(auth));
 $("userSearch").addEventListener("input",renderUsers);
 $("refreshUsers").addEventListener("click",()=>load().catch(e=>status.textContent=e.message));
+$("nextUsers").addEventListener("click",()=>load(nextPageToken).catch(e=>status.textContent=e.message));
 $("users").addEventListener("click",async e=>{
  const b=e.target.closest("button[data-user]");if(!b)return;
  if(!confirm((b.dataset.disable==="true"?"Block":"Unblock")+" this account?"))return;
@@ -63,9 +66,15 @@ $("users").addEventListener("click",async e=>{
  try{await api("moderate-user",{uid:b.dataset.user,disabled:b.dataset.disable==="true"});await load();}
  catch(err){alert(err.message);b.disabled=false;}
 });
+$("saveKnowledge").addEventListener("click",async()=>{
+ const btn=$("saveKnowledge"),msg=$("knowledgeStatus");btn.disabled=true;msg.textContent="Saving…";
+ try{JSON.parse($("knowledgeInfo").value);await api("save-config",{instructions:$("instructions").value,knowledgeJson:$("knowledgeInfo").value,animation:{enabled:$("animationEnabled").checked,style:"3d-robot"}});msg.textContent="Knowledge published. New requests will use it.";}
+ catch(e){msg.textContent="Save failed: "+(e.message||"Invalid JSON");}
+ finally{btn.disabled=false;}
+});
 $("saveConfig").addEventListener("click",async()=>{
  const btn=$("saveConfig"),msg=$("saveStatus");btn.disabled=true;msg.textContent="Saving…";
- try{await api("save-config",{instructions:$("instructions").value,animation:{enabled:$("animationEnabled").checked,style:"3d-robot"}});msg.textContent="Published. New chat requests will use the saved instructions.";}
+ try{await api("save-config",{instructions:$("instructions").value,knowledgeJson:$("knowledgeInfo").value,animation:{enabled:$("animationEnabled").checked,style:"3d-robot"}});msg.textContent="Published. New chat requests will use the saved instructions and knowledge.";}
  catch(e){msg.textContent="Save failed: "+e.message;}
  finally{btn.disabled=false;}
 });
