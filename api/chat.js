@@ -56,7 +56,7 @@ async function callGemini(model, key, system, contents) {
       data,
       text,
       elapsedMs: Date.now() - startedAt,
-      retryAfterMs: parseRetryDelay(response, 0)
+      retryAfterMs: (() => { const h = response.headers.get("retry-after"); if (!h) return 0; const n = Number(h); if (Number.isFinite(n)) return Math.min(Math.max(n * 1000, 500), 6000); const t = Date.parse(h); return Number.isFinite(t) ? Math.min(Math.max(t - Date.now(), 500), 6000) : 0; })()
     };
   } finally {
     clearTimeout(timeout);
@@ -215,7 +215,7 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
           }
 
           if (attempt < MAX_RETRIES_PER_MODEL) {
-            const delay = parseRetryDelay({ headers: { get: () => null } }, attempt);
+            const delay = Math.min(1000 * (2 ** attempt), 4000);
             await sleep(Math.min(Math.max(result.retryAfterMs || delay, 500), 6000));
             continue;
           }
