@@ -15,7 +15,9 @@ Optional:
 - `GEMINI_LIVE_MODEL`: defaults to `gemini-3.8-live`.
 - `GEMINI_REQUEST_TIMEOUT_MS`: defaults to 22000.
 - Live token requests time out after 12 seconds; Vercel allows up to 20 seconds for this function.
-- Live Voice enables server session-resumption handles and context-window compression, and retries a resumable disconnect without reopening the microphone.
+- Live Voice creates an ephemeral token locked to the configured Live model and AUDIO modality, then connects using the v1alpha `BidiGenerateContentConstrained` WebSocket endpoint (required for ephemeral tokens).
+- Admin → System Status → Run Backend Tests checks the signed-in administrator, Gemini text response, Gemini Live token provisioning, and Firestore reachability. The test never displays API keys or returns a usable Live token to the browser.
+- The profile display name is saved to Firebase Authentication first. Firestore profile storage is an additional sync; the profile remains usable if Firestore is temporarily unavailable.
 - `ALLOWED_ORIGINS`: comma-separated additional HTTPS origins, only if a trusted custom domain is intentionally used.
 
 Redeploy after changing environment variables.

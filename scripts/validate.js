@@ -10,6 +10,7 @@ const files = [
   "api/admin.js",
   "api/profile.js",
   "api/live-token.js",
+  "api/diagnostics.js",
   "public/js/firebase.js",
   "public/js/chat-storage.js"
 ];
@@ -53,6 +54,9 @@ const adminApi = fs.readFileSync(path.join(root, "api/admin.js"), "utf8");
 const profileApi = fs.readFileSync(path.join(root, "api/profile.js"), "utf8");
 const liveTokenApi = fs.readFileSync(path.join(root, "api/live-token.js"), "utf8");
 const chatApi = fs.readFileSync(path.join(root, "api/chat.js"), "utf8");
+const diagnosticsApi = fs.readFileSync(path.join(root, "api/diagnostics.js"), "utf8");
+const sharedApi = fs.readFileSync(path.join(root, "api/_shared.js"), "utf8");
+const adminPage = fs.readFileSync(path.join(root, "public/admin.html"), "utf8");
 function requireText(source, value, label) { if (!source.includes(value)) { failed = true; console.error("Missing required behavior: " + label); } }
 function forbidText(source, value, label) { if (source.includes(value)) { failed = true; console.error("Removed feature still present: " + label); } }
 forbidText(mainHtml, "jarvisAnimations", "user animation toggle");
@@ -82,6 +86,18 @@ requireText(mainHtml, "this.buffer.length >= 1764", "low-latency audio frame bat
 requireText(liveTokenApi, "guard(req, res", "Live token CORS/request guard");
 forbidText(liveTokenApi, "Access-Control-Allow-Origin", "wildcard token CORS headers");
 requireText(liveTokenApi, "controller.abort()", "Live token upstream timeout");
+requireText(liveTokenApi, "liveConnectConstraints", "constrained Gemini Live token");
+requireText(mainHtml, "v1alpha.GenerativeService.BidiGenerateContentConstrained", "ephemeral-token Live WebSocket API version");
+requireText(profileApi, "Firebase Auth remains primary profile store", "profile persistence without Firestore");
+requireText(profileApi, "updateUser(identity.user.uid, { displayName })", "persist profile display name to Firebase Authentication");
+requireText(adminApi, "firestoreAvailable", "graceful admin dashboard without Firestore");
+requireText(adminPage, "runDiagnostics", "admin backend diagnostics control");
+requireText(diagnosticsApi, "geminiLiveToken", "Gemini Live token backend diagnostic");
+requireText(diagnosticsApi, "geminiText", "Gemini text backend diagnostic");
+requireText(sharedApi, "displayName: decoded.name || ''", "Firebase Auth display-name fallback");
+requireText(mainHtml, "jarvis-premium-light-theme", "premium light interface theme");
+requireText(mainHtml, "jarvisEyeBlink", "animated robot eye blink");
+requireText(mainHtml, "IP BABA by JARVIS AI", "updated JARVIS AI brand label");
 requireText(chatApi, "gemini-3.8-flash", "current primary chat model");
 requireText(chatApi, "gemini-3.7-flash", "current fallback chat model");
 if (failed) process.exit(1);
