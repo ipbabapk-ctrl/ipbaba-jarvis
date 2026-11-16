@@ -3338,7 +3338,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
   <section id="jarvisSettingsPanel" class="jarvis-settings" hidden aria-label="JARVIS settings">
     <div class="settings-head"><strong>JARVIS Settings</strong><button id="jarvisSettingsClose" type="button" aria-label="Close settings">×</button></div>
     <label for="jarvisLiveVoice">Live voice</label>
-    <select id="jarvisLiveVoice"><option value="Aoede">Aoede · Calm</option><option value="Kore">Kore · Clear</option><option value="Puck">Puck · Bright</option><option value="Charon">Charon · Deep</option><option value="Fenrir">Fenrir · Strong</option></select>
+    <select id="jarvisLiveVoice"><option value="Aoede">Aoede · Breezy</option><option value="Kore">Kore · Firm</option><option value="Puck">Puck · Upbeat</option><option value="Charon">Charon · Informative</option><option value="Fenrir">Fenrir · Excitable</option></select>
     <label for="jarvisVoiceSpeed">Speech playback speed</label><input id="jarvisVoiceSpeed" type="range" min="0.75" max="1.25" step="0.05" value="1">
     <label for="jarvisTextSize">Chat text size</label><select id="jarvisTextSize"><option value="small">Compact</option><option value="normal" selected>Standard</option><option value="large">Large</option></select>
         <label for="jarvisTheme">Appearance</label><select id="jarvisTheme"><option value="dark">Dark</option><option value="light">Light</option><option value="system">System default</option></select>
@@ -4791,6 +4791,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
           -24
         );
       if (window.jarvisSaveLocalConversation) await window.jarvisSaveLocalConversation({ id:"current", title:String(state.messages.find(m=>m.role==="user")?.text || "New chat").slice(0,72), messages:state.messages });
+      if (requestId !== chatRequestId) return;
 
       addMessage(
         "ai",
@@ -4897,6 +4898,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
   function newChat(){
     chatRequestId++;
+    state.recognition?.stop();
     activeChatController?.abort();
     activeChatController = null;
     if (typingRow) typingRow.remove();
@@ -7076,7 +7078,7 @@ $("jarvisSettingsToggle").addEventListener("click",()=>{settingsPanel.hidden=!se
 $("jarvisSettingsClose").addEventListener("click",()=>{settingsPanel.hidden=true;$("jarvisSettingsToggle").setAttribute("aria-expanded","false");});
 const prefs={voice:$("jarvisLiveVoice"),speed:$("jarvisVoiceSpeed"),size:$("jarvisTextSize"),theme:$("jarvisTheme")};
 const readPref=(key,fallback)=>localStorage.getItem("jarvisPref:"+key)??fallback;
-prefs.voice.value=readPref("voice","Aoede");prefs.speed.value=readPref("speed","1");prefs.size.value=readPref("size","normal");prefs.theme.value=readPref("theme","dark");
+prefs.voice.value=readPref("voice","Aoede");localStorage.setItem("jarvisLiveVoice",prefs.voice.value);prefs.speed.value=readPref("speed","1");prefs.size.value=readPref("size","normal");prefs.theme.value=readPref("theme","dark");
 function applyPrefs(){document.body.classList.toggle("chat-text-small",prefs.size.value==="small");document.body.classList.toggle("chat-text-large",prefs.size.value==="large");const sys=prefs.theme.value==="system";document.body.classList.toggle("light-theme",prefs.theme.value==="light"||(sys&&matchMedia("(prefers-color-scheme: light)").matches));document.body.classList.toggle("force-dark-theme",prefs.theme.value==="dark"||(sys&&matchMedia("(prefers-color-scheme: dark)").matches));}
 Object.entries(prefs).forEach(([key,control])=>{control.addEventListener("change",()=>{localStorage.setItem("jarvisPref:"+key,control.type==="checkbox"?String(control.checked):control.value);applyPrefs();});if(control.type==="range")control.addEventListener("input",()=>localStorage.setItem("jarvisPref:"+key,control.value));});
 applyPrefs();
