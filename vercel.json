@@ -16,6 +16,9 @@
     },
     "api/profile.js": {
       "maxDuration": 20
+    },
+    "api/live-token.js": {
+      "maxDuration": 20
     }
   }
 }

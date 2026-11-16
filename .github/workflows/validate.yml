@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - ipbaba-jarvis-control-center-v4
+      - ipbaba-jarvis-deep-audit-v5
 jobs:
   syntax:
     runs-on: ubuntu-latest

@@ -13,14 +13,13 @@ module.exports = async (req, res) => {
       const db = await getFirestore();
       if (action === "save-config") {
         const instructions = String(body.instructions || "").slice(0, 12000);
-        const animation = body.animation && typeof body.animation === "object" ? { enabled: body.animation.enabled !== false, style: "3d-robot" } : {enabled:true,style:"3d-robot"};
         let knowledge;
         if (body.knowledgeJson !== undefined) {
           if (typeof body.knowledgeJson !== "string" || body.knowledgeJson.length > 30000) return res.status(400).json({error:"knowledge_json_too_large"});
           try { knowledge = JSON.parse(body.knowledgeJson); } catch (_) { return res.status(400).json({error:"invalid_knowledge_json"}); }
           if (!knowledge || Array.isArray(knowledge) || typeof knowledge !== "object") return res.status(400).json({error:"knowledge_must_be_object"});
         }
-        const update = {instructions,animation,updatedAt:new Date().toISOString(),updatedBy:identity.user.email};
+        const update = {instructions,updatedAt:new Date().toISOString(),updatedBy:identity.user.email};
         if (knowledge) update.knowledge = knowledge;
         await db.collection("jarvisConfig").doc("runtime").set(update,{merge:true});
         return res.status(200).json({ok:true});
@@ -65,7 +64,6 @@ module.exports = async (req, res) => {
     return res.status(200).json({
       users, nextPageToken: result.pageToken || null,
       knowledge: config.knowledge || readKnowledge(), instructions: String(config.instructions || ""),
-      animation: config.animation || { enabled:true, style:"3d-robot" },
       capabilities: { userDirectory:true, adminKnowledgeBase:true, adminInstructionEditor:true, analytics:true, userModerationActions:true, firestore:true },
       usageTotals: { requests:usageSnap.docs.reduce((n,d)=>n+Number((d.data()||{}).requests||0),0), activeUsers:usageSnap.docs.filter(d=>Number((d.data()||{}).requests||0)>0).length }
     });

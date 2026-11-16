@@ -1,4 +1,4 @@
-const { guard, verifyFirebaseUser, getFirestore, getRuntimeConfig } = require("./_shared");
+const { guard, verifyFirebaseUser, getFirestore } = require("./_shared");
 
 module.exports = async (req, res) => {
   if (guard(req, res, { method: req.method === "GET" ? "GET" : "POST", json: req.method !== "GET", maxBytes: 2000 })) return;
@@ -9,8 +9,7 @@ module.exports = async (req, res) => {
     const ref = db.collection("jarvisProfiles").doc(identity.user.uid);
     if (req.method === "GET") {
       const snap = await ref.get();
-      const config = await getRuntimeConfig();
-      return res.status(200).json({ profile: snap.exists ? snap.data() : {}, animation: config.animation || { enabled: true, style: "3d-robot" } });
+      return res.status(200).json({ profile: snap.exists ? snap.data() : {} });
     }
     if (req.method !== "POST") return res.status(405).json({ error: "method_not_allowed" });
     const displayName = String((req.body || {}).displayName || "").trim().replace(/\s+/g, " ").slice(0, 40);
