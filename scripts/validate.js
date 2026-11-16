@@ -60,6 +60,7 @@ const adminPage = fs.readFileSync(path.join(root, "public/admin.html"), "utf8");
 function requireText(source, value, label) { if (!source.includes(value)) { failed = true; console.error("Missing required behavior: " + label); } }
 function forbidText(source, value, label) { if (source.includes(value)) { failed = true; console.error("Removed feature still present: " + label); } }
 forbidText(mainHtml, "jarvisAnimations", "user animation toggle");
+forbidText(mainHtml, "jarvisTheme", "removed dark/system theme selector");
 forbidText(mainHtml, "admin-animations-off", "runtime animation override");
 forbidText(mainHtml, "jarvisSoundEffects", "inactive sound effects toggle");
 forbidText(adminHtml, "animationEnabled", "admin animation toggle");
@@ -93,6 +94,7 @@ requireText(profileApi, "updateUser(identity.user.uid, { displayName })", "persi
 requireText(adminApi, "firestoreAvailable", "graceful admin dashboard without Firestore");
 requireText(adminPage, "runDiagnostics", "admin backend diagnostics control");
 requireText(diagnosticsApi, "geminiLiveToken", "Gemini Live token backend diagnostic");
+requireText(diagnosticsApi, "testLiveSocket", "actual Gemini Live WebSocket setup handshake test");
 requireText(diagnosticsApi, "geminiText", "Gemini text backend diagnostic");
 requireText(sharedApi, "displayName: decoded.name || ''", "Firebase Auth display-name fallback");
 requireText(mainHtml, "jarvis-premium-light-theme", "premium light interface theme");
