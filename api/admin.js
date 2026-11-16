@@ -67,7 +67,7 @@ module.exports = async (req, res) => {
       knowledge: config.knowledge || readKnowledge(), instructions: String(config.instructions || ""),
       animation: config.animation || { enabled:true, style:"3d-robot" },
       capabilities: { userDirectory:true, adminKnowledgeBase:true, adminInstructionEditor:true, analytics:true, userModerationActions:true, firestore:true },
-      usageTotals: { requests:users.reduce((n,u)=>n+u.requests,0), activeUsers:users.filter(u=>u.requests>0).length }
+      usageTotals: { requests:usageSnap.docs.reduce((n,d)=>n+Number((d.data()||{}).requests||0),0), activeUsers:usageSnap.docs.filter(d=>Number((d.data()||{}).requests||0)>0).length }
     });
   } catch (error) {
     console.error("Admin user list failed", error);
