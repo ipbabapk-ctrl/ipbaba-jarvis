@@ -15,6 +15,7 @@ Optional:
 - `GEMINI_LIVE_MODEL`: defaults to `gemini-3.8-live`.
 - `GEMINI_REQUEST_TIMEOUT_MS`: defaults to 22000.
 - Live token requests time out after 12 seconds; Vercel allows up to 20 seconds for this function.
+- Live Voice enables server session-resumption handles and context-window compression, and retries a resumable disconnect without reopening the microphone.
 - `ALLOWED_ORIGINS`: comma-separated additional HTTPS origins, only if a trusted custom domain is intentionally used.
 
 Redeploy after changing environment variables.
