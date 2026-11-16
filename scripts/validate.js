@@ -100,7 +100,7 @@ requireText(diagnosticsApi, "geminiText", "Gemini text backend diagnostic");
 requireText(sharedApi, "displayName: decoded.name || ''", "Firebase Auth display-name fallback");
 requireText(mainHtml, "jarvis-premium-light-theme", "premium light interface theme");
 requireText(mainHtml, "jarvisEyeBlink", "animated robot eye blink");
-requireText(mainHtml, "live-robot-chest"><span>JARVIS</span><small>IP BABA</small>", "consistent robot chest branding");
+requireText(mainHtml, `live-robot-chest"><span>JARVIS</span><small>IP BABA</small>`, "consistent robot chest branding");
 forbidText(mainHtml, "IP BABA by JARVIS AI", "duplicate live robot brandline");
 forbidText(mainHtml, "JARVIS AI · by IP BABA", "duplicate chat subheading");
 requireText(chatApi, "gemini-3.8-flash", "current primary chat model");
