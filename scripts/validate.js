@@ -93,6 +93,7 @@ requireText(profileApi, "updateUser(identity.user.uid, { displayName })", "persi
 requireText(adminApi, "firestoreAvailable", "graceful admin dashboard without Firestore");
 requireText(adminPage, "runDiagnostics", "admin backend diagnostics control");
 requireText(diagnosticsApi, "geminiLiveToken", "Gemini Live token backend diagnostic");
+requireText(diagnosticsApi, "testLiveSocket", "actual Gemini Live WebSocket setup handshake test");
 requireText(diagnosticsApi, "geminiText", "Gemini text backend diagnostic");
 requireText(sharedApi, "displayName: decoded.name || ''", "Firebase Auth display-name fallback");
 requireText(mainHtml, "jarvis-premium-light-theme", "premium light interface theme");
