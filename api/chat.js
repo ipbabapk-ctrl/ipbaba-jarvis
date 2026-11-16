@@ -59,7 +59,7 @@ module.exports = async (req, res) => {
     const config = await getRuntimeConfig();
     const profile = await getUserProfile(identity.user.uid);
     if (profile.disabled === true) return res.status(403).json({ error: "account_disabled" });
-    const knowledge = readKnowledge();
+    const knowledge = config.knowledge || readKnowledge();
     const key = process.env.GEMINI_API_KEY;
 
     if (!key) {
@@ -149,7 +149,7 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
               .trim();
 
             if (reply) {
-              await logUsage(identity.user.uid, identity.user.email, "success");
+              await logUsage(identity.user.uid, identity.user.email, "success").catch(error => console.error("Usage logging failed", error));
               return res.status(200).json({ reply });
             }
 
