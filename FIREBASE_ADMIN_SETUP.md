@@ -10,9 +10,11 @@ Set these in Vercel for Production and Preview as appropriate:
 
 Optional:
 
-- `GEMINI_MODEL`: defaults to `gemini-2.5-flash`.
-- `GEMINI_FALLBACK_MODEL`: defaults to `gemini-2.0-flash`.
+- `GEMINI_MODEL`: defaults to `gemini-3.8-flash`.
+- `GEMINI_FALLBACK_MODEL`: defaults to `gemini-3.7-flash`.
+- `GEMINI_LIVE_MODEL`: defaults to `gemini-3.8-live`.
 - `GEMINI_REQUEST_TIMEOUT_MS`: defaults to 22000.
+- Live token requests time out after 12 seconds; Vercel allows up to 20 seconds for this function.
 - `ALLOWED_ORIGINS`: comma-separated additional HTTPS origins, only if a trusted custom domain is intentionally used.
 
 Redeploy after changing environment variables.
