@@ -5117,6 +5117,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
   let liveOpening = false;
   let setupTimeout = 0;
   let reconnectTimer = 0;
+  let reconnectAttempts = 0;
   let liveModel = "gemini-3.8-live";
 
   let resumeHandle =
@@ -6436,6 +6437,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
               true;
             clearTimeout(setupTimeout);
             clearTimeout(reconnectTimer);
+            reconnectAttempts = 0;
             clearLiveError();
 
             setMode(
@@ -6475,7 +6477,8 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
           if (data.goAway || data.go_away) {
             const notice = data.goAway || data.go_away;
             console.warn("Gemini Live requested reconnection:", notice);
-            if (resumeHandle && liveToken && attemptId === liveAttemptId) {
+            if (resumeHandle && liveToken && attemptId === liveAttemptId && reconnectAttempts < 3) {
+              reconnectAttempts++;
               setLiveStatus("RECONNECTING", "Restoring your voice session without losing its conversation…");
               clearTimeout(setupTimeout);
               clearTimeout(reconnectTimer);
@@ -6662,7 +6665,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
           const intentional = state.intentionalLiveClose;
           const wasCurrentSocket = state.liveSocket === socket;
           if (wasCurrentSocket) clearTimeout(setupTimeout);
-          const canResume = wasCurrentSocket && !intentional && attemptId === liveAttemptId && !!resumeHandle && !!liveToken;
+          const canResume = wasCurrentSocket && !intentional && attemptId === liveAttemptId && !!resumeHandle && !!liveToken && reconnectAttempts < 3;
 
           if (wasCurrentSocket) {
             state.liveSocket = null;
@@ -6672,6 +6675,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
           }
 
           if (canResume) {
+            reconnectAttempts++;
             setLiveStatus("RECONNECTING", "Connection dropped. Restoring the current voice conversation…");
             clearTimeout(reconnectTimer);
             reconnectTimer = setTimeout(() => {
@@ -6803,6 +6807,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
     liveOpening = false;
     clearTimeout(setupTimeout);
     clearTimeout(reconnectTimer);
+    reconnectAttempts = 0;
     state.intentionalLiveClose =
       true;
 
