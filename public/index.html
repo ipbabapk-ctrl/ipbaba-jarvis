@@ -3850,6 +3850,8 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
 
     state.mode =
       mode;
+    els.liveStage.classList.toggle("is-speaking", mode === "speaking");
+    els.robotStage.classList.toggle("is-speaking", mode === "speaking");
 
     const text =
       label ||
@@ -5151,8 +5153,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
         "--voice-level",
         value.toFixed(3)
       );
-    els.liveStage.classList.toggle("is-speaking", value > 0.035);
-    els.robotStage.classList.toggle("is-speaking", value > 0.035);
+
   }
 
   /* =======================================================
@@ -5508,6 +5509,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
             setVoiceLevel(
               .04
             );
+            setMode("listening", "LISTENING");
 
             setLiveStatus(
               "LISTENING",
