@@ -6,10 +6,8 @@ const PRIMARY_MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 // independently configurable fallback; do not silently retry the same model.
 const FALLBACK_MODEL = process.env.GEMINI_FALLBACK_MODEL || "gemini-3.6-flash";
 const MAX_RETRIES_PER_MODEL = 1; // two attempts total for transient failures
-const REQUEST_TIMEOUT_MS = Math.min(
-  Math.max(Number(process.env.GEMINI_REQUEST_TIMEOUT_MS || 25000), 12000),
-  35000
-);
+const REQUEST_TIMEOUT_MS = Math.min(Math.max(Number(process.env.GEMINI_REQUEST_TIMEOUT_MS || 10000), 7000), 12000);
+const MAX_TOTAL_GEMINI_MS = 44000;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -25,9 +23,9 @@ function retryDelayFromHeader(value, attempt) {
   return Math.min(1000 * (2 ** attempt), 4000);
 }
 
-async function callGemini(model, key, system, contents) {
+async function callGemini(model, key, system, contents, timeoutMs = REQUEST_TIMEOUT_MS) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
   const startedAt = Date.now();
   try {
     const response = await fetch(
@@ -141,12 +139,8 @@ Use clean Markdown.
 Only append the exact token [[CTA]] at the very end when contacting IP BABA is a genuinely useful next step.
 `;
 
-    const models = [
-      PRIMARY_MODEL,
-      FALLBACK_MODEL,
-      "gemini-3.8-flash",
-      "gemini-3.6-flash"
-    ].filter((model, index, all) => model && all.indexOf(model) === index);
+    const models = [PRIMARY_MODEL, FALLBACK_MODEL].filter((model, index, all) => model && all.indexOf(model) === index);
+    const geminiDeadline = Date.now() + MAX_TOTAL_GEMINI_MS;
 
     let lastStatus = 0;
     let lastDetail = "";
@@ -157,7 +151,15 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
       let tryFallbackModel = false;
       for (let attempt = 0; attempt <= MAX_RETRIES_PER_MODEL; attempt++) {
         try {
-          const result = await callGemini(model, key, system, contents);
+          const remainingMs = geminiDeadline - Date.now();
+          if (remainingMs < 1500) {
+            lastStatus = 504;
+            lastCode = "TOTAL_TIMEOUT";
+            lastDetail = "Gemini fallback budget exhausted before the Vercel function deadline.";
+            tryFallbackModel = true;
+            break;
+          }
+          const result = await callGemini(model, key, system, contents, Math.min(REQUEST_TIMEOUT_MS, remainingMs));
           lastModel = model;
           lastStatus = result.status;
           lastDetail = summarizeUpstreamError(result);
@@ -214,9 +216,8 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
           }
 
           if (attempt < MAX_RETRIES_PER_MODEL) {
-            const delay = Math.min(1000 * (2 ** attempt), 4000);
-            await sleep(Math.min(Math.max(result.retryAfterMs || delay, 500), 6000));
-            continue;
+            const delay = Math.min(Math.max(result.retryAfterMs || (1000 * (2 ** attempt)), 500), 6000);
+            if (geminiDeadline - Date.now() > delay + 7500) { await sleep(delay); continue; }
           }
           tryFallbackModel = true;
           break;
@@ -235,8 +236,8 @@ Only append the exact token [[CTA]] at the very end when contacting IP BABA is a
             message: lastDetail
           });
 
-          if (attempt < MAX_RETRIES_PER_MODEL) {
-            await sleep(1000 * (attempt + 1));
+          if (attempt < MAX_RETRIES_PER_MODEL && geminiDeadline - Date.now() > 8500) {
+            await sleep(Math.min(500 * (attempt + 1), 1000));
             continue;
           }
           tryFallbackModel = true;
