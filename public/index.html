@@ -3740,6 +3740,21 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
   const API_BASE_URL =
     window.JARVIS_API_BASE_URL || "";
 
+  // Keep the token provider available before Firebase's asynchronous
+  // onAuthStateChanged callback has completed.
+  window.jarvisGetIdToken = async function () {
+    const startedAt = Date.now();
+    while ((!window.jarvisUser || typeof window.jarvisUser.getIdToken !== "function") &&
+           Date.now() - startedAt < 12000) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    const user = window.jarvisUser;
+    if (!user || typeof user.getIdToken !== "function") {
+      throw new Error("Please sign in again. Firebase authentication is not ready.");
+    }
+    return user.getIdToken();
+  };
+
   /* =======================================================
      ELEMENTS
      ======================================================= */
@@ -7038,7 +7053,6 @@ async function loadSdk(){
     $("jarvisProfileNameInput").value=displayName;
     $("jarvisAccountCreated").textContent=user.metadata&&user.metadata.creationTime?new Date(user.metadata.creationTime).toLocaleDateString():"Google account";
     const avatarKey="jarvisAvatar:"+user.uid;const avatar=localStorage.getItem(avatarKey)||"robot";setAvatar(avatar);
-    window.jarvisGetIdToken=()=>user.getIdToken();
     try{
      const token=await user.getIdToken();
      const profileResponse=await fetch("/api/profile",{headers:{Authorization:"Bearer "+token}});
@@ -7049,7 +7063,7 @@ async function loadSdk(){
     }catch(err){console.warn("Profile settings unavailable",err);}
     try{window.jarvisLocalConversations=await storage.getConversations(user.uid);}catch(err){console.warn(err);}
    }else{
-    gate.hidden=false;userBar.hidden=true;profileToggle.hidden=true;profilePanel.hidden=true;settingsPanel.hidden=true;window.jarvisGetIdToken=null;profilePanel.hidden=true;settingsPanel.hidden=true;profileToggle.setAttribute("aria-expanded","false");
+    gate.hidden=false;userBar.hidden=true;profileToggle.hidden=true;profilePanel.hidden=true;settingsPanel.hidden=true;profilePanel.hidden=true;settingsPanel.hidden=true;profileToggle.setAttribute("aria-expanded","false");
    }
   });
   authReady=true;
