@@ -3366,7 +3366,7 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
   </aside>
   <section id="jarvisProfilePanel" class="jarvis-profile-panel" hidden aria-label="User account">
     <div class="profile-panel-head"><span>YOUR ACCOUNT</span><button id="jarvisProfileClose" type="button" aria-label="Close account panel">×</button></div>
-    <div class="profile-identity"><span id="jarvisProfileLargeAvatar" class="profile-avatar profile-avatar-large">J</span><div><div class="profile-name-edit"><input id="jarvisProfileNameInput" type="text" maxlength="40" placeholder="Your name" aria-label="Your display name"><button id="jarvisSaveProfileName" type="button">Save</button></div><small id="jarvisUserEmail">Sign in to your account</small><small id="jarvisProfileSaveStatus" class="profile-save-status" role="status" aria-live="polite"></small></div></div>
+    <div class="profile-identity"><span id="jarvisProfileLargeAvatar" class="profile-avatar profile-avatar-large">J</span><div><div class="profile-name-edit"><span id="jarvisProfileNameDisplay" class="profile-name-display">JARVIS User</span><button id="jarvisEditProfileName" class="profile-icon-btn" type="button" aria-label="Edit username" title="Edit username"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16.5-.8 4.3 4.3-.8L19.8 7.7a2.1 2.1 0 0 0-3-3L4 16.5Z"/><path d="m14.8 6.7 3 3"/></svg></button><input id="jarvisProfileNameInput" type="text" maxlength="40" placeholder="Your name" aria-label="Your display name" hidden><button id="jarvisSaveProfileName" class="profile-icon-btn profile-save-icon" type="button" aria-label="Save username" title="Save" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg></button><button id="jarvisCancelProfileName" class="profile-icon-btn profile-cancel-icon" type="button" aria-label="Cancel username edit" title="Cancel" hidden>×</button></div><small id="jarvisUserEmail">Sign in to your account</small><small id="jarvisProfileSaveStatus" class="profile-save-status" role="status" aria-live="polite"></small></div></div>
     <div class="profile-meta"><span>Account created</span><strong id="jarvisAccountCreated">—</strong></div>
     <div class="profile-avatar-label">Choose your avatar</div>
     <div id="jarvisAvatarChoices" class="avatar-choices" aria-label="Select a profile avatar">
@@ -4782,7 +4782,7 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
         new AbortController();
       activeChatController = controller;
 
-      requestTimeout = setTimeout(() => controller.abort(), 55000);
+      requestTimeout = setTimeout(() => controller.abort(), 38000);
 
       const response =
         await fetch(
@@ -5913,7 +5913,7 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
             }
 
             if(
-              this.buffer.length >= 1764
+              this.buffer.length >= Math.ceil(sampleRate * 0.1)
             ){
 
               const chunk =
@@ -7035,6 +7035,8 @@ const $=id=>document.getElementById(id);
 const gate=$("jarvisAuthGate"),form=$("jarvisAuthForm"),email=$("jarvisAuthEmail"),password=$("jarvisAuthPassword"),errorBox=$("jarvisAuthError"),modeBtn=$("jarvisAuthMode"),googleBtn=$("jarvisGoogleSubmit"),emailBtn=$("jarvisEmailSubmit"),userBar=$("jarvisUserBar"),profileToggle=$("jarvisProfileToggle"),profilePanel=$("jarvisProfilePanel"),settingsPanel=$("jarvisSettingsPanel");
 let createMode=false,fb=null,storage=null,activeUser=null,authReady=false;
 function message(text){if(errorBox)errorBox.textContent=text;}
+function setProfileName(name){const clean=String(name||"").trim()||"JARVIS User";$("jarvisProfileNameDisplay").textContent=clean;$("jarvisProfileNameInput").value=clean;}
+function setProfileNameEditing(editing){$("jarvisProfileNameDisplay").hidden=editing;$("jarvisEditProfileName").hidden=editing;$("jarvisProfileNameInput").hidden=!editing;$("jarvisSaveProfileName").hidden=!editing;$("jarvisCancelProfileName").hidden=!editing;if(editing){$("jarvisProfileNameInput").focus();$("jarvisProfileNameInput").select();}}
 function explain(e){
  const code=e&&e.code||"";
  const map={
@@ -7069,7 +7071,7 @@ async function loadSdk(){
     gate.hidden=true;userBar.hidden=false;profileToggle.hidden=false;profileToggle.hidden=false;
     $("jarvisUserEmail").textContent=user.email||"Signed in";
     const displayName=localStorage.getItem("jarvisDisplayName:"+user.uid)||user.displayName||((user.email||"JARVIS User").split("@")[0]);
-    $("jarvisProfileNameInput").value=displayName;
+    $("jarvisProfileNameInput").value=displayName;$("jarvisProfileNameDisplay").textContent=displayName;
     $("jarvisAccountCreated").textContent=user.metadata&&user.metadata.creationTime?new Date(user.metadata.creationTime).toLocaleDateString():"Google account";
     const avatarKey="jarvisAvatar:"+user.uid;const avatar=localStorage.getItem(avatarKey)||"robot";setAvatar(avatar);
     try{
@@ -7077,7 +7079,7 @@ async function loadSdk(){
      const profileResponse=await fetch("/api/profile",{headers:{Authorization:"Bearer "+token}});
      if(profileResponse.ok){
       const profileData=await profileResponse.json();
-      if(profileData.profile&&profileData.profile.displayName){$("jarvisProfileNameInput").value=profileData.profile.displayName;}
+      if(profileData.profile&&profileData.profile.displayName){setProfileName(profileData.profile.displayName);}
      }
     }catch(err){console.warn("Profile settings unavailable",err);}
     try{window.jarvisLocalConversations=await storage.getConversations(user.uid);}catch(err){console.warn(err);}
@@ -7118,23 +7120,28 @@ function setAvatar(name){
  $("jarvisProfileAvatar").innerHTML=markup;
  $("jarvisProfileLargeAvatar").innerHTML=markup;
 }
-$("jarvisSaveProfileName").addEventListener("click",async()=>{
+$("jarvisEditProfileName").addEventListener("click",()=>setProfileNameEditing(true));
+$("jarvisCancelProfileName").addEventListener("click",()=>{$("jarvisProfileNameInput").value=$("jarvisProfileNameDisplay").textContent;$("jarvisProfileSaveStatus").textContent="";setProfileNameEditing(false);});
+async function saveProfileName(){
  const name=$("jarvisProfileNameInput").value.trim();
- if(!activeUser||!name){message("اپنا نام درج کریں۔");return;}
- const btn=$("jarvisSaveProfileName"),saveStatus=$("jarvisProfileSaveStatus");btn.disabled=true;saveStatus.textContent="Saving…";
+ const saveBtn=$("jarvisSaveProfileName"),status=$("jarvisProfileSaveStatus");
+ if(!activeUser||!name){status.textContent="Enter a valid name.";return;}
+ if(name.length>40){status.textContent="Name must be 40 characters or fewer.";return;}
+ saveBtn.disabled=true;status.textContent="Saving…";
  try{
   const token=await activeUser.getIdToken();
   const res=await fetch("/api/profile",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({displayName:name})});
   const data=await res.json().catch(()=>({}));
-  if(!res.ok)throw new Error(data.error||"profile_update_failed");
-  $("jarvisProfileNameInput").value=data.displayName||name;
-  localStorage.setItem("jarvisDisplayName:"+activeUser.uid,data.displayName||name);
+  if(!res.ok)throw new Error(data.hint||data.error||"profile_update_failed");
+  const savedName=data.displayName||name;setProfileName(savedName);localStorage.setItem("jarvisDisplayName:"+activeUser.uid,savedName);
   try{await activeUser.reload();}catch(_){}
-  saveStatus.textContent=data.storage==="firebase-auth"?"Saved to your account. Cloud profile database is not connected yet.":"Name saved successfully.";
-  btn.textContent="Saved";
- }catch(error){saveStatus.textContent="Save failed: "+String(error.message||error).slice(0,140);message("نام محفوظ نہیں ہوا۔ "+String(error.message||"").slice(0,100));}
- finally{btn.disabled=false;setTimeout(()=>btn.textContent="Save",1500);}
-});
+  setProfileNameEditing(false);status.textContent="Username updated ✓";
+  setTimeout(()=>{if(status.textContent==="Username updated ✓")status.textContent="";},2600);
+ }catch(error){status.textContent="Could not save. "+String(error.message||error).slice(0,100);}
+ finally{saveBtn.disabled=false;}
+}
+$("jarvisSaveProfileName").addEventListener("click",saveProfileName);
+$("jarvisProfileNameInput").addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();saveProfileName();}if(event.key==="Escape")$("jarvisCancelProfileName").click();});
 $("jarvisAvatarChoices").addEventListener("click",event=>{
  const button=event.target.closest("button[data-avatar]");if(!button||!activeUser)return;
  localStorage.setItem("jarvisAvatar:"+activeUser.uid,button.dataset.avatar);setAvatar(button.dataset.avatar);
