@@ -4901,7 +4901,7 @@ body.light-theme,body.light-theme .app{color:#17394c}body.light-theme .panel{bac
     activeChatController = null;
     if (typingRow) typingRow.remove();
     typingRow = null;
-    if (state.liveSocket || liveOpening) closeLive();
+    if (state.liveSocket || liveOpening || reconnectTimer) closeLive();
     setBusy(false);
 
     state.messages =
