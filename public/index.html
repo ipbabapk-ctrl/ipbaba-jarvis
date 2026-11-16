@@ -3322,6 +3322,53 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
 .live-stage.is-speaking .live-robot-mouth,.robot-stage.is-speaking .live-robot-mouth{animation:jarvisMouth 125ms ease-in-out infinite alternate!important}@keyframes jarvisMouth{from{height:3px;transform:scaleX(.78)}to{height:13px;transform:scaleX(1.12)}}
 @media(prefers-reduced-motion:reduce){.live-robot-eye,.live-stage.is-speaking .live-robot-mouth,.robot-stage.is-speaking .live-robot-mouth{animation:none!important}}
 </style>
+<style id="jarvis-v9-professional-polish">
+/* Fixed robot placement: keep the character still while only its limbs animate. */
+.robot-orbit{animation:none!important;transform:none!important}.robot-float{animation:none!important}
+.robot-stage .live-robot-scene,.live-stage .live-robot-scene{animation:none!important}
+.live-robot-body{animation:none!important;transform:none!important}
+.live-robot-arm{transform-origin:50% 8%!important;will-change:transform}
+.live-robot-arm.left{animation:jarvisArmIdleLeft 6.2s ease-in-out infinite!important}
+.live-robot-arm.right{animation:jarvisArmIdleRight 6.8s ease-in-out infinite!important}
+.live-stage.is-speaking .live-robot-arm.left,.robot-stage.is-speaking .live-robot-arm.left{animation:jarvisArmSpeakLeft 1.15s ease-in-out infinite!important}
+.live-stage.is-speaking .live-robot-arm.right,.robot-stage.is-speaking .live-robot-arm.right{animation:jarvisArmSpeakRight 1.35s ease-in-out infinite!important}
+@keyframes jarvisArmIdleLeft{0%,100%{transform:rotate(13deg)}50%{transform:rotate(17deg)}}
+@keyframes jarvisArmIdleRight{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(-17deg)}}
+@keyframes jarvisArmSpeakLeft{0%,100%{transform:rotate(13deg)}50%{transform:rotate(22deg)}}
+@keyframes jarvisArmSpeakRight{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(-22deg)}}
+.robot-stage .live-robot-scene{left:50%;top:50%;transform:translate(-50%,-50%)!important}
+.live-stage .live-robot-scene{left:50%;top:50%;transform:translate(-50%,-50%)!important}
+/* Inline account-name editing */
+.profile-name-edit{display:flex;align-items:center;gap:8px;min-height:34px;flex-wrap:nowrap}
+.profile-name-display{font-size:15px;font-weight:800;letter-spacing:-.015em;color:#17384f;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.profile-icon-btn{width:30px;height:30px;flex:0 0 30px;display:inline-grid;place-items:center;border:1px solid #d7e6ed;border-radius:9px;background:#f6fbfd;color:#34758e;cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .18s ease,color .18s ease}
+.profile-icon-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.profile-icon-btn:hover{background:#e8f6fa;border-color:#9bcbd9;color:#087fa8;transform:translateY(-1px)}
+.profile-icon-btn:disabled{opacity:.55;cursor:wait;transform:none}
+.profile-icon-btn[hidden],.profile-name-edit [hidden]{display:none!important}
+.profile-save-icon{background:#eaf8f2;border-color:#c8e9d9;color:#168e73}.profile-cancel-icon{font-size:19px;line-height:1}
+.profile-name-edit input{width:min(42vw,220px);min-width:0;padding:8px 10px;border:1px solid #9ccbd9;border-radius:9px;background:#f8fcfe;color:#17384f;font:inherit;box-shadow:0 0 0 3px rgba(12,159,189,.08)}
+.profile-save-status{min-height:15px;opacity:.9;transition:opacity .2s ease}
+/* Cohesive navigation, profile and settings surfaces */
+.side-drawer{background:linear-gradient(155deg,#fff 0%,#f7fbfd 100%)!important;border-right:1px solid #dce8ef!important;box-shadow:18px 0 55px rgba(26,67,92,.13)!important}
+.drawer-head{padding:18px 18px 16px!important;border-bottom:1px solid #e6eef3!important}
+.drawer-section{padding:18px 18px 8px!important;color:#8295a3!important;font-size:10px!important;font-weight:850!important;letter-spacing:.14em!important}
+.drawer-links{padding:0 10px!important;gap:4px!important}
+.drawer-links a{display:flex;align-items:center;min-height:42px;padding:10px 12px!important;border:1px solid transparent;border-radius:11px!important;color:#294b61!important;font-size:13px;font-weight:650;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.drawer-links a:hover,.drawer-links a:focus-visible{background:#edf7fa!important;border-color:#d7ebf1!important;transform:translateX(2px)}
+.drawer-footer{border-top:1px solid #e6eef3!important;color:#8194a2!important;padding:16px 18px!important}
+.jarvis-profile-panel,.settings-panel{border:1px solid #dce8ef!important;border-radius:18px!important;background:linear-gradient(150deg,#fff,#f8fbfd)!important;box-shadow:0 24px 65px rgba(26,67,92,.16)!important;backdrop-filter:blur(18px)}
+.profile-panel-head,.settings-panel-head{padding:15px 17px!important;border-bottom:1px solid #e8eff3!important;font-size:11px!important;font-weight:850!important;letter-spacing:.13em!important}
+.profile-identity{padding:16px 17px!important;gap:12px!important}
+.profile-meta{margin:0 17px 14px!important;padding:12px 0!important;border-top:1px solid #edf2f5!important;border-bottom:1px solid #edf2f5!important}
+.avatar-choices{padding:0 17px 16px!important;gap:9px!important}
+.avatar-choices button{border:1px solid #e0ebf0!important;border-radius:12px!important;background:#f8fbfd!important;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.avatar-choices button:hover{transform:translateY(-2px);border-color:#9bcbd9!important;box-shadow:0 7px 16px rgba(20,100,130,.10)}
+.top-btn,.profile-trigger,.menu-trigger{transition:background .18s ease,border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.top-btn:hover,.profile-trigger:hover,.menu-trigger:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(24,92,120,.10)}
+@media(max-width:600px){.profile-name-display{max-width:150px}.profile-name-edit input{width:min(48vw,190px)}.jarvis-profile-panel,.settings-panel{border-radius:16px!important}}
+@media(prefers-reduced-motion:reduce){.live-robot-arm,.live-stage.is-speaking .live-robot-arm,.robot-stage.is-speaking .live-robot-arm{animation:none!important}}
+</style>
 </head>
 
 <body>
