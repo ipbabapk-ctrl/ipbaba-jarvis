@@ -76,19 +76,19 @@ module.exports = async function handler(req, res) {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
         body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: "Reply with exactly: OK" }] }], generationConfig: { maxOutputTokens: 8 } })
-      }, 12000);
+      }, 20000);
       let body = {}; try { body = JSON.parse(response.text); } catch (_) {}
       const answer = (body.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("").trim();
       checks.geminiText = response.ok && answer
         ? { ok: true, message: "Text model " + textModel + " returned a response." }
         : { ok: false, message: "Gemini text request failed (HTTP " + response.status + "): " + String(body.error?.message || body.error?.status || "No text response.").slice(0, 180) };
     } catch (error) {
-      checks.geminiText.message = error?.name === "AbortError" ? "Gemini text test timed out after 12 seconds." : String(error.message || error).slice(0, 180);
+      checks.geminiText.message = error?.name === "AbortError" ? "Gemini text test timed out after 20 seconds." : String(error.message || error).slice(0, 180);
     }
 
     try {
       const now = Date.now();
-      const response = await timedFetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens", {
+      const response = await timedFetch("https://generativelanguage.googleapis.com/v1alpha/auth_tokens", {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
         body: JSON.stringify({
