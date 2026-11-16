@@ -8,17 +8,21 @@ module.exports = async (req, res) => {
     const db = await getFirestore();
     const ref = db.collection("jarvisProfiles").doc(identity.user.uid);
     if (req.method === "GET") {
-      const snap = await ref.get();
-      return res.status(200).json({ profile: snap.exists ? snap.data() : {} });
+      let profile = {};
+      try { const snap = await ref.get(); if (snap.exists) profile = snap.data(); }
+      catch (error) { console.warn("Profile store unavailable; using Firebase Auth profile", error.message); }
+      return res.status(200).json({ profile: { ...profile, displayName: profile.displayName || identity.user.displayName || "" }, storage: profile.updatedAt ? "firestore" : "firebase-auth" });
     }
     if (req.method !== "POST") return res.status(405).json({ error: "method_not_allowed" });
     const displayName = String((req.body || {}).displayName || "").trim().replace(/\s+/g, " ").slice(0, 40);
     if (!displayName) return res.status(400).json({ error: "display_name_required" });
-    await ref.set({ displayName, updatedAt: new Date().toISOString() }, { merge: true });
     const auth = await import("firebase-admin/auth");
     const app = (await import("firebase-admin/app")).getApps()[0];
     await auth.getAuth(app).updateUser(identity.user.uid, { displayName });
-    return res.status(200).json({ ok: true, displayName });
+    let firestoreSaved = false;
+    try { await ref.set({ displayName, updatedAt: new Date().toISOString() }, { merge: true }); firestoreSaved = true; }
+    catch (storeError) { console.warn("Profile saved to Firebase Auth; Firestore profile store unavailable", storeError.message); }
+    return res.status(200).json({ ok: true, displayName, storage: firestoreSaved ? "firestore+firebase-auth" : "firebase-auth", warning: firestoreSaved ? null : "firestore_unavailable" });
   } catch (error) {
     console.error("Profile API failed", error);
     return res.status(500).json({ error: "profile_update_failed" });
