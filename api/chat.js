@@ -2,13 +2,10 @@ const { guard, BRAND, RULES, verifyFirebaseUser, readKnowledge, getRuntimeConfig
 
 
 const PRIMARY_MODEL =
-  process.env.GEMINI_MODEL || "gemini-2.5-flash";
+  process.env.GEMINI_MODEL || "gemini-3.8-flash";
 
 const FALLBACK_MODEL =
-  process.env.GEMINI_FALLBACK_MODEL || "gemini-2.0-flash";
-
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
+  process.env.GEMINI_FALLBACK_MODEL || "gemini-3.7-flash";
 
 async function callGemini(model, key, system, contents) {
   const controller = new AbortController();
