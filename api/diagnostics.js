@@ -13,7 +13,9 @@ async function timedFetch(url, options, ms) {
 async function testLiveSocket(token, model, timeoutMs = 9000) {
   if (typeof WebSocket === "undefined") throw new Error("WebSocket is not available in this Node runtime.");
   return new Promise((resolve, reject) => {
-    const socket = new WebSocket("wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContentConstrained?access_token=" + token);
+    let socket;
+    try { socket = new WebSocket("wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContentConstrained?access_token=" + token); }
+    catch (error) { reject(error); return; }
     let settled = false;
     const timer = setTimeout(() => finish(new Error("Live WebSocket setup timed out.")), timeoutMs);
     function finish(error) {
