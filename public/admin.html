@@ -14,7 +14,7 @@
 </section>
 <section id="tab-knowledge" class="panel" hidden><h2>Knowledge Base</h2><p class="note">Edit verified IP BABA facts, services, founder information, contact details and social URLs here as JSON. Save to publish the knowledge to JARVIS for new requests. Keep social URLs blank until you enter the official profile links.</p><textarea id="knowledgeInfo" class="editor" spellcheck="false" aria-label="Editable JARVIS knowledge JSON"></textarea><div class="actions" style="margin-top:10px"><button class="btn" id="saveKnowledge">Save Knowledge Base</button><span id="knowledgeStatus" class="note" role="status"></span></div></section>
 <section id="tab-instructions" class="panel" hidden><h2>AI Instructions & Runtime Controls</h2><p class="note">These instructions are added to the JARVIS system context after saving. Never paste private credentials or sensitive personal data.</p><textarea id="instructions" class="editor" placeholder="Write instructions for JARVIS…"></textarea><div class="actions" style="margin-top:10px"><button class="btn" id="saveConfig">Publish instructions</button></div><div id="saveStatus" class="note" role="status"></div></section>
-<section id="tab-status" class="panel" hidden><h2>Usage & System Overview</h2><div class="grid"><div class="metric"><strong id="totalRequests">—</strong><span>Tracked requests</span></div><div class="metric"><strong id="activeUsers">—</strong><span>Users with activity</span></div><div class="metric"><strong id="firebaseStatus">—</strong><span>Authentication</span></div><div class="metric"><strong id="storeStatus">—</strong><span>Admin data store</span></div></div><p class="note">This is request-count analytics, not token billing or audio-minute metering. Live Voice usage is not included in this counter yet.</p></section>
+<section id="tab-status" class="panel" hidden><h2>Usage & System Overview</h2><div class="actions" style="margin:12px 0"><button class="btn" id="runDiagnostics">Run Backend Tests</button><span id="diagnosticsStatus" class="note" role="status">Test text chat, Live Voice token, Firebase and Firestore.</span></div><div id="diagnosticsResults" class="file-row" aria-live="polite"></div><div class="grid"><div class="metric"><strong id="totalRequests">—</strong><span>Tracked requests</span></div><div class="metric"><strong id="activeUsers">—</strong><span>Users with activity</span></div><div class="metric"><strong id="firebaseStatus">—</strong><span>Authentication</span></div><div class="metric"><strong id="storeStatus">—</strong><span>Admin data store</span></div></div><p class="note">This is request-count analytics, not token billing or audio-minute metering. Live Voice usage is not included in this counter yet.</p></section>
 </div></section></main>
 <script type="module">
 import {auth,signOut,onAuthStateChanged} from "./js/firebase.js";
@@ -26,7 +26,7 @@ async function api(action,extra={},pageToken=null) {
  const url="/api/admin"+(!action&&pageToken?"?pageToken="+encodeURIComponent(pageToken):"");
  const res=await fetch(url,{method:action?"POST":"GET",headers:{Authorization:"Bearer "+token,...(action?{"Content-Type":"application/json"}:{})},body:action?JSON.stringify({action,...extra}):undefined});
  const data=await res.json().catch(()=>({}));
- if(!res.ok)throw new Error(data.error||"Admin API error");
+ if(!res.ok)throw new Error([data.error,data.hint,data.upstreamStatus?"HTTP "+data.upstreamStatus:""].filter(Boolean).join(" — ")||"Admin API error");
  return data;
 }
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
@@ -45,19 +45,36 @@ async function load(pageToken=null){
   $("totalRequests").textContent=Number(data.usageTotals?.requests||0).toLocaleString();
  $("activeUsers").textContent=Number(data.usageTotals?.activeUsers||0).toLocaleString();
  $("firebaseStatus").textContent="Connected";
- $("storeStatus").textContent="Firestore";
- status.innerHTML='<span class="pill">Administrator verified</span> · Controls connected';
+ $("storeStatus").textContent=data.firestoreAvailable?"Firestore":"Unavailable";
+ $("saveKnowledge").disabled=!data.firestoreAvailable;
+ $("saveConfig").disabled=!data.firestoreAvailable;
+ if(data.firestoreAvailable){status.innerHTML='<span class="pill">Administrator verified</span> · Controls connected';}
+ else {status.textContent="Administrator verified. "+(data.firestoreWarning||"Firestore is unavailable; some controls are disabled.");}
  dashboard.classList.remove("hidden");
 }
+function friendlyError(error){const m=String(error.message||error);if(m.includes("firebase_admin_not_configured"))return "Server setup incomplete: FIREBASE_SERVICE_ACCOUNT_JSON is missing from Vercel. Add the Firebase service account securely, then redeploy.";if(m.includes("invalid_authentication"))return "Firebase rejected the sign-in token. Confirm the Firebase project and service-account credentials match.";if(m.includes("admin_only"))return "This signed-in email is not the verified ADMIN_EMAIL. Check Vercel ADMIN_EMAIL and use that verified Google account.";if(m.includes("firestore_unavailable")||m.includes("NOT_FOUND"))return "Firestore is not available. Create Firestore Database in Native mode in the same Firebase project.";return m;}
 onAuthStateChanged(auth,async user=>{
  currentUser=user||null;
- if(!user){status.textContent="Please sign in with the administrator account on the JARVIS home page.";dashboard.classList.add("hidden");return;}
- try{await load();}catch(e){status.textContent=e.message==="admin_only"?"This account is not authorized as an administrator.":e.message;dashboard.classList.add("hidden");}
+ if(!user){status.textContent="Sign in with the verified administrator Google account on the JARVIS home page, then reopen this panel.";dashboard.classList.add("hidden");return;}
+ try{await load();}catch(e){status.textContent=friendlyError(e);dashboard.classList.add("hidden");}
 });
 $("signout").addEventListener("click",()=>signOut(auth));
 $("userSearch").addEventListener("input",renderUsers);
-$("refreshUsers").addEventListener("click",()=>load().catch(e=>status.textContent=e.message));
-$("nextUsers").addEventListener("click",()=>load(nextPageToken).catch(e=>status.textContent=e.message));
+$("refreshUsers").addEventListener("click",()=>load().catch(e=>status.textContent=friendlyError(e)));
+$("nextUsers").addEventListener("click",()=>load(nextPageToken).catch(e=>status.textContent=friendlyError(e)));
+$("runDiagnostics").addEventListener("click",async()=>{
+ const btn=$("runDiagnostics"),statusEl=$("diagnosticsStatus"),results=$("diagnosticsResults");
+ btn.disabled=true;statusEl.textContent="Running backend tests…";results.textContent="";
+ try{
+  const token=await currentUser.getIdToken(true);
+  const response=await fetch("/api/diagnostics",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:"{}"});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(friendlyError(new Error(data.error||"Diagnostics failed")));
+  results.innerHTML=Object.entries(data.checks||{}).map(([key,value])=>'<div class="file-row"><strong>'+esc(key.replace(/([A-Z])/g," $1"))+'</strong> · <span class="'+(value.ok?"pill":"warning")+'">'+(value.ok?"PASS":"CHECK")+'</span><div class="note">'+esc(value.message)+'</div></div>').join("");
+  statusEl.textContent=data.ok?"All backend tests passed.":"Some backend components need attention; see the exact result above.";
+ }catch(error){statusEl.textContent=friendlyError(error);}
+ finally{btn.disabled=false;}
+});
 $("users").addEventListener("click",async e=>{
  const b=e.target.closest("button[data-user]");if(!b)return;
  if(!confirm((b.dataset.disable==="true"?"Block":"Unblock")+" this account?"))return;
