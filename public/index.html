@@ -7112,7 +7112,7 @@ $("jarvisSettingsToggle").addEventListener("click",()=>{settingsPanel.hidden=!se
 $("jarvisSettingsClose").addEventListener("click",()=>{settingsPanel.hidden=true;$("jarvisSettingsToggle").setAttribute("aria-expanded","false");});
 const prefs={voice:$("jarvisLiveVoice"),speed:$("jarvisVoiceSpeed"),size:$("jarvisTextSize"),theme:$("jarvisTheme")};
 const readPref=(key,fallback)=>localStorage.getItem("jarvisPref:"+key)??fallback;
-prefs.voice.value=readPref("voice","Aoede");localStorage.setItem("jarvisLiveVoice",prefs.voice.value);prefs.speed.value=readPref("speed","1");prefs.size.value=readPref("size","normal");prefs.theme.value=readPref("theme","dark");
+prefs.voice.value=readPref("voice","Aoede");localStorage.setItem("jarvisLiveVoice",prefs.voice.value);prefs.speed.value=readPref("speed","1");prefs.size.value=readPref("size","normal");prefs.theme.value=readPref("theme","light");
 function applyPrefs(){document.body.classList.toggle("chat-text-small",prefs.size.value==="small");document.body.classList.toggle("chat-text-large",prefs.size.value==="large");const sys=prefs.theme.value==="system";document.body.classList.toggle("light-theme",prefs.theme.value==="light"||(sys&&matchMedia("(prefers-color-scheme: light)").matches));document.body.classList.toggle("force-dark-theme",prefs.theme.value==="dark"||(sys&&matchMedia("(prefers-color-scheme: dark)").matches));}
 Object.entries(prefs).forEach(([key,control])=>{control.addEventListener("change",()=>{localStorage.setItem("jarvisPref:"+key,control.type==="checkbox"?String(control.checked):control.value);applyPrefs();});if(control.type==="range")control.addEventListener("input",()=>localStorage.setItem("jarvisPref:"+key,control.value));});
 applyPrefs();
