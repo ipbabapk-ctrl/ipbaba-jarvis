@@ -15,7 +15,11 @@ module.exports = async function handler(req, res) {
   const payload = {
     uses: 1,
     expireTime: new Date(now + 30 * 60 * 1000).toISOString(),
-    newSessionExpireTime: new Date(now + 10 * 60 * 1000).toISOString()
+    newSessionExpireTime: new Date(now + 60 * 1000).toISOString(),
+    liveConnectConstraints: {
+      model: "models/" + model,
+      config: { responseModalities: ["AUDIO"], sessionResumption: {} }
+    }
   };
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 12000);
