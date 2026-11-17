@@ -89,6 +89,8 @@ forbidText(liveTokenApi, "Access-Control-Allow-Origin", "wildcard token CORS hea
 requireText(liveTokenApi, "controller.abort()", "Live token upstream timeout");
 requireText(liveTokenApi, "bidiGenerateContentSetup", "REST-compatible constrained Gemini Live token");
 requireText(liveTokenApi, "fieldMask: \"model,generationConfig.responseModalities,sessionResumption\"", "Live token locks only required fields while allowing client speech/system configuration");
+forbidText(liveTokenApi, "authToken:", "invalid wrapper around REST AuthToken request body");
+requireText(liveTokenApi, "v1beta/auth_tokens", "REST AuthToken creation endpoint version");
 forbidText(liveTokenApi, "liveConnectConstraints:", "invalid SDK-only REST token field");
 requireText(mainHtml, "v1alpha.GenerativeService.BidiGenerateContentConstrained", "ephemeral-token Live WebSocket API version");
 requireText(mainHtml, "window.jarvisGetIdToken = async function", "stable Firebase ID-token provider before auth initialization");
@@ -114,7 +116,9 @@ requireText(chatApi, "MAX_RETRIES_PER_MODEL = 0", "fast fallback without repeate
 requireText(chatApi, "GEMINI_REQUEST_TIMEOUT_MS || 22000", "longer per-model response window");
 requireText(chatApi, "MAX_TOTAL_GEMINI_MS = 52000", "bounded total chat request duration under the Vercel function timeout");
 requireText(liveTokenApi, "uses: 5", "short-lived Live token allows bounded reconnects");
-requireText(diagnosticsApi, "v1alpha/auth_tokens", "Live diagnostic uses the ephemeral-token API version");
+requireText(diagnosticsApi, "v1beta/auth_tokens", "Live diagnostic uses the REST AuthToken creation endpoint");
+requireText(diagnosticsApi, "bidiGenerateContentSetup", "Live diagnostic uses the REST AuthToken setup field");
+forbidText(diagnosticsApi, "liveConnectConstraints:", "invalid SDK-only Live token field in diagnostics");
 requireText(mainHtml, "Math.ceil(sampleRate * 0.1)", "Live microphone audio sent in approximately 100ms chunks");
 requireText(mainHtml, "jarvisProfileNameDisplay", "inline profile username display");
 requireText(mainHtml, "jarvisEditProfileName", "pencil-triggered inline profile editing");
@@ -126,6 +130,6 @@ requireText(chatApi, "All Gemini models exhausted", "Gemini failure diagnostics"
 requireText(chatApi, "All Gemini models exhausted", "Gemini upstream diagnostic logging");
 requireText(chatApi, "MAX_TOTAL_GEMINI_MS", "Gemini retries bounded below Vercel timeout");
 requireText(chatApi, "geminiDeadline", "overall Gemini deadline guard");
-requireText(liveTokenApi, "v1alpha/auth_tokens", "ephemeral token provisioning uses v1alpha");
+requireText(liveTokenApi, "v1beta/auth_tokens", "ephemeral token provisioning uses the documented REST endpoint");
 if (failed) process.exit(1);
 console.log("JARVIS syntax and JSON validation passed.");
