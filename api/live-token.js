@@ -12,25 +12,23 @@ module.exports = async function handler(req, res) {
   if (!apiKey) return res.status(503).json({ ok:false, error:"gemini_api_key_missing" });
 
   const now = Date.now();
-  // REST expects the authToken wrapper and bidiGenerateContentSetup oneof.
-  // liveConnectConstraints is an SDK configuration name, not a REST field.
+  // The REST auth_tokens endpoint accepts an AuthToken resource directly.
+  // Do not wrap this body in authToken; that wrapper is not a REST AuthToken field.
   const payload = {
-    authToken: {
-      uses: 5,
-      expireTime: new Date(now + 30 * 60 * 1000).toISOString(),
-      newSessionExpireTime: new Date(now + 60 * 1000).toISOString(),
-      fieldMask: "model,generationConfig.responseModalities,sessionResumption",
-      bidiGenerateContentSetup: {
-        model: "models/" + model,
-        generationConfig: { responseModalities: ["AUDIO"] },
-        sessionResumption: {}
-      }
+    uses: 5,
+    expireTime: new Date(now + 30 * 60 * 1000).toISOString(),
+    newSessionExpireTime: new Date(now + 60 * 1000).toISOString(),
+    fieldMask: "model,generationConfig.responseModalities,sessionResumption",
+    bidiGenerateContentSetup: {
+      model: "models/" + model,
+      generationConfig: { responseModalities: ["AUDIO"] },
+      sessionResumption: {}
     }
   };
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 12000);
   try {
-    const upstream = await fetch("https://generativelanguage.googleapis.com/v1alpha/auth_tokens", {
+    const upstream = await fetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens", {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
       body: JSON.stringify(payload),
@@ -52,7 +50,7 @@ module.exports = async function handler(req, res) {
       console.error("Gemini Live token missing:", data);
       return res.status(502).json({ ok:false, error:"live_token_missing", upstreamError:"Gemini returned no ephemeral token." });
     }
-    return res.status(200).json({ ok:true, token, model, expiresAt:payload.authToken.expireTime, newSessionExpiresAt:payload.authToken.newSessionExpireTime });
+    return res.status(200).json({ ok:true, token, model, expiresAt:payload.expireTime, newSessionExpiresAt:payload.newSessionExpireTime });
   } catch (error) {
     if (error?.name === "AbortError") return res.status(504).json({ ok:false, error:"live_token_timeout", message:"Gemini token service timed out. Please try again." });
     console.error("Gemini Live token server failure:", error);
