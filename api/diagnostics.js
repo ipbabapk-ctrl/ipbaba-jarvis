@@ -88,16 +88,18 @@ module.exports = async function handler(req, res) {
 
     try {
       const now = Date.now();
-      const response = await timedFetch("https://generativelanguage.googleapis.com/v1alpha/auth_tokens", {
+      const response = await timedFetch("https://generativelanguage.googleapis.com/v1beta/auth_tokens", {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
         body: JSON.stringify({
           uses: 5,
           expireTime: new Date(now + 30 * 60 * 1000).toISOString(),
           newSessionExpireTime: new Date(now + 60 * 1000).toISOString(),
-          liveConnectConstraints: {
+          fieldMask: "model,generationConfig.responseModalities,sessionResumption",
+          bidiGenerateContentSetup: {
             model: "models/" + liveModel,
-            config: { responseModalities: ["AUDIO"], sessionResumption: {} }
+            generationConfig: { responseModalities: ["AUDIO"] },
+            sessionResumption: {}
           }
         })
       }, 12000);
