@@ -3443,7 +3443,8 @@ body{overflow:hidden!important}
   width:300px!important;height:390px!important;min-height:0!important;
   transform:translate(-50%,-50%) scale(.96)!important;transform-origin:center!important;
 }
-.live-robot-body{transform:none!important}
+.live-robot-body{transform:none!important;animation:jarvisRobotIdleV12 4.8s ease-in-out infinite!important;transform-origin:center!important}
+@keyframes jarvisRobotIdleV12{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 .live-orbit{width:min(64vw,590px)!important;max-width:74%!important}
 .live-energy{width:min(58vw,560px)!important}
 .live-wave{left:50%!important;top:58%!important;bottom:auto!important;width:min(74%,680px)!important;transform:translate(-50%,-50%)!important}
@@ -4980,7 +4981,7 @@ body{overflow:hidden!important}
 
   async function sendText(){
     const text = els.input.value.trim();
-    if(!text || els.sendBtn.disabled || state.liveSocket || state.offline) return;
+    if(!text || els.sendBtn.disabled || state.liveSocket) return;
 
     const requestId = ++chatRequestId;
     removeWelcome();
@@ -5015,7 +5016,7 @@ body{overflow:hidden!important}
 
       controller = new AbortController();
       activeChatController = controller;
-      requestTimeout = setTimeout(() => controller.abort(), 56000);
+      requestTimeout = setTimeout(() => controller.abort(), 55000);
 
       const response = await fetch(API_BASE_URL + "/api/chat", {
         method:"POST",
