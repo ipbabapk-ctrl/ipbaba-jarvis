@@ -9,6 +9,7 @@ const files = [
   "api/chat.js",
   "api/admin.js",
   "api/profile.js",
+  "api/health.js",
   "api/live-token.js",
   "api/diagnostics.js",
   "public/js/firebase.js",
@@ -52,6 +53,7 @@ const mainHtml = fs.readFileSync(path.join(root, "public/index.html"), "utf8");
 const adminHtml = fs.readFileSync(path.join(root, "public/admin.html"), "utf8");
 const adminApi = fs.readFileSync(path.join(root, "api/admin.js"), "utf8");
 const profileApi = fs.readFileSync(path.join(root, "api/profile.js"), "utf8");
+const healthApi = fs.readFileSync(path.join(root, "api/health.js"), "utf8");
 const liveTokenApi = fs.readFileSync(path.join(root, "api/live-token.js"), "utf8");
 const chatApi = fs.readFileSync(path.join(root, "api/chat.js"), "utf8");
 const diagnosticsApi = fs.readFileSync(path.join(root, "api/diagnostics.js"), "utf8");
@@ -89,6 +91,8 @@ forbidText(liveTokenApi, "Access-Control-Allow-Origin", "wildcard token CORS hea
 requireText(liveTokenApi, "controller.abort()", "Live token upstream timeout");
 requireText(liveTokenApi, "bidiGenerateContentSetup", "REST-compatible constrained Gemini Live token");
 requireText(liveTokenApi, "fieldMask: \"model,generationConfig.responseModalities,sessionResumption\"", "Live token locks only required fields while allowing client speech/system configuration");
+forbidText(liveTokenApi, "authToken:", "invalid wrapper around REST AuthToken request body");
+requireText(liveTokenApi, "v1beta/auth_tokens", "REST AuthToken creation endpoint version");
 forbidText(liveTokenApi, "liveConnectConstraints:", "invalid SDK-only REST token field");
 requireText(mainHtml, "v1alpha.GenerativeService.BidiGenerateContentConstrained", "ephemeral-token Live WebSocket API version");
 requireText(mainHtml, "window.jarvisGetIdToken = async function", "stable Firebase ID-token provider before auth initialization");
@@ -107,25 +111,43 @@ forbidText(mainHtml, "IP BABA by JARVIS AI", "duplicate live robot brandline");
 forbidText(mainHtml, "JARVIS AI · by IP BABA", "duplicate chat subheading");
 requireText(chatApi, "gemini-3.8-flash", "current primary chat model");
 requireText(chatApi, "gemini-3.6-flash", "current fallback chat model");
-requireText(chatApi, "MAX_RETRIES_PER_MODEL", "bounded retry and fallback loop");
 requireText(chatApi, "gemini-3.6-flash", "current fallback chat model");
-requireText(chatApi, "retryDelayFromHeader", "Retry-After and exponential backoff");
-requireText(chatApi, "MAX_RETRIES_PER_MODEL = 0", "fast fallback without repeated overloaded-model retries");
 requireText(chatApi, "GEMINI_REQUEST_TIMEOUT_MS || 22000", "longer per-model response window");
-requireText(chatApi, "MAX_TOTAL_GEMINI_MS = 52000", "bounded total chat request duration under the Vercel function timeout");
+requireText(chatApi, "MAX_TOTAL_GEMINI_MS = 48000", "streaming chat budget leaves headroom under the Vercel function timeout");
+requireText(chatApi, ":streamGenerateContent?alt=sse", "Gemini text responses stream progressively over SSE");
+requireText(chatApi, "text/event-stream; charset=utf-8", "chat backend emits server-sent events");
+requireText(chatApi, "Promise.allSettled", "independent Firestore lookups run concurrently");
+requireText(chatApi, 'logUsage(identity.user.uid, identity.user.email, "success")', "chat usage logging runs after answer streaming without blocking it");
 requireText(liveTokenApi, "uses: 5", "short-lived Live token allows bounded reconnects");
-requireText(diagnosticsApi, "v1alpha/auth_tokens", "Live diagnostic uses the ephemeral-token API version");
+requireText(diagnosticsApi, "v1beta/auth_tokens", "Live diagnostic uses the REST AuthToken creation endpoint");
+requireText(diagnosticsApi, "bidiGenerateContentSetup", "Live diagnostic uses the REST AuthToken setup field");
+forbidText(diagnosticsApi, "liveConnectConstraints:", "invalid SDK-only Live token field in diagnostics");
 requireText(mainHtml, "Math.ceil(sampleRate * 0.1)", "Live microphone audio sent in approximately 100ms chunks");
 requireText(mainHtml, "jarvisProfileNameDisplay", "inline profile username display");
 requireText(mainHtml, "jarvisEditProfileName", "pencil-triggered inline profile editing");
 requireText(mainHtml, "jarvisCancelProfileName", "cancelable profile username editing");
 requireText(mainHtml, "jarvis-v9-professional-polish", "professional UI and fixed robot overrides");
+requireText(mainHtml, "jarvis-mobile-robot-refresh-v12", "mobile-first Text and immersive Live Voice layout");
+requireText(mainHtml, ".live-robot-body::before,.live-robot-body::after", "full-body robot legs are visible in Text and Live interfaces");
+requireText(mainHtml, "readJARVISChatStream", "browser consumes progressive chat response events");
+requireText(mainHtml, "requestTimeout = setTimeout(() => controller.abort(), 55000)", "browser chat timeout is aligned with backend stream budget");
+forbidText(mainHtml, 'userBar.hidden', "removed reference to missing user bar DOM element");
+forbidText(mainHtml, 'userBar=$("jarvisUserBar")', "removed lookup for missing user bar DOM element");
+requireText(mainHtml, 'src="/assets/ipbaba-logo.png"', "local IP BABA logo used in authentication screen");
 requireText(mainHtml, ".robot-orbit{animation:none!important", "robot orbit no longer spins");
 requireText(mainHtml, ".live-robot-body{animation:none!important;transform:none!important}", "Live robot body stays fixed");
-requireText(chatApi, "All Gemini models exhausted", "Gemini failure diagnostics");
-requireText(chatApi, "All Gemini models exhausted", "Gemini upstream diagnostic logging");
-requireText(chatApi, "MAX_TOTAL_GEMINI_MS", "Gemini retries bounded below Vercel timeout");
-requireText(chatApi, "geminiDeadline", "overall Gemini deadline guard");
-requireText(liveTokenApi, "v1alpha/auth_tokens", "ephemeral token provisioning uses v1alpha");
+ requireText(chatApi, "All Gemini streaming models exhausted", "Gemini streaming failure diagnostics");
+requireText(chatApi, "MAX_TOTAL_GEMINI_MS", "Gemini streaming is bounded below Vercel timeout");
+requireText(chatApi, "MAX_TOTAL_GEMINI_MS", "overall Gemini streaming deadline guard");
+requireText(healthApi, "gemini-3.8-flash", "health endpoint reports the current primary text model");
+requireText(healthApi, "fallbackTextModel", "health endpoint reports the current fallback text model");
+requireText(liveTokenApi, "v1beta/auth_tokens", "ephemeral token provisioning uses the documented REST endpoint");
+// Every DOM id must be unique. Duplicate ids make UI controls and overlays unreliable.
+const allIds = [...mainHtml.matchAll(/\\bid=["']([^"']+)["']/g)].map(match => match[1]);
+const idCounts = new Map();
+for (const id of allIds) idCounts.set(id, (idCounts.get(id) || 0) + 1);
+for (const [id, count] of idCounts) {
+  if (count > 1) { failed = true; console.error("Duplicate DOM id: " + id); }
+}
 if (failed) process.exit(1);
 console.log("JARVIS syntax and JSON validation passed.");
