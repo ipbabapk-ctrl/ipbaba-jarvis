@@ -128,6 +128,7 @@ requireText(mainHtml, "jarvisEditProfileName", "pencil-triggered inline profile 
 requireText(mainHtml, "jarvisCancelProfileName", "cancelable profile username editing");
 requireText(mainHtml, "jarvis-v9-professional-polish", "professional UI and fixed robot overrides");
 requireText(mainHtml, "jarvis-mobile-robot-refresh-v12", "mobile-first Text and immersive Live Voice layout");
+requireText(mainHtml, ".live-robot-body::before,.live-robot-body::after", "full-body robot legs are visible in Text and Live interfaces");
 requireText(mainHtml, "readJARVISChatStream", "browser consumes progressive chat response events");
 requireText(mainHtml, "requestTimeout = setTimeout(() => controller.abort(), 55000)", "browser chat timeout is aligned with backend stream budget");
 forbidText(mainHtml, 'userBar.hidden', "removed reference to missing user bar DOM element");
