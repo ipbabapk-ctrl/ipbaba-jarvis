@@ -3369,6 +3369,186 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
 @media(max-width:600px){.profile-name-display{max-width:150px}.profile-name-edit input{width:min(48vw,190px)}.jarvis-profile-panel,.settings-panel{border-radius:16px!important}}
 @media(prefers-reduced-motion:reduce){.live-robot-arm,.live-stage.is-speaking .live-robot-arm,.robot-stage.is-speaking .live-robot-arm{animation:none!important}}
 </style>
+<style id="jarvis-mobile-robot-refresh-v12">
+/* v12 responsive product layout — scoped overrides after legacy theme layers */
+:root{
+  --jarvis-safe-top:env(safe-area-inset-top,0px);
+  --jarvis-safe-right:env(safe-area-inset-right,0px);
+  --jarvis-safe-bottom:env(safe-area-inset-bottom,0px);
+  --jarvis-safe-left:env(safe-area-inset-left,0px);
+}
+html,body{min-width:0!important;overscroll-behavior:none!important}
+body{overflow:hidden!important}
+.app{
+  width:100%!important;max-width:1600px!important;height:var(--app-h,100dvh)!important;
+  padding:max(10px,var(--jarvis-safe-top)) max(12px,var(--jarvis-safe-right)) max(10px,var(--jarvis-safe-bottom)) max(12px,var(--jarvis-safe-left))!important;
+}
+.topbar{min-height:64px!important;flex-basis:64px!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;gap:12px!important}
+.brand-holder{flex:0 0 auto}
+.workspace{min-height:0!important;gap:12px!important;grid-template-columns:minmax(260px,34%) minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important}
+.robot-panel,.chat-panel{min-width:0!important;min-height:0!important;border-radius:22px!important}
+.chat-panel{display:flex!important;flex-direction:column!important}
+.chat-scroll{min-height:0!important;overscroll-behavior:contain!important;scroll-behavior:smooth}
+.chat-header{flex:0 0 62px!important;min-height:62px!important}
+.chat-header-title{font-size:14px!important}
+.chat-header-sub{display:block!important}
+.chat-state{font-size:10px!important}
+.message{font-size:15px!important;line-height:1.65!important;max-width:min(88%,850px)!important;padding:12px 15px!important;border-radius:16px!important}
+.message.ai h3{font-size:1rem!important}
+.message.ai code,.message.ai pre{font-size:.86rem!important}
+.message-actions{gap:8px!important}
+.message-action{min-height:34px!important;padding:7px 11px!important;font-size:12px!important}
+.welcome-card{padding:20px!important;border-radius:18px!important}
+.welcome-kicker{font-size:10px!important}
+.welcome-card h2{font-size:clamp(22px,2.4vw,32px)!important;line-height:1.18!important}
+.welcome-card p{font-size:14px!important;line-height:1.65!important}
+.quick-grid{gap:10px!important}
+.quick-card{min-height:66px!important;padding:12px!important;border-radius:13px!important}
+.quick-title{font-size:13px!important}
+.quick-sub{display:block!important;font-size:11px!important}
+.composer-shell{padding:12px!important}
+.composer{gap:8px!important;padding:7px!important;border-radius:16px!important}
+.composer textarea,#input{min-height:48px!important;max-height:160px!important;padding:12px!important;font-size:16px!important;line-height:1.45!important}
+.composer-btn{width:46px!important;height:46px!important;min-width:46px!important;border-radius:13px!important}
+.composer-btn svg{width:20px!important;height:20px!important}
+.composer-hint{font-size:10px!important;margin:6px 5px 0!important}
+.live-main-btn{min-height:46px!important;font-size:12px!important;border-radius:13px!important}
+.robot-caption-title{font-size:14px!important}
+.robot-caption-sub{font-size:11px!important}
+.robot-stage.is-responding .live-robot-mouth{animation:jarvisMouth 135ms ease-in-out infinite alternate!important}
+.robot-stage.is-responding .live-robot-arm.left{animation:jarvisArmSpeakLeft 1s ease-in-out infinite!important}
+.robot-stage.is-responding .live-robot-arm.right{animation:jarvisArmSpeakRight 1.1s ease-in-out infinite!important}
+.robot-stage.is-responding .robot-orbit{box-shadow:0 0 38px rgba(0,169,214,.22)!important}
+.live-robot-scene{will-change:transform}
+.live-robot-eye{transform-origin:center!important;animation:jarvisEyeBlink 5.2s infinite ease-in-out!important}
+.live-robot-eye:nth-child(2){animation-delay:.12s!important}
+.live-stage.is-speaking .live-robot-mouth,.robot-stage.is-speaking .live-robot-mouth{animation:jarvisMouth 125ms ease-in-out infinite alternate!important}
+.live-overlay{
+  position:fixed!important;inset:0!important;z-index:500!important;
+  padding:max(8px,var(--jarvis-safe-top)) max(8px,var(--jarvis-safe-right)) max(8px,var(--jarvis-safe-bottom)) max(8px,var(--jarvis-safe-left))!important;
+  align-items:center!important;justify-content:center!important;
+}
+.live-frame{
+  width:min(100%,1120px)!important;max-width:1120px!important;
+  height:min(900px,calc(var(--app-h,100dvh) - 16px))!important;max-height:100%!important;
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:62px minmax(0,1fr) 78px 72px!important;
+  overflow:hidden!important;border-radius:24px!important;
+}
+.live-topbar{min-width:0!important;padding:0 20px!important}
+.live-stage{min-width:0!important;min-height:0!important;overflow:hidden!important}
+.live-stage .live-robot-scene{
+  display:grid!important;visibility:visible!important;opacity:1!important;
+  left:50%!important;top:46%!important;right:auto!important;bottom:auto!important;
+  width:300px!important;height:390px!important;min-height:0!important;
+  transform:translate(-50%,-50%) scale(.96)!important;transform-origin:center!important;
+}
+.live-robot-body{transform:none!important}
+.live-orbit{width:min(64vw,590px)!important;max-width:74%!important}
+.live-energy{width:min(58vw,560px)!important}
+.live-wave{left:50%!important;top:58%!important;bottom:auto!important;width:min(74%,680px)!important;transform:translate(-50%,-50%)!important}
+.live-status{min-width:0!important;padding:8px 12px!important;text-align:center!important}
+.live-status strong{font-size:13px!important}
+.live-status span{font-size:12px!important;line-height:1.45!important}
+.live-end-wrap{min-width:0!important;padding:8px 12px max(8px,var(--jarvis-safe-bottom))!important}
+.live-end{min-height:46px!important;min-width:min(240px,80%)!important;padding:0 24px!important;border-radius:14px!important;font-size:12px!important}
+.live-error-box{max-width:min(500px,90%)!important;bottom:6%!important;z-index:12!important;padding:12px!important}
+.live-error-detail{font-size:11px!important;line-height:1.5!important;overflow-wrap:anywhere!important}
+
+@media(max-width:960px){
+  .app{padding:calc(7px + var(--jarvis-safe-top)) max(8px,var(--jarvis-safe-right)) calc(7px + var(--jarvis-safe-bottom)) max(8px,var(--jarvis-safe-left))!important}
+  .topbar{height:58px!important;flex-basis:58px!important;min-height:58px!important}
+  .workspace{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(132px,17dvh) minmax(0,1fr)!important;gap:8px!important}
+  .robot-panel{position:relative!important;display:block!important;min-height:0!important;overflow:hidden!important;border-radius:18px!important}
+  .robot-panel-top{position:absolute!important;left:12px!important;right:12px!important;top:8px!important;z-index:6!important;padding:0!important}
+  .robot-stage{position:absolute!important;left:5px!important;top:24px!important;bottom:5px!important;width:132px!important;min-height:0!important;display:block!important}
+  .robot-stage .robot-orbit{width:100px!important;max-width:none!important;left:15px!important;top:50%!important;transform:translateY(-50%)!important}
+  .robot-stage .code-stream{opacity:.25!important}
+  .robot-stage .live-robot-scene{
+    position:absolute!important;left:65px!important;top:50%!important;
+    width:190px!important;height:310px!important;min-height:0!important;
+    transform:translate(-50%,-50%) scale(.39)!important;transform-origin:center!important;
+  }
+  .robot-caption{position:absolute!important;left:136px!important;right:12px!important;top:42px!important;bottom:auto!important;padding:0!important;text-align:left!important}
+  .robot-caption-title{font-size:14px!important}
+  .robot-caption-sub{display:block!important;font-size:10px!important;line-height:1.35!important;margin-top:4px!important}
+  .live-main-btn{position:absolute!important;left:136px!important;right:12px!important;bottom:10px!important;width:auto!important;min-height:36px!important;margin:0!important;font-size:10px!important}
+  .chat-panel{border-radius:18px!important}
+  .chat-scroll{padding:14px!important}
+  .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .live-frame{width:100%!important;height:var(--app-h,100dvh)!important;max-height:var(--app-h,100dvh)!important}
+}
+@media(max-width:600px){
+  .app{padding:calc(5px + var(--jarvis-safe-top)) max(5px,var(--jarvis-safe-right)) calc(5px + var(--jarvis-safe-bottom)) max(5px,var(--jarvis-safe-left))!important}
+  .topbar{height:48px!important;flex-basis:48px!important;min-height:48px!important;gap:6px!important}
+  .brand-holder{width:42px!important;height:42px!important}
+  .brand-square{width:39px!important;height:39px!important;border-radius:10px!important}
+  .menu-trigger{width:40px!important;height:40px!important}
+  .new-chat-btn{width:40px!important;min-width:40px!important;height:40px!important;padding:0!important}
+  .new-chat-btn span{display:none!important}
+  .profile-trigger{width:40px!important;height:40px!important}
+  .workspace{grid-template-rows:minmax(120px,16dvh) minmax(0,1fr)!important;gap:7px!important}
+  .robot-panel{border-radius:16px!important}
+  .robot-stage{left:0!important;width:118px!important}
+  .robot-stage .robot-orbit{left:11px!important;width:92px!important}
+  .robot-stage .live-robot-scene{left:57px!important;transform:translate(-50%,-50%) scale(.35)!important}
+  .robot-caption{left:119px!important;right:9px!important;top:37px!important}
+  .robot-caption-title{font-size:13px!important}
+  .robot-caption-sub{font-size:9px!important;max-width:100%!important}
+  .live-main-btn{left:119px!important;right:9px!important;bottom:8px!important;min-height:34px!important;font-size:9px!important;border-radius:10px!important}
+  .chat-header{height:48px!important;min-height:48px!important;flex-basis:48px!important;padding:0 12px!important}
+  .chat-header-left{gap:9px!important}
+  .chat-agent-orb{width:24px!important;height:24px!important}
+  .chat-header-title{font-size:13px!important}
+  .chat-header-sub{font-size:10px!important}
+  .chat-state{font-size:9px!important;letter-spacing:.06em!important}
+  .chat-scroll{padding:10px!important}
+  .welcome{justify-content:flex-start!important;gap:10px!important;padding:4px 0!important}
+  .welcome-card{padding:14px!important}
+  .welcome-card h2{font-size:22px!important;margin:7px 0!important}
+  .welcome-card p{display:block!important;font-size:13px!important;line-height:1.5!important}
+  .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+  .quick-card{min-height:58px!important;padding:9px!important}
+  .quick-title{font-size:12px!important}
+  .quick-sub{display:none!important}
+  .messages{gap:9px!important}
+  .message{max-width:94%!important;font-size:15px!important;line-height:1.6!important;padding:11px 12px!important}
+  .message.ai h3{font-size:15px!important}
+  .composer-shell{padding:7px!important}
+  .composer{gap:5px!important;padding:5px!important}
+  .composer textarea,#input{font-size:16px!important;min-height:44px!important;max-height:120px!important;padding:10px 8px!important}
+  .composer-btn{width:42px!important;height:42px!important;min-width:42px!important;border-radius:11px!important}
+  .composer-hint{display:none!important}
+  .live-overlay{padding:var(--jarvis-safe-top) var(--jarvis-safe-right) var(--jarvis-safe-bottom) var(--jarvis-safe-left)!important;align-items:stretch!important}
+  .live-frame{width:100%!important;height:var(--app-h,100dvh)!important;max-height:var(--app-h,100dvh)!important;grid-template-rows:56px minmax(0,1fr) 76px 68px!important;border-radius:0!important;border-left:0!important;border-right:0!important}
+  .live-topbar{padding:0 14px!important}
+  .live-title strong{font-size:13px!important}
+  .live-title span{font-size:9px!important}
+  .live-close{width:40px!important;height:40px!important}
+  .live-stage .live-robot-scene{left:50%!important;top:45%!important;transform:translate(-50%,-50%) scale(.76)!important;width:300px!important;height:390px!important}
+  .live-orbit{width:min(88vw,390px)!important;max-width:90%!important}
+  .live-energy{width:min(84vw,360px)!important}
+  .live-wave{top:59%!important;width:88%!important;height:58px!important;gap:3px!important}
+  .live-wave i{width:2px!important}
+  .live-status{padding:7px 10px!important;gap:4px!important}
+  .live-status strong{font-size:12px!important}
+  .live-status span{font-size:10px!important;max-width:94%!important}
+  .live-end-wrap{padding:7px 12px max(12px,var(--jarvis-safe-bottom))!important}
+  .live-end{width:min(260px,86%)!important;min-height:46px!important;font-size:11px!important}
+  .live-error-box{bottom:5%!important;width:92%!important}
+}
+@media(max-width:380px){
+  .workspace{grid-template-rows:minmax(112px,15dvh) minmax(0,1fr)!important}
+  .robot-caption{left:110px!important;top:34px!important}
+  .live-main-btn{left:110px!important}
+  .robot-stage{width:108px!important}
+  .robot-stage .live-robot-scene{left:53px!important;transform:translate(-50%,-50%) scale(.32)!important}
+  .live-stage .live-robot-scene{transform:translate(-50%,-50%) scale(.68)!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .live-robot-eye,.robot-stage.is-responding .live-robot-mouth,.live-stage.is-speaking .live-robot-mouth{animation:none!important}
+}
+</style>
 </head>
 
 <body>
@@ -4764,202 +4944,180 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
      TEXT CHAT
      ======================================================= */
 
-  async function sendText(){
-    let requestTimeout = 0;
-    const text =
-      els.input.value.trim();
-
-    if(
-      !text ||
-      els.sendBtn.disabled ||
-      state.liveSocket
-    ){
-      return;
+  async function readJARVISChatStream(response, onEvent){
+    if(!response.body || typeof response.body.getReader !== "function"){
+      throw new Error("Streaming is not supported by this browser. Refresh the page and try again.");
     }
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    const dispatch = block => {
+      const lines = block.split("\n").filter(line => line.startsWith("data:"));
+      if(!lines.length) return;
+      const raw = lines.map(line => line.slice(5).trimStart()).join("\n");
+      if(!raw || raw === "[DONE]") return;
+      try { onEvent(JSON.parse(raw)); }
+      catch(error){ console.warn("Invalid JARVIS stream event", error); }
+    };
+    try{
+      while(true){
+        const {value,done} = await reader.read();
+        if(done) break;
+        buffer += decoder.decode(value,{stream:true}).replace(/\r\n/g,"\n");
+        let boundary;
+        while((boundary = buffer.indexOf("\n\n")) !== -1){
+          const block = buffer.slice(0,boundary);
+          buffer = buffer.slice(boundary+2);
+          dispatch(block);
+        }
+      }
+      buffer += decoder.decode().replace(/\r\n/g,"\n");
+      if(buffer.trim()) dispatch(buffer);
+    }finally{
+      try{reader.releaseLock();}catch(_){}
+    }
+  }
+
+  async function sendText(){
+    const text = els.input.value.trim();
+    if(!text || els.sendBtn.disabled || state.liveSocket || state.offline) return;
 
     const requestId = ++chatRequestId;
     removeWelcome();
-
-    els.input.value =
-      "";
-
+    els.input.value = "";
     autoResize();
-
-    addMessage(
-      "user",
-      text,
-      false
-    );
-
-    state.messages.push({
-      role:"user",
-      text:text
-    });
-
-    state.messages =
-      state.messages.slice(
-        -24
-      );
-
+    addMessage("user",text,false);
+    state.messages.push({role:"user",text});
+    state.messages = state.messages.slice(-24);
     setBusy(true);
 
-    typingRow =
-      addMessage(
-        "ai",
-        "Thinking…",
-        false
-      );
+    typingRow = addMessage("ai","JARVIS is thinking…",false);
+    const typingBubble = typingRow.querySelector(".message");
+    typingBubble?.classList.add("typing");
 
-    const typingBubble =
-      typingRow.querySelector(
-        ".message"
-      );
+    let reply = "";
+    let streamFailure = null;
+    let requestTimeout = 0;
+    let controller = null;
 
-    if(
-      typingBubble
-    ){
-      typingBubble.classList.add(
-        "typing"
-      );
-    }
+    const renderPartial = () => {
+      if(!typingBubble) return;
+      typingBubble.classList.remove("typing");
+      typingBubble.innerHTML = renderMarkdown(reply);
+      els.chatScroll.scrollTop = els.chatScroll.scrollHeight;
+    };
 
     try{
+      // Get the Firebase token before starting the network deadline. The old
+      // timer started before auth refresh and could abort a valid backend call.
+      const idToken = await window.jarvisGetIdToken();
+      if(requestId !== chatRequestId) return;
 
-      const controller =
-        new AbortController();
+      controller = new AbortController();
       activeChatController = controller;
+      requestTimeout = setTimeout(() => controller.abort(), 56000);
 
-      requestTimeout = setTimeout(() => controller.abort(), 38000);
-
-      const response =
-        await fetch(
-          API_BASE_URL +
-          "/api/chat",
-          {
-            method:"POST",
-
-            headers:{
-              "Content-Type":"application/json",
-              "Authorization":"Bearer " + await window.jarvisGetIdToken()
-            },
-
-            body:
-              JSON.stringify({
-                messages:
-                  state.messages
-              }),
-
-            signal:
-              controller.signal
-          }
-        );
-
-      clearTimeout(requestTimeout);
-      requestTimeout = 0;
-
-      const data =
-        await response
-          .json()
-          .catch(
-            () => ({})
-          );
-
-      if(
-        !response.ok
-      ){
-
-        throw new Error(
-          [data.error, data.hint].filter(Boolean).join(" — ") || "CHAT_HTTP_" + response.status
-        );
-      }
-
-      if (requestId !== chatRequestId) return;
-      typingRow?.remove();
-
-      typingRow =
-        null;
-
-      const reply =
-        String(
-          data.reply ||
-          "I did not receive a response."
-        );
-
-      state.messages.push({
-        role:"assistant",
-        text:reply
+      const response = await fetch(API_BASE_URL + "/api/chat", {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer " + idToken
+        },
+        body:JSON.stringify({messages:state.messages.slice(-12)}),
+        signal:controller.signal
       });
 
-      state.messages =
-        state.messages.slice(
-          -24
-        );
-      if (window.jarvisSaveLocalConversation) await window.jarvisSaveLocalConversation({ id:"current", title:String(state.messages.find(m=>m.role==="user")?.text || "New chat").slice(0,72), messages:state.messages });
-      if (requestId !== chatRequestId) return;
-
-      addMessage(
-        "ai",
-        reply,
-        true
-      );
-
-      setMode(
-        "idle",
-        "READY"
-      );
-
-    }catch(
-      error
-    ){
-      if (requestId !== chatRequestId) return;
-
-      console.error(
-        "JARVIS chat error:",
-        error
-      );
-
-      typingRow?.remove();
-
-      typingRow =
-        null;
-
-      let message =
-        "JARVIS backend سے connection نہیں ہو سکا۔";
-
-      if(
-        error?.name ===
-        "AbortError"
-      ){
-
-        message =
-          "JARVIS request timeout ہو گئی۔ دوبارہ کوشش کریں۔";
-      }
-      else if(
-        state.offline
-      ){
-
-        message =
-          "Internet connection available نہیں ہے۔ Network check کریں۔";
-      }
-      else if(error?.message){
-        message =
-          "Backend error: " + String(error.message).slice(0, 220);
+      if(!response.ok){
+        const data = await response.json().catch(()=>({}));
+        throw new Error([data.error,data.hint].filter(Boolean).join(" — ") || "CHAT_HTTP_" + response.status);
       }
 
-      addMessage(
-        "ai",
-        message,
-        false
-      );
+      const contentType = String(response.headers.get("content-type") || "").toLowerCase();
+      if(contentType.includes("text/event-stream")){
+        await readJARVISChatStream(response,event=>{
+          if(requestId !== chatRequestId) return;
+          if(event.type === "provider"){
+            setMode("thinking",event.fallback ? "SWITCHING MODEL" : "GENERATING");
+          }else if(event.type === "chunk" && typeof event.text === "string"){
+            reply += event.text;
+            els.robotStage.classList.add("is-responding");
+            renderPartial();
+          }else if(event.type === "error"){
+            streamFailure = event;
+          }
+        });
+      }else{
+        // Backward compatibility with an older deployed JSON-only function.
+        const data = await response.json().catch(()=>({}));
+        if(!data.reply) throw new Error(data.hint || data.error || "JARVIS returned an empty response.");
+        reply = String(data.reply);
+        renderPartial();
+      }
 
-      setMode(
-        "error",
-        "CONNECTION ERROR"
-      );
+      if(requestId !== chatRequestId) return;
+      if(!reply.trim()){
+        throw new Error(streamFailure?.hint || "JARVIS did not receive a complete response. Please try again.");
+      }
 
+      if(streamFailure?.partial){
+        reply += "\n\nConnection interrupted. Ask JARVIS to continue from the last point.";
+        renderPartial();
+      }
+
+      typingBubble?.classList.remove("typing");
+      if(typingBubble) addMessageActions(typingBubble,reply);
+      typingRow = null;
+
+      state.messages.push({role:"assistant",text:reply});
+      state.messages = state.messages.slice(-24);
+      setMode("idle","READY");
+
+      // Show the answer first; local IndexedDB persistence must never delay it.
+      if(window.jarvisSaveLocalConversation){
+        void window.jarvisSaveLocalConversation({
+          id:"current",
+          title:String(state.messages.find(m=>m.role==="user")?.text || "New chat").slice(0,72),
+          messages:state.messages
+        }).catch(error=>console.warn("JARVIS local conversation save failed",error));
+      }
+
+      if(streamFailure && !streamFailure.partial){
+        addMessage("ai",streamFailure.hint || "The response ended unexpectedly. Please try again.",false);
+      }
+    }catch(error){
+      if(requestId !== chatRequestId) return;
+      console.error("JARVIS chat error:",error);
+
+      if(reply.trim() && typingBubble){
+        reply += "\n\nConnection interrupted. Ask JARVIS to continue from the last point.";
+        typingBubble.classList.remove("typing");
+        typingBubble.innerHTML = renderMarkdown(reply);
+        addMessageActions(typingBubble,reply);
+        state.messages.push({role:"assistant",text:reply});
+        state.messages = state.messages.slice(-24);
+        if(window.jarvisSaveLocalConversation){
+          void window.jarvisSaveLocalConversation({
+            id:"current",
+            title:String(state.messages.find(m=>m.role==="user")?.text || "New chat").slice(0,72),
+            messages:state.messages
+          }).catch(saveError=>console.warn("JARVIS local conversation save failed",saveError));
+        }
+      }else{
+        typingRow?.remove();
+        const message = error?.name === "AbortError"
+          ? "JARVIS نے جواب مکمل کرنے میں مقررہ وقت سے زیادہ لیا۔ دوبارہ کوشش کریں۔"
+          : state.offline
+            ? "Internet connection available نہیں ہے۔ Network چیک کریں۔"
+            : "JARVIS backend error: " + String(error?.message || error).slice(0,220);
+        addMessage("ai",message,false);
+      }
+
+      typingRow = null;
+      setMode("error","CONNECTION ISSUE");
     }finally{
       clearTimeout(requestTimeout);
-      if (requestId === chatRequestId) {
+      els.robotStage.classList.remove("is-responding");
+      if(requestId === chatRequestId){
         activeChatController = null;
         setBusy(false);
       }
@@ -7061,7 +7219,7 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
 
 <div id="jarvisAuthGate">
  <section class="jarvis-auth-card" aria-labelledby="jarvisAuthTitle">
-  <img class="jarvis-auth-logo" src="https://drive.google.com/uc?export=view&id=1Jmscd_rCXU-aAgZG9dvcfgosLrf3Auw6" alt="IP BABA logo" onerror="this.style.display='none'">
+  <img class="jarvis-auth-logo" src="/assets/ipbaba-logo.png" alt="IP BABA logo" onerror="this.style.display='none'">
   <div style="font-size:11px;letter-spacing:.2em;font-weight:800;color:#138db8">IP BABA • DIGITAL GROWTH PARTNER</div>
   <h1 id="jarvisAuthTitle">Welcome to JARVIS</h1>
   <p>Sign in to securely access your AI assistant. Your chat history stays in this browser on this device.</p>
@@ -7079,7 +7237,7 @@ body::after{background-image:linear-gradient(rgba(44,106,145,.035) 1px,transpare
 (function(){
 "use strict";
 const $=id=>document.getElementById(id);
-const gate=$("jarvisAuthGate"),form=$("jarvisAuthForm"),email=$("jarvisAuthEmail"),password=$("jarvisAuthPassword"),errorBox=$("jarvisAuthError"),modeBtn=$("jarvisAuthMode"),googleBtn=$("jarvisGoogleSubmit"),emailBtn=$("jarvisEmailSubmit"),userBar=$("jarvisUserBar"),profileToggle=$("jarvisProfileToggle"),profilePanel=$("jarvisProfilePanel"),settingsPanel=$("jarvisSettingsPanel");
+const gate=$("jarvisAuthGate"),form=$("jarvisAuthForm"),email=$("jarvisAuthEmail"),password=$("jarvisAuthPassword"),errorBox=$("jarvisAuthError"),modeBtn=$("jarvisAuthMode"),googleBtn=$("jarvisGoogleSubmit"),emailBtn=$("jarvisEmailSubmit"),profileToggle=$("jarvisProfileToggle"),profilePanel=$("jarvisProfilePanel"),settingsPanel=$("jarvisSettingsPanel");
 let createMode=false,fb=null,storage=null,activeUser=null,authReady=false;
 function message(text){if(errorBox)errorBox.textContent=text;}
 function setProfileName(name){const clean=String(name||"").trim()||"JARVIS User";$("jarvisProfileNameDisplay").textContent=clean;$("jarvisProfileNameInput").value=clean;}
@@ -7115,7 +7273,7 @@ async function loadSdk(){
   fb.onAuthStateChanged(auth,async user=>{
    activeUser=user||null;window.jarvisUser=activeUser;
    if(user){
-    gate.hidden=true;userBar.hidden=false;profileToggle.hidden=false;profileToggle.hidden=false;
+    gate.hidden=true;profileToggle.hidden=false;
     $("jarvisUserEmail").textContent=user.email||"Signed in";
     const displayName=localStorage.getItem("jarvisDisplayName:"+user.uid)||user.displayName||((user.email||"JARVIS User").split("@")[0]);
     $("jarvisProfileNameInput").value=displayName;$("jarvisProfileNameDisplay").textContent=displayName;
@@ -7131,7 +7289,7 @@ async function loadSdk(){
     }catch(err){console.warn("Profile settings unavailable",err);}
     try{window.jarvisLocalConversations=await storage.getConversations(user.uid);}catch(err){console.warn(err);}
    }else{
-    gate.hidden=false;userBar.hidden=true;profileToggle.hidden=true;profilePanel.hidden=true;settingsPanel.hidden=true;profilePanel.hidden=true;settingsPanel.hidden=true;profileToggle.setAttribute("aria-expanded","false");
+    gate.hidden=false;profileToggle.hidden=true;profilePanel.hidden=true;settingsPanel.hidden=true;profilePanel.hidden=true;settingsPanel.hidden=true;profileToggle.setAttribute("aria-expanded","false");
    }
   });
   authReady=true;
